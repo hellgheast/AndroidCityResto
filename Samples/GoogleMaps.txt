@@ -16,7 +16,7 @@
 -- https://developers.google.com/maps/documentation/android-api/intents Intent avec googlemaps !à voir!
 
 -- Interaction avec la map (GoogleMap)
-	++ Controle graphiques (.UiSettings)
+	++ Controle graphiques (.UiSettings())
 		-- Zoom 					UiSettings.setZoomControlsEnabled(boolean).
 		-- Boussole 				UiSettings.setCompassEnabled(boolean)
 		-- Propre localisation 		Chapitre dédié
@@ -26,5 +26,34 @@
 		-- Inclinaison				UiSettings.setTiltGesturesEnabled(boolean)
 		-- Rotation 				UiSettings.setRotateGesturesEnabled(boolean)
 	++ Evenements
-		
-		
+		-- Click bref sur la map	OnMapClickListener		// GoogleMap.setOnMapClickListener(OnMapClickListener)
+		-- Click long sur la map 	OnMapLongClickListener	// GoogleMap.setOnMapLongClickListener(OnMapLongClickListener)
+	Il est possible de désactiver les clicks en lite mode via view.setClickable(boolean) || fragment.getView().setClickable(boolean);
+		-- Changement Caméra		OnCameraChangeListener  // GoogleMap.setOnCameraChangeListener(OnCameraChangeListener)
+	
+	++ Caméra et Vue (.moveCamera(CameraUpdateFactory)) https://developers.google.com/maps/documentation/android-api/views
+		-- Position  	position sur laquelle est centrée la caméra de la map longitude/latitude
+		-- Zoom 		Indique le niveau de zoom	 256 * 2N dp
+		-- Orientation 
+		-- Angle de vue
+		-- Changer la position de la caméra 	CameraUpdate
+		-- Change Zoom
+			-- Unitaire (Change pas la position de la caméra)
+						+ CameraUpdateFactory.zoomIn()
+						- CameraUpdateFactory.zoomOut()
+			-- Valeur (Change pas la position de la caméra)
+						  CameraUpdateFactory.zoomTo(float)
+			-- Relatif 
+						+/- CameraUpdateFactory.zoomBy(float) 
+						+/- CameraUpdateFactory.zoomBy(float, Point) Maintien le centre de la caméra à la position indiquée
+		-- Changer position
+			-- Position Lat/Lng
+						CameraUpdateFactory.newLatLng(LatLng)
+			-- Position Lat/Lng avec Zoom 	
+						CameraUpdateFactory.newLatLngZoom(LatLng, float)
+			--Position de camera !le plus complet avec les quatres paramètres (Position,Zoom,Orientation,Angle de Vue)!
+						CameraUpdateFactory.newCameraPosition(CameraPosition) || CameraPosition.Builder
+			--Changer Position relative
+						CameraUpdateFactory.scrollBy(float, float)
+						
+						
