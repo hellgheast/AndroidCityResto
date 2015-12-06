@@ -1,0 +1,30 @@
+-- Ajout de la clé standard dans le manifest
+-- Ajout dans le xml du layout de l'activité le fragment FragmentMaps
+-- Ajout des callbacks OnMapReady
+-- Récupération du MapFragment via un FragmentManager casté
+-- Mise en place du listener de callback avec getMapAsync
+-- On récupère la map prête dans le callback
+-- Deux types d'affichage de Map : MapFragment,MapView
+-- Un seul objet qui va bosser avec : GoogleMap
+-- Initialisation : Sélection Position,Zoom,Relèvement,Inclinason
+-- Paramètres : Type de Map,Choix des bouttons additionnels (Zoom,Boussole),Mouvement fait par le user,litemode ou pas?
+-- Paramètres configurables de trois manières :
+   via XML (balise map: https://developers.google.com/maps/documentation/android-api/map avec namespace xmlns:map="http://schemas.android.com/apk/res-auto") 
+   ou de manière programmatique via l'objet GoogleMapOptions avec MapFragment / MapView
+   ou en configuration l'objet GoogleMap via .getUiSettings() //Seule fonctionelle pour le moment
+   
+-- https://developers.google.com/maps/documentation/android-api/intents Intent avec googlemaps !à voir!
+
+-- Interaction avec la map (GoogleMap)
+	++ Controle graphiques (.UiSettings)
+		-- Zoom 					UiSettings.setZoomControlsEnabled(boolean).
+		-- Boussole 				UiSettings.setCompassEnabled(boolean)
+		-- Propre localisation 		Chapitre dédié
+    ++ Mouvements
+		-- Zoom						UiSettings.setZoomGesturesEnabled(boolean)
+		-- Défillement				UiSettings.setScrollGesturesEnabled(boolean).
+		-- Inclinaison				UiSettings.setTiltGesturesEnabled(boolean)
+		-- Rotation 				UiSettings.setRotateGesturesEnabled(boolean)
+	++ Evenements
+		
+		
