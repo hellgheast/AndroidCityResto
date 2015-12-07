@@ -56,4 +56,31 @@
 			--Changer Position relative
 						CameraUpdateFactory.scrollBy(float, float)
 						
-						
+		!NO BOUNDARIES!
+		
+		-- Déplacement avec animation  GoogleMap.animateCamera(cameraUpdate, duration, callback)
+			-- Nécéssite le callback  GoogleMap.CancellableCallback
+				onFinish() // Si animation finie
+				onCancel() // Si animation interrompue
+			
+	++ Localistion
+		// En ayant les permissions requises on peut afficher le bouton de localisation
+		mMap.setMyLocationEnabled(true);
+		// Quand actif centre sur la position actuelle indiquée par le GPS
+		
+	++ Markeurs https://developers.google.com/android/reference/com/google/android/gms/maps/model/Marker
+		-- Ajout d'un marquer
+			.addMarker(new MarkerOptions()
+			.position(new LatLng(10, 10))
+			.title("Hello world"));
+		-- Ajout d'information sur le marquer
+			.snippet() // Automatique
+			Marker.showInfoWindow // n'est pas automatique
+		-- Pour modifier l'aspect graphique de InfoWindows
+			--InfoWindowAdapter() qui implémente les deux méthodes
+				--  getInfoWindow qui change le contenu de  la windowsinfo
+				--   getInfoContents qui change le contenu
+		-- Pour réagir aux click sur le windowsinfo on utilise un listener
+			GoogleMap.OnInfoWindowClickListener qui contient la méthode
+			--  public void onInfoWindowClick(Marker marker)
+			
