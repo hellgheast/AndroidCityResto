@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">AppFragIntents</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="intro_message">City Resto</string>
+    <string name="version_message">V 1.0.0.0.0</string>
+    <string name="target_intro_message">Localisation</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="display_prompt">Choisissez un affichage</string>
+    <string name="searchButton">Rechercher</string>
+    <string-array name="choix_affichage">
+        <item>Carte</item>
+        <item>Liste</item>
+    </string-array>
+
+    <!-- Checkboxes -->
+    <string name="Checkbox1">Pizzerias</string>
+    <string name="Checkbox2">McDonald\&apos;s</string>
+    <string name="Checkbox3">Restaurants</string>
+    <string name="Checkbox4">Kebabs</string>
+    <string name="Checkbox5">Cuisine chinoise</string>
+    <string name="Checkbox6">Cuisine thaïlandaise</string>
+    <string name="Checkbox7">Cuisine indienne</string>
+    <string name="Checkbox8">Sandwitcherie</string>
+    <string name="Checkbox9">Fast food</string>
+    <string name="Checkbox10">Restaurant gastronomique</string>
+    <string name="Checkbox11"></string>
+    <string name="Checkbox12"></string>
+    <string name="Checkbox13"></string>
+    <string name="Checkbox14"></string>
+    <string name="Checkbox15"></string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_resto">RestoActivity</string>
+    <string name="title_activity_choice">ChoiceActivity</string>
+    <string name="title_activity_fragment_map">FragmentMap</string>
+</resources>
