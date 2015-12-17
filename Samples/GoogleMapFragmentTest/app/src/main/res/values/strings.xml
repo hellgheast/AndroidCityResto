@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GoogleMapFragmentTest</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="searchButton">Rechercher</string>
+    <string name="title_activity_location_fragment">LocationFragment</string>
+    <string name="title_activity_affich_fragment_map">AffichFragmentMap</string>
+</resources>
