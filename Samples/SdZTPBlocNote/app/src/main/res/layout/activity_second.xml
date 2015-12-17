@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
+    android:background="@color/background"
+    android:id="@+id/Layout_Second"
+    android:animateLayoutChanges="true"
+    >
+
+
+
+
+    <Button
+        android:id="@+id/Drawable_HideShowButton"
+        android:src="@drawable/a9p_09_11_00752"
+        style="@style/hideButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/DrawShow_FR"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="Drawable_ChangeLayout"/>
+
+    <ImageView
+        android:id="@+id/Drawable_Divider"
+        android:src="@android:drawable/divider_horizontal_textfield"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@id/Drawable_HideShowButton"
+        android:scaleType="fitXY"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"/>
+
+    <!-- On rajoute la zone de texte-->
+    <TextView
+        android:id="@+id/TextView_TextEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TextEdit_FR"
+        android:layout_below="@id/Drawable_Divider"/>
+    <EditText
+        android:id="@+id/EditText_Zone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="8sp"
+        android:lines="5"
+        android:background="@color/white"
+        android:layout_below="@id/Drawable_Divider"
+        android:layout_toRightOf="@+id/TextView_TextEdit"
+        android:inputType="textMultiLine"/>
+    <!-- On rajoute la zone de prévisualisation-->
+    <TextView
+        android:id="@+id/TextView_TextPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/TextPreview_FR"
+        android:layout_below="@id/EditText_Zone"/>
+    <TextView
+        android:id="@+id/TextView_Preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_toRightOf="@id/TextView_TextPreview"
+        android:layout_below="@id/EditText_Zone"/>
+
+</RelativeLayout>

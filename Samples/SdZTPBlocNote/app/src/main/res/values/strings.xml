@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">SdZTPBlocNote</string>
+
+    <string name="DrawHide_FR">Cacher</string>
+    <string name="DrawShow_FR">Afficher</string>
+
+    <string name="ColorBlue_FR">Bleu</string>
+    <string name="ColorRed_FR">Rouge</string>
+    <string name="ColorBlack_FR">Noir</string>
+    <string name="smileys">Smileys :</string>
+    <string name="TextDivider_FR">Séparateur</string>
+    <string name="TextEdit_FR">Édition :</string>
+    <string name="TextPreview_FR">Prévisualisation : </string>
+    <string name="SmileySmile_FR">Smiley content</string>
+    <string name="SmileyWink_FR">Smiley qui fait un clin d\oeil</string>
+    <string name="SmileyHappy_FR">Smiley avec un gros sourire</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="DrawItalic_FR">Italique</string>
+    <string name="DrawBold_FR">Gras</string>
+    <string name="DrawUnderline_FR">Souligné</string>
+</resources>

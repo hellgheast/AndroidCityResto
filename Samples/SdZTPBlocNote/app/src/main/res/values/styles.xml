@@ -1,0 +1,38 @@
+<resources>
+
+    <color name="background">#99CCFF</color>
+    <color name="black">#000000</color>
+    <color name="translucide">#00000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="red">#E34612</color>
+    <color name="blue">#1CB5E8</color>
+
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+    </style>
+
+    <style name="CouleurFond">
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="Couleurtexte">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="optionButton">
+        <item name="android:background">@drawable/a9p_09_11_00741</item>
+    </style>
+
+    <style name="hideButton">
+        <item name="android:background">@drawable/a9p_09_11_00752</item>
+    </style>
+
+    <style name="translucide">
+        <item name="android:background">@color/translucide</item>
+    </style>
+
+</resources>
