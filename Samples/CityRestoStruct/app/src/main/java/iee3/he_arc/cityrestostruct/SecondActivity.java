@@ -4,6 +4,7 @@ package iee3.he_arc.cityrestostruct;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentActivity;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,8 +24,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecondActivity extends AppCompatActivity {
+public class SecondActivity extends FragmentActivity {
 
+    public static FragmentManager fragmentManager;
     ListView mListView;
     private Spinner spinner1;
 
@@ -39,11 +41,16 @@ public class SecondActivity extends AppCompatActivity {
 
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fragmentManager = getFragmentManager();
+
                 Toast.makeText(getApplication(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+
                 Fragment fr;
-                if (0 == position)
+                if (1 == position)
                     fr = new FragmentMap();
                 else
                     fr = new FragmentListe();

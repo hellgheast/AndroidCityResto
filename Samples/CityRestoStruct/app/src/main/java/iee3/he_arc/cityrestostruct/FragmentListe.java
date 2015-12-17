@@ -43,6 +43,9 @@ public class FragmentListe extends Fragment {
         Toast.makeText(getActivity(), "salut", Toast.LENGTH_SHORT).show();
         mListView = (ListView) this.getActivity().findViewById(R.id.listView);
         List<Resto> restos = genererRestos();
+
+        // Afin de remplir une ListView, il existe un objet nommé Adapter, qui va prendre en entrée
+        // une liste d’objets et un layout XML et va générer pour chaque entrée une cellule formatée
         RestoAdapter adapter = new RestoAdapter(getActivity(), restos);
         mListView.setAdapter(adapter);
 

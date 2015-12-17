@@ -1,10 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="iee3.he_arc.appfragintents.SecondActivity">
+    tools:context="iee3.he_arc.cityrestostruct.SecondActivity">
     <Spinner
         android:id="@+id/spinner1"
         android:layout_width="wrap_content"
@@ -13,10 +15,17 @@
         android:prompt="@string/display_prompt" />
 
     <fragment
-        android:name="iee3.he_arc.appfragintents.FragmentMap"
+        android:name="iee3.he_arc.cityrestostruct.FragmentMap"
         android:id="@+id/fragment_place"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/spinner1" />
+        android:layout_below="@+id/spinner1"
+        class="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <fragment
+        android:id="@+id/location_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        class="com.google.android.gms.maps.SupportMapFragment" />
 
 </RelativeLayout>
