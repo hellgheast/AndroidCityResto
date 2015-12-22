@@ -97,8 +97,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     {
         Log.i(TAG, "Connected to GoogleApiClient");
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-    }
+        Toast.makeText(getApplicationContext(), "Your Location is - \nLat: "
+                                                + mLastLocation.getLatitude() + "\nLong: "
+                                                + mLastLocation.getLongitude(),
+                                                Toast.LENGTH_LONG).show();
+     }
 
 
     /**

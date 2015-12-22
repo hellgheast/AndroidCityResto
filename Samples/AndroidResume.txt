@@ -1,0 +1,160 @@
+
+Intents : 
+	Communication entre composants d'une application
+	Transmet les données d'une activité à une autre avec startActivity()
+	Un résultat d'activité est reçu avec startActivityForResult()
+	Notre activité (en attente) reçoit le résultat dans onActivityResult()
+	Services : startService permet de lancer un Service (Intent)
+	Lors d'un communication client-serveur, on va lier l'Intent au Service avec bindService
+	Pour du broadcast on passe un Intent avec sendBroadcast, etc.
+	Deux types d'Intents : excplicites et implicites:
+		Excplicites : spécifie le composant à lancer via son nom (startActivity)
+		Implicites  : déclare juste une action à faire, permet aux aux autres Services de ce type de réagir
+	Construire un Intent : nom de composant à lancer,  action à effectuer, ainsi que les données sous la forme d'un objet URI, catégorie, extras
+	Intents filter : peut filter les actions, les catégories et les données.
+	PendingIntents : premet d'autoriser une autre application à utiliser un Intent déjà créé
+	
+	Source : https://developer.android.com/guide/components/intents-filters.html
+	Source pour FileStorage : https://developer.android.com/guide/components/intents-common.html
+	
+Activités :
+	LifeCycle :
+		SavingActivityState : lorsqu'on passe à une autre activité, onSaveInstanceState permet de sauver l'état de l'activité actuelle, avant par exemple de la tuer
+							  ordre de sauvegarde (FIFO) lors de restauration
+		
+		CoordinatingActivities : lorsqu'une activité en appelle une autre : quand A lance B : 1) la méthode onPause de A s'éxécute
+																							  2) le onCreate, onStart et onResume de l'activité B s'éxécutent (l'activité B a désormais le focus)
+																							  3) l'activité A lance la méthode onStop
+																			exemple : si on écrit dans une DB quand la première activité s'arrête, de sorte que l'activité suivante puisse la lire, 
+																					  on devrait donc écrite dans la DB dans onPause de A, à la place l'écrire dans le onStop
+Fragment, Loader, BackStacks : 
+	Fragment : Partie d'interface utilisateur d'un activité
+			   Toujours embarqué dans une activité (cycle de vie lié)
+			   Le fragment lancé vit dans un ViewGroup 
+			   Un fragment n'a pas besoin de faire partie d'un layout d'une activité
+			   Deux manières d'insertions dans layout : 
+											Balise fragment<>
+											Rajout dans un ViewGroup existant
+											
+				Création : onCreate, onCreateView, onPause (au minimum)
+					onCreate : Créé le fragment
+					onCreateView : Appelé quand il faut créer l'interface graphique du fragment. Retourne une view
+								   Information sur le contenu d'un onCreateView : https://developer.android.com/guide/components/fragments.html
+					onPause : équivalent à onPause d'une activité -> ne pas oublier de sauvegarder les changements avec onSaveInstanceState
+					
+					-> La différence avec le LifeCycle d'une activité est comment chacun est enregistré dans un BackStack (voir Thread et BackStack)
+					   Par défaut, une Activity est mis dans la BackStack losqu'elle est stoppée. Cependant, un Fragment est placé dans une BackStack gérée par l'activitée, via addToBackStack.
+					   Sinon très similaire
+					   
+				Un fragment se rajoute dans le layout. Cette déclaration contient au moins :
+																					Un ID unique
+																					Un TAG unique (information supplémentaire) 
+				Un fragment peut aussi se rajouter de manière programmatique, avec ViewGroup :
+																					getFragmentManager 
+																					getFragmentTransaction
+																					
+				Management avec FragmentManager :
+											Se récupère avec getFragmentManager
+											Récupère les fragments de l'activité avec findFragmentById ou findFragmentByTag
+											On peu popper les Fragments en dehors de la BackStack
+											On peut enregistrer les Listener pour le BackStack
+				Transactions avec FragmentTransaction :
+											Chaque transaction est une combinaison des changements que l'on veut faire
+											Deux parties : 	
+													modification (add, remove, replace)
+													commit (transaction.commit) -> Ne commit pas immédiatement, mais ordonnance afin d'être lancé dans le thread graphique de l'activité.
+																				   Il est cependant possible de forcer l'éxécution des comits via executePendingTransaction.
+																				   On peut commiter une transaction uniquement avant la sauvegarde de l'application.
+				Communication avec activité :
+											Il est possible d'afficher des effets de transition.
+											Peut accéder à l'activité avec getActivity().
+											
+				Communication inter-fragments :
+											Peut être effectué en déclarant des interfaces dans un fragment qui sera ensuite instancié dans l'activité.
+				
+				Ajouter objets dans AppBar : Ajouter des items au Menu Option : onCreateOptionMenu()
+																				setAsOptionMenu() durant le onCreate
+																				onOptionItemSelected() pour la méthode de callback
+																				On peut aussi enregistrer une View spécifique pour 
+																				le ContextMenu avec registerForContextMenu -> charger telle View pour tel contexte
+																				Voir Info supplémentaires
+																				Quand l'utilisateur ouvre le ContextMenu, le fragment reçoit un appele de onCreateContextMenu
+																				Quand l'utilisateur sélectionne un item : onContextItemSelected
+																				Entraînement disponible pour Menu et App Bar
+				Voir exemples
+				
+				
+	Loaders : 
+		https://developer.android.com/guide/components/loaders.html
+		Un Loader est disponible pour tous les Activity et Fragments. 
+			Cela permet le chargement des données asynchrones (p.ex de ContentProvider).
+			Il monitore la source de donnée.
+			Il envoie le résultat des données dès que le contenu change.
+			Il se reconnecte automatiquement au dernier curseur du Loader lorsqu'il a été recréé. Il n'y a donc pas besoin d'une nouvelle requête de donnée.
+				
+		Résumé de l'API
+			LoaderManager : Gère les Loaders. Unique pour chaque activités et fragments.
+			LoaderManager.LoaderCallback : Interaction avec LoaderManager.
+										   onCreateLoaderCallback
+			Loader : Classe abstraite pour chargement asynchrone des données (classe de base)
+			AsyncTaskLoader : Classe abstraite qui fournit des tâches asynchrones
+							  CursorLoader : Effectue une requête sur un ContentResolver, et retourne un curseur. 
+											 Implémente le protocole de chargement des Loaders.
+											 Meilleur moyen de charger des données de manière asynchrone depuis un ContentProvider.
+		Lancement d'un Loader :	
+			initLoader() : Initialise un Loader, le créer s'il est inexistant, ou le charge s'il existe déjà.
+		Relancement d'un Loader :
+			restartLoader(), pour virer les anciennes données.
+		Utilisation du CallbackManager :
+			onCreateLoader() : Instancie et retourne un nouveau Loader pour l'ID donné.
+			onLoadFinished() : Appelé quand un Loader appelé précédemment a finit de charger.
+			onLoaderReset()  : Positionne le curseur sur null.
+	
+	
+	Tasks et BackStacks : 
+		Superposition d'activités, comportements par défaut des activités et des tâches.
+		https://developer.android.com/design/patterns/navigation.html
+		
+	
+	
+Services : Tâches en background		
+	Composant de l'application qui tourne en tâche de fond.
+	A démarrer avec startService()
+	On peut lier un Service avec bindService, pour interagir entre un client et un serveur (p. ex. un service qui gère une DB)
+	Deux modes : Standrard (tourne indéfiniment) et Bound (lié, et finit donc par s'arrêter).
+	Deux métodes de callback : onStartCommand : start le Service.
+							   onBind : lie le Service.
+	Un Service tourne dans le Main Thread. Sinon, c'est une AsyncTask.
+	
+	Basics : Pour créer un Service, on doit créer une classe dérivée de Service.
+			 Voir cours DLM
+			 Les méthode à surcharger sont : 
+											onStartCommand(): Le système appelle cette méthode lorsqu'un autre composant, telle qu'une activité, appelle startService. 
+															  Une fois cette méthode exécutée, le Service s'exécute indéfiniment. Il est conseillé d'appeler stopSelf ou 
+															  stopService pour y mettre fin. Si on veut utiliser le binding, ces appels sont inutiles.
+											onBind() 		: Le systèmeappelle ces méthodes lorsqu'un composant veut se lier au Service avec bindService.
+															  Dans l'implémentation, on doit appeler une interface qui retourne IBinder. Mais si on ne veut pas autoriser le binding, on retourne null.
+											onCreate() 		: Standard, mais appelé une seule fois.
+											onDestroy() 	: Le système l'appelle lorsqu'on veut détruire le Service.
+											
+			Déclaration dans le manifest avec la balise <service, ne pas oublier le point !
+			
+			https://developer.android.com/guide/components/services.html
+			
+			Le service s'arrête lui-même.
+			
+Content Providers :
+			
+								
+						
+								
+								
+				
+	
+Infos supplémentaires : 
+			Bundle : Objet de stockage de données à transmettre entre activités (p.ex utilisé avec Intent)
+			A Uri is an address that points to something of significance. In the case of ContentProviders, the Uri is usually used to determine which table to use.	
+			Tabs : http://www.androidhive.info/2015/09/android-material-design-working-with-tabs/		
+			ContextMenu : http://www.stealthcopter.com/blog/2010/04/android-context-menu-example-on-long-press-gridview/
+			Content Resolver/Provider : http://www.androiddesignpatterns.com/2012/06/content-resolvers-and-content-providers.html								
+						
