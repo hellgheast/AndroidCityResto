@@ -33,6 +33,9 @@ public class ActConnect extends AppCompatActivity {
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();
                 lPassword = ((EditText) findViewById(R.id.etPassword)).getText().toString();
 
+                if (cbRememberMe.isChecked()){
+
+                }
                 Intent intent = new Intent(ActConnect.this, ActMainResto.class);
                 startActivity(intent);
             }

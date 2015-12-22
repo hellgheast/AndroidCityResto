@@ -30,6 +30,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class FragMapList extends Fragment{
 
+    //Variable google maps
+    private GoogleMap mMap;
+    private GoogleApiClient mGoogleApiClient;
+    private Location  mLastLocation;
+
+    //Location request
+    private LocationRequest mLocationRequest;
     public FragMapList() {
         // Required empty public constructor
     }
@@ -39,6 +46,7 @@ public class FragMapList extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_frag_map_list, container, false);
+
     }
 
     @Override
