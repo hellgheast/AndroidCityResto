@@ -9,40 +9,46 @@ import java.util.HashMap;
  */
 public class ClassMainStorageManager {
 
-    public int lRadius = 1000; // Radius of research in km
-    public int lCondition = 0; // Condition to choose restaurants : 0 = AND, 1 = OR
+    public static int lRadius = 10000; // Radius of research in meters
 
     // We use a Hashmap for saving choices of types of restaurants
     // The key is the type of restaurant, and the value is a boolean who said if it's checked or not.
-    public HashMap<String, Integer> hmTypesChecked = new HashMap<String, Integer>();
+    static  HashMap<String, Boolean> hmTypesChecked = new HashMap<String, Boolean>();
 
-    // Set alls types to 0, because noone are checked
-    public HashMap<String, Integer> initTypes(Context c) {
-        hmTypesChecked.put(c.getString(R.string.type1), 0);
-        hmTypesChecked.put(c.getString(R.string.type2), 0);
-        hmTypesChecked.put(c.getString(R.string.type3), 0);
-        hmTypesChecked.put(c.getString(R.string.type4), 0);
-        hmTypesChecked.put(c.getString(R.string.type5), 0);
-        hmTypesChecked.put(c.getString(R.string.type6), 0);
-        hmTypesChecked.put(c.getString(R.string.type7), 0);
-        hmTypesChecked.put(c.getString(R.string.type8), 0);
-        hmTypesChecked.put(c.getString(R.string.type9), 0);
-        hmTypesChecked.put(c.getString(R.string.type10), 0);
-        return hmTypesChecked;
+    public static void initCheckBoxes(Context c) {
+        // Set alls types to "uncheck", because noone are checked yet
+        hmTypesChecked.put(c.getString(R.string.type1), false);
+        hmTypesChecked.put(c.getString(R.string.type2), false);
+        hmTypesChecked.put(c.getString(R.string.type3), false);
+        hmTypesChecked.put(c.getString(R.string.type4), false);
+        hmTypesChecked.put(c.getString(R.string.type5), false);
+        hmTypesChecked.put(c.getString(R.string.type6), false);
+        hmTypesChecked.put(c.getString(R.string.type7), false);
+        hmTypesChecked.put(c.getString(R.string.type8), false);
+        hmTypesChecked.put(c.getString(R.string.type9), false);
+        hmTypesChecked.put(c.getString(R.string.type10), false);
     }
 
-
-
-    public HashMap<String, Integer> getHmTypesChecked() {
-        return hmTypesChecked;
+    // Set value of a specific key
+    public static void setHmTypesChecked(String key, Boolean isChecked, Context c) {
+        // To change a value, we update it with "put"
+       hmTypesChecked.put(key, isChecked);
     }
 
-    public int getlRadius() {
+    // Get value of a specific key
+    public static Boolean getHmTypesChecked(String key, Context c) {
+        return hmTypesChecked.get(key);
+    }
+
+    // Set radius
+    public static void setRadius(int rad, Context c) {
+        lRadius = rad;
+    }
+
+    // Get radius
+    public static int getRadius(Context c){
         return lRadius;
     }
 
-    public void setRadius(int rad){
-        lRadius = rad;
-    }
 }
 

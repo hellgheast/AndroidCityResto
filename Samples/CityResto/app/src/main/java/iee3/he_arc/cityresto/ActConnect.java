@@ -14,8 +14,8 @@ public class ActConnect extends AppCompatActivity {
 
     private Button btnOKConnect;
     private CheckBox cbRememberMe;
-    String lUserName;
-    String lPassword;
+    String lUserName = "name";
+    String lPassword = "password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

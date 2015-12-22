@@ -41,7 +41,7 @@
     <string name="TabFavourites"></string>
 
     <!-- ClassMainStorageManager  -->
-    <string name="SetRadius">Radius : </string>
+    <string name="TvSetRadius">Radius : </string>
     <string name="BtnAcceptParam">Accept</string>
     <string name="BtnCancelParam">Cancel</string>
     <string name="type1">Fast Food</string>
