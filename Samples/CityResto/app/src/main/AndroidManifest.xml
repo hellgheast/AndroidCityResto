@@ -25,6 +25,14 @@
             android:name=".ActChoice"
             android:label="@string/title_activity_act_choice" >
         </activity>
+        <activity
+            android:name=".ActSubscribe"
+            android:label="@string/title_activity_act_subscr" >
+        </activity>
+        <activity
+            android:name=".ActMainResto"
+            android:label="@string/title_activity_act_main_resto" >
+        </activity>
     </application>
 
 </manifest>

@@ -9,6 +9,9 @@
     <string name="app_name">CityResto</string>
     <string name="title_activity_act_connect"></string>
     <string name="title_activity_act_choice"></string>
+    <string name="title_activity_act_subscr">ActSubscr</string>
+    <string name="title_activity_act_main_resto">ActSubscr</string>
+    <string name="action_settings">Settings</string>
 
     <!-- ActAcceuil  -->
     <string name="BtnLogin">Login</string>
@@ -18,8 +21,42 @@
     <!-- ActConnect  -->
     <string name="TvEditBoxUserName">Name :</string>
     <string name="TvEditBoxPassword">Password :</string>
-    <string name="TvCheckBoxRemember">Remember me</string>
+    <string name="TvCheckBoxRemember">Remember me !</string>
     <string name="BtnOKConnect">Connect</string>
+
+    <!-- ActChoice  -->
+    <string name="BtnClient">Client</string>
+    <string name="BtnOwner">Owner</string>
+
+    <!-- ActSubscribe  -->
+    <string name="TvEditBoxUserNameSubsrc">Name :</string>
+    <string name="TvEditBoxPasswordSubsrc">Password :</string>
+    <string name="TvEditBoxConfirmPasswordSubsrc">Confirm password :</string>
+    <string name="BtnOKSubsrcibe">Subscribe</string>
+    <string name="NoMatchPassword">Two passwords are not matching !</string>
+
+    <!-- ActMainResto  -->
+    <string name="TabMapList"></string>
+    <string name="TabParameters"></string>
+    <string name="TabFavourites"></string>
+
+    <!-- ClassMainStorageManager  -->
+    <string name="SetRadius">Radius : </string>
+    <string name="BtnAcceptParam">Accept</string>
+    <string name="BtnCancelParam">Cancel</string>
+    <string name="type1">Fast Food</string>
+    <string name="type2">Pizzeria</string>
+    <string name="type3">Kebap</string>
+    <string name="type4">Italian</string>
+    <string name="type5">Turkish</string>
+    <string name="type6">Chinese</string>
+    <string name="type7">Thailand</string>
+    <string name="type8">Japanese</string>
+    <string name="type9">Spainish</string>
+    <string name="type10">Gastronomic</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 

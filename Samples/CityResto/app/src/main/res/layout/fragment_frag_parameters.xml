@@ -1,0 +1,132 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="iee3.he_arc.cityresto.FragParameters">
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/searchButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/etSetRadius"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="57dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type1"
+                android:id="@+id/cbType1"
+                android:paddingTop="40px"
+                android:paddingBottom="40px"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type2"
+                android:id="@+id/cbType2"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type3"
+                android:id="@+id/cbType3"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type4"
+                android:id="@+id/cbType4"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type5"
+                android:id="@+id/cbType5"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type6"
+                android:id="@+id/cbType6"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type7"
+                android:id="@+id/cbType7"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type8"
+                android:id="@+id/cbType8"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type9"
+                android:id="@+id/cbType9"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/type10"
+                android:id="@+id/cbType10"
+                android:paddingTop="40px"
+                android:paddingBottom="40px" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/BtnAcceptParam"
+            android:id="@+id/btnAcceptParam"
+            android:paddingBottom="40px"
+            android:layout_alignParentBottom="true"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/BtnCancelParam"
+            android:id="@+id/btnCancelParam"
+            android:paddingBottom="40px"
+            android:layout_alignParentBottom="true"/>
+
+    </ScrollView>
+
+
+
+</FrameLayout>

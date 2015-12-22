@@ -7,42 +7,52 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class ActConnect extends AppCompatActivity {
+public class ActSubscribe extends AppCompatActivity {
 
-    private Button btnOKConnect;
-    private CheckBox cbRememberMe;
+    private Button btnOKSubscribe;
     String lUserName;
     String lPassword;
+    String lPasswordConfirmed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act_connect);
+        setContentView(R.layout.activity_act_subscr);
 
-        btnOKConnect = (Button) findViewById(R.id.btnOKConnect);
+        btnOKSubscribe = (Button) findViewById(R.id.btnOKSubscribe);
 
-
-        // Connection
-        btnOKConnect.setOnClickListener(new View.OnClickListener() {
+        // Subscription
+        btnOKSubscribe.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();
                 lPassword = ((EditText) findViewById(R.id.etPassword)).getText().toString();
+                lPasswordConfirmed = ((EditText) findViewById(R.id.etConfirmPassword)).getText().toString();
 
-                Intent intent = new Intent(ActConnect.this, ActMainResto.class);
-                startActivity(intent);
+                if(lPassword.equals(lPasswordConfirmed)) {
+                    Intent intent = new Intent(ActSubscribe.this, ActMainResto.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(ActSubscribe.this, "@string/NoMatchPassword",
+                            Toast.LENGTH_LONG).show();
+                    //lPassword.setText("");
+                    //lPasswordConfirmed.setTect("");
+
+                }
+
             }
+
         });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_act_connect, menu);
+        getMenuInflater().inflate(R.menu.menu_act_subscr, menu);
         return true;
     }
 

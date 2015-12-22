@@ -1,16 +1,45 @@
 package iee3.he_arc.cityresto;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class ActChoice extends AppCompatActivity {
+
+    private Button btnClient;
+    private Button btnOwner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_choice);
+        btnClient = (Button) findViewById(R.id.btnClient);
+        btnOwner = (Button) findViewById(R.id.btnOwner);
+
+        // Client
+        btnClient.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(ActChoice.this, ActSubscribe.class);
+                startActivity(intent);
+            }
+        });
+
+        // Owner
+        btnOwner.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(ActChoice.this, ActSubscribe.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
