@@ -1,0 +1,29 @@
+<resources>
+
+    <!-- Chaque activité contient des Strings, j'ai donc fait des paragraphes  -->
+    <!-- Un paragraphe contient les strings d'une activité  -->
+
+    <!-- Btn = Button, Tv = TextView -->
+
+    <!-- Noms des activités et de l'application  -->
+    <string name="app_name">CityResto</string>
+    <string name="title_activity_act_connect"></string>
+    <string name="title_activity_act_choice"></string>
+
+    <!-- ActAcceuil  -->
+    <string name="BtnLogin">Login</string>
+    <string name="BtnSubscribe">Subscribe</string>
+    <string name="TvVersionNb">v0.1</string>
+
+    <!-- ActConnect  -->
+    <string name="TvEditBoxUserName">Name :</string>
+    <string name="TvEditBoxPassword">Password :</string>
+    <string name="TvCheckBoxRemember">Remember me</string>
+    <string name="BtnOKConnect">Connect</string>
+
+
+
+
+
+
+</resources>
