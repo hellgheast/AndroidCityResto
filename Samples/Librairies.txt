@@ -1,0 +1,8 @@
+Android-Sprockets (trouve les restaurant et à des widgets sympa)
+https://github.com/pushbit/sprockets-android
+Site web sympa pour les effets graphiques et librairies en tout genre
+https://android-arsenal.com/
+Librairie pour l'itinairaire (librairie perso)
+https://github.com/jd-alexander/Google-Directions-Android
+Appel de google Maps
+http://stackoverflow.com/questions/23006672/how-to-call-google-maps-app-in-another-android-application
