@@ -156,5 +156,7 @@ Infos supplémentaires :
 			A Uri is an address that points to something of significance. In the case of ContentProviders, the Uri is usually used to determine which table to use.	
 			Tabs : http://www.androidhive.info/2015/09/android-material-design-working-with-tabs/		
 			ContextMenu : http://www.stealthcopter.com/blog/2010/04/android-context-menu-example-on-long-press-gridview/
-			Content Resolver/Provider : http://www.androiddesignpatterns.com/2012/06/content-resolvers-and-content-providers.html								
+			Content Resolver/Provider : http://www.androiddesignpatterns.com/2012/06/content-resolvers-and-content-providers.html		
+			Gestion des exceptions SQL : https://docs.oracle.com/javase/tutorial/jdbc/basics/sqlexception.html
+			Écriture d'une javadoc propre : http://www.oracle.com/technetwork/articles/java/index-137868.html
 						
