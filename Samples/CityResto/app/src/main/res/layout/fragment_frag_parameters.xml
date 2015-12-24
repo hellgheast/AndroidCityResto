@@ -10,12 +10,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true">>
+        android:layout_alignParentBottom="true">
 
         <RelativeLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:minHeight="800dp"
             android:layout_gravity="top">
 
             <TextView
@@ -132,23 +133,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/BtnAcceptParam"
                 android:id="@+id/btnAcceptParam"
-                android:layout_below="@+id/cbType9"
-                android:layout_alignParentBottom="true"
-                />
+                android:layout_below="@+id/cbType10"
+                android:layout_marginRight="71dp"
+                android:layout_marginEnd="71dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BtnCancelParam"
                 android:id="@+id/btnCancelParam"
+                android:layout_alignRight="@+id/btnAcceptParam"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:layout_alignBaseline="@+id/btnAcceptParam"
-                android:layout_alignBottom="@+id/btnAcceptParam"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginRight="71dp"
-                android:layout_marginEnd="71dp" />
+                android:paddingBottom="20dp" />
 
         </RelativeLayout>
 
