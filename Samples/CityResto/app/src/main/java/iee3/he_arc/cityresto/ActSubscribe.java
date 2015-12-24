@@ -37,7 +37,7 @@ public class ActSubscribe extends AppCompatActivity {
                     Intent intent = new Intent(ActSubscribe.this, ActMainResto.class);
                     startActivity(intent);
                 }else{
-                    Toast.makeText(ActSubscribe.this, "@string/NoMatchPassword",
+                    Toast.makeText(ActSubscribe.this, getString(R.string.NoMatchPassword),
                             Toast.LENGTH_LONG).show();
                     //lPassword.setText("");
                     //lPasswordConfirmed.setTect("");
