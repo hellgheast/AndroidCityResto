@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="iee3.he_arc.cityresto.FragMap">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:enabled="true"
+        android:layout_gravity="right|top" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CbSwitchList"
+        android:textSize="20dp"
+        android:fontFamily="Arial"
+        android:id="@+id/cbSwitchList"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_gravity="right|top" />
+
+</FrameLayout>
+

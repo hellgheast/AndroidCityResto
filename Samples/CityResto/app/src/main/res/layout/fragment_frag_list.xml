@@ -1,0 +1,20 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="iee3.he_arc.cityresto.FragList">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
+        android:text="@string/hello_blank_fragment" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CbSwitchMap"
+        android:textSize="20dp"
+        android:fontFamily="Arial"
+        android:id="@+id/cbSwitchMap"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_gravity="right|top" />
+
+</FrameLayout>

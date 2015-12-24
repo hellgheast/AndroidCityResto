@@ -10,6 +10,7 @@ import java.util.HashMap;
 public class ClassMainStorageManager {
 
     public static int lRadius = 500; // Radius of research in meters
+    public static boolean isCbChecked = false; // Boolean to know if user want to switch to List/Map
 
     // We use a Hashmap for saving choices of types of restaurants
     // The key is the type of restaurant, and the value is a boolean who said if it's checked or not.

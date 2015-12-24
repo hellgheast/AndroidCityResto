@@ -58,6 +58,12 @@
     <string name="type9">Spainish</string>
     <string name="type10">Gastronomic</string>
 
+    <!-- FragMap  -->
+    <string name="CbSwitchList">See list</string>
+
+    <!-- FragList -->
+    <string name="CbSwitchMap">See map</string>
+
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -5,17 +5,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +18,13 @@ public class ActMainResto extends AppCompatActivity {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private static  ViewPager viewPager;
+    private static ViewPager viewPager;
+    private static ViewPagerAdapter adapter;
     private int[] tabIcons = {
             R.drawable.ic_tab_map,
             R.drawable.ic_tab_setting,
             R.drawable.ic_tab_favourite
     };
-
-
 
 
     @Override
@@ -44,16 +37,14 @@ public class ActMainResto extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        setupViewPager(viewPager, adapter);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
     }
-    // Going to the Map/List fragment
-    public static void setPage(Context c){
-        viewPager.setCurrentItem(0);
-    }
+
 
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
@@ -61,13 +52,33 @@ public class ActMainResto extends AppCompatActivity {
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragMapList(), "");
+    private void setupViewPager(ViewPager viewPager, ViewPagerAdapter adapter) {
+        adapter.addFragment(new FragMap(), "");
+       // adapter.addFragment(new FragList(), "");
         adapter.addFragment(new FragParameters(), "");
         adapter.addFragment(new FragFavourites(), "");
         viewPager.setAdapter(adapter);
+    }
 
+    // Going to the Map/List fragment
+    public static void setPage(Context c){
+        viewPager.setCurrentItem(0);
+    }
+
+    // Switch between Map and List Fragments
+    public static void switchList(Context c){
+        adapter.destroyItem(viewPager, 0, adapter.instantiateItem(viewPager, 0));
+        adapter.addFragment(new FragList(), "");
+        //adapter.setPrimaryItem(viewPager, 0, new FragList());
+        viewPager.setAdapter(adapter);
+    }
+
+    // Switch between List and Map Fragments
+    public static void switchMap(Context c) {
+        adapter.destroyItem(viewPager, 0, adapter.instantiateItem(viewPager, 0));
+       // adapter.setPrimaryItem(viewPager, 0, new FragMap());
+        viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(0);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
