@@ -13,10 +13,10 @@ import java.sql.Statement;
 
 /*=====================================================================*
  | This file declares the following classes:
- |    DBHelper
+ |    ClassDBHelper
  |
  |
- | Description of the class DBHelper :
+ | Description of the class ClassDBHelper :
  | Classe qui permet la communication avec la base de donnée et entre l'application
  |
  |
@@ -29,11 +29,11 @@ import java.sql.Statement;
  *=====================================================================*/
 
 
-public class DBHelper
+public class ClassDBHelper
 {
     private Connection mConnect=null;
     private Statement mStatement=null;
-    private String TAG = DBHelper.class.getSimpleName();
+    private String TAG = ClassDBHelper.class.getSimpleName();
 
     //Name of the database tables & others constants
     final static String databaseName = "AndroidDB";
@@ -62,7 +62,7 @@ public class DBHelper
 
 
     /*Constructeur simple*/
-    public DBHelper()
+    public ClassDBHelper()
     {
         mConnect=null;
         try

@@ -5,6 +5,9 @@
 
     <!-- Btn = Button, Tv = TextView -->
 
+    <!-- Google API Keys -->
+    <string name="google_maps_key">AIzaSyDGroVx9DacLLZ5VR1F3xg-ubjhozVxlsY</string>
+
     <!-- Noms des activités et de l'application  -->
     <string name="app_name">CityResto</string>
     <string name="title_activity_act_connect"></string>

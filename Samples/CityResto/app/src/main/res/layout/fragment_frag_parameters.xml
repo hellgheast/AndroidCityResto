@@ -2,17 +2,20 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="iee3.he_arc.cityresto.FragParameters">
 
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/scrollView">
+        android:id="@+id/scrollView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">>
 
-
-        <LinearLayout
+        <RelativeLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top">
 
             <TextView
@@ -20,120 +23,135 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/TvSetRadius"
-                android:id="@+id/tvSetRadius"/>
+                android:id="@+id/tvSetRadius"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"/>
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/etSetRadius"
                 android:inputType="numberDecimal"
-                android:layout_marginBottom="57dp" />
+                android:ems="4"
+                android:layout_above="@+id/cbType1"
+                android:layout_toRightOf="@+id/tvSetRadius"
+                android:layout_toEndOf="@+id/tvSetRadius" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type1"
                 android:id="@+id/cbType1"
-                android:paddingTop="40dp"
-                android:paddingBottom="40dp"/>
+                android:layout_below="@+id/tvSetRadius"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type2"
                 android:id="@+id/cbType2"
-                android:paddingTop="40dp"
-                android:paddingBottom="40dp" />
+                android:layout_below="@+id/cbType1"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type3"
                 android:id="@+id/cbType3"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType2"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type4"
                 android:id="@+id/cbType4"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType3"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type5"
                 android:id="@+id/cbType5"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType4"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type6"
                 android:id="@+id/cbType6"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType5"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type7"
                 android:id="@+id/cbType7"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType6"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type8"
                 android:id="@+id/cbType8"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType7"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type9"
                 android:id="@+id/cbType9"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType8"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type10"
                 android:id="@+id/cbType10"
-                android:layout_centerHorizontal="true"
-                android:paddingTop="40px"
-                android:paddingBottom="40px" />
+                android:layout_below="@+id/cbType9"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BtnAcceptParam"
                 android:id="@+id/btnAcceptParam"
-                android:paddingLeft="40dp"
-                android:paddingBottom="40dp" />
+                android:layout_below="@+id/cbType9"
+                android:layout_alignParentBottom="true"
+                />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BtnCancelParam"
                 android:id="@+id/btnCancelParam"
-                android:paddingRight="40dp"
-                android:paddingBottom="40dp" />
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:layout_alignBaseline="@+id/btnAcceptParam"
+                android:layout_alignBottom="@+id/btnAcceptParam"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="71dp"
+                android:layout_marginEnd="71dp" />
 
-        </LinearLayout>
+        </RelativeLayout>
+
     </ScrollView>
 
 </FrameLayout>

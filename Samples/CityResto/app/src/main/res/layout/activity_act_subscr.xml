@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etUserName"
+        android:ems="10"
         android:layout_marginBottom="22dp"
         android:layout_above="@+id/tvPasswordSubscr"
         android:layout_alignParentLeft="true"
@@ -19,14 +20,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etPassword"
+        android:ems="10"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/etConfirmPassword"
-        android:layout_toStartOf="@+id/etConfirmPassword" />
+        android:layout_toStartOf="@+id/etConfirmPassword"
+        android:layout_alignRight="@+id/etUserName"
+        android:layout_alignEnd="@+id/etUserName" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etConfirmPassword"
+        android:ems="10"
         android:layout_below="@+id/tvConfirmPasswordSubscr"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
