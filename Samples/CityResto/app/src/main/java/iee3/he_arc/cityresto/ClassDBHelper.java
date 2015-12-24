@@ -39,7 +39,7 @@ public class ClassDBHelper
 
     //Name of the database tables & others constants
     final static String databaseName = "AndroidDB";
-    final static String databaseUsername = "HELGHEAST";
+    final static String databaseUsername = "HELLGHEAST";
     final static String databasePassword = "Toto22";
 
 
