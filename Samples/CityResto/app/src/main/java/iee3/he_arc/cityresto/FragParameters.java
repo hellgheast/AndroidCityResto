@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ScrollView;
 
 
 public class FragParameters extends Fragment {
@@ -18,6 +20,7 @@ public class FragParameters extends Fragment {
     private Button BtnCancelParameters;
     private CheckBox chk1, chk2, chk3, chk4, chk5, chk6, chk7, chk8, chk9, chk10;
     private int lRadius;
+
 
     public FragParameters() {
         // Required empty public constructor
@@ -34,8 +37,12 @@ public class FragParameters extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //!\\ Vérifier que les checkBoxes ne se reset pas à chaque fois !
-        lRadius = ClassMainStorageManager.getRadius(getContext()); // Reade the default radius
+        final EditText etRadius = (EditText) getActivity().findViewById(R.id.etSetRadius);
+
+        lRadius = ClassMainStorageManager.getRadius(getContext()); // Read the default radius
+        etRadius.setText(lRadius + ""); // Set the default Radius
+
+        // TODO : Vérifier que les checkBoxes ne se reset pas à chaque fois !
         ClassMainStorageManager.initCheckBoxes(getContext()); // Make checkboxes empty
 
         chk1 = (CheckBox) this.getActivity().findViewById(R.id.cbType1);
@@ -69,11 +76,16 @@ public class FragParameters extends Fragment {
                 ClassMainStorageManager.setHmTypesChecked("@string/type9", chk9.isChecked(), getContext());
                 ClassMainStorageManager.setHmTypesChecked("@string/type10", chk10.isChecked(), getContext());
 
-                // Set radius
+                // Set radius chose by user and save it
+                lRadius = Integer.parseInt(etRadius.getText().toString());
                 ClassMainStorageManager.setRadius(lRadius, getContext());
 
                 // Go to Map/List fragment
                 ActMainResto.setPage(getContext());
+
+                // Scroll to the top of the parameters list for further uses
+                ScrollView scroll = (ScrollView) getActivity().findViewById(R.id.scrollView);
+                scroll.scrollTo(0, scroll.getTop());
 
             }
         });

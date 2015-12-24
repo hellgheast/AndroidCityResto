@@ -33,6 +33,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -100,6 +101,13 @@ public class FragMapList extends Fragment {
 
         }
 
+        // TODO : Actualiser le rayon lorsqu'on le modifie
+        Circle circle = map.addCircle(new CircleOptions()
+                .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                .radius(ClassMainStorageManager.getRadius(getContext()))
+                .strokeColor(Color.CYAN));
+
+
         return v;
     }
 
@@ -107,6 +115,7 @@ public class FragMapList extends Fragment {
     public void onResume() {
         mapView.onResume();
         super.onResume();
+
     }
 
     @Override

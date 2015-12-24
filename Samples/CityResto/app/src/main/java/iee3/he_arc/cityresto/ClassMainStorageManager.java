@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 public class ClassMainStorageManager {
 
-    public static int lRadius = 10000; // Radius of research in meters
+    public static int lRadius = 500; // Radius of research in meters
 
     // We use a Hashmap for saving choices of types of restaurants
     // The key is the type of restaurant, and the value is a boolean who said if it's checked or not.

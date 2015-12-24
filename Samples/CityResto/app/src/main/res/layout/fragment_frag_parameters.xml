@@ -16,7 +16,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:minHeight="800dp"
+            android:minHeight="1100dp"
             android:layout_gravity="top">
 
             <TextView
@@ -25,8 +25,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/TvSetRadius"
                 android:id="@+id/tvSetRadius"
+                android:textSize="21dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp"/>
+                android:paddingBottom="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/cbType9"
+                android:layout_alignEnd="@+id/cbType9" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -34,105 +39,140 @@
                 android:id="@+id/etSetRadius"
                 android:inputType="numberDecimal"
                 android:ems="4"
-                android:layout_above="@+id/cbType1"
-                android:layout_toRightOf="@+id/tvSetRadius"
-                android:layout_toEndOf="@+id/tvSetRadius" />
+                android:layout_alignBottom="@+id/tvSetRadius"
+                android:layout_centerHorizontal="true" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type1"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:id="@+id/cbType1"
-                android:layout_below="@+id/tvSetRadius"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp"/>
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/tvSetRadius"
+                android:layout_alignLeft="@+id/tvSetRadius"
+                android:layout_alignStart="@+id/tvSetRadius" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type2"
                 android:id="@+id/cbType2"
-                android:layout_below="@+id/cbType1"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType1"
+                android:layout_alignLeft="@+id/cbType1"
+                android:layout_alignStart="@+id/cbType1" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type3"
                 android:id="@+id/cbType3"
-                android:layout_below="@+id/cbType2"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType2"
+                android:layout_alignLeft="@+id/cbType2"
+                android:layout_alignStart="@+id/cbType2" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type4"
                 android:id="@+id/cbType4"
-                android:layout_below="@+id/cbType3"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType3"
+                android:layout_alignLeft="@+id/cbType3"
+                android:layout_alignStart="@+id/cbType3" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type5"
                 android:id="@+id/cbType5"
-                android:layout_below="@+id/cbType4"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType4"
+                android:layout_alignLeft="@+id/cbType4"
+                android:layout_alignStart="@+id/cbType4" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type6"
                 android:id="@+id/cbType6"
-                android:layout_below="@+id/cbType5"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType5"
+                android:layout_alignLeft="@+id/cbType5"
+                android:layout_alignStart="@+id/cbType5" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type7"
                 android:id="@+id/cbType7"
-                android:layout_below="@+id/cbType6"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"
+                android:layout_below="@+id/cbType6"
+                android:layout_alignLeft="@+id/cbType6"
+                android:layout_alignStart="@+id/cbType6" />
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type8"
                 android:id="@+id/cbType8"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:layout_below="@+id/cbType7"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type9"
                 android:id="@+id/cbType9"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:layout_below="@+id/cbType8"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/type10"
                 android:id="@+id/cbType10"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:layout_below="@+id/cbType9"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:paddingBottom="20dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/BtnAcceptParam"
                 android:id="@+id/btnAcceptParam"
+                android:textSize="20dp"
+                android:fontFamily="Arial"
                 android:layout_below="@+id/cbType10"
                 android:layout_marginRight="71dp"
                 android:layout_marginEnd="71dp"/>
@@ -142,9 +182,11 @@
                 android:layout_height="wrap_content"
                 android:text="@string/BtnCancelParam"
                 android:id="@+id/btnCancelParam"
-                android:layout_alignRight="@+id/btnAcceptParam"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp" />
+                android:textSize="20dp"
+                android:fontFamily="Arial"
+                android:layout_below="@+id/cbType10"
+                android:layout_toRightOf="@+id/etSetRadius"
+                android:layout_toEndOf="@+id/etSetRadius" />
 
         </RelativeLayout>
 
