@@ -59,7 +59,7 @@ public class FragMapList extends Fragment {
     String imageURL;
 
     // GPSTracker class
-    ClassGPSTracker gps;
+    ServiceGPSTracker gps;
 
     public FragMapList() {
         // Required empty public constructor
@@ -82,7 +82,7 @@ public class FragMapList extends Fragment {
         MapsInitializer.initialize(this.getActivity());
 
         // create class object
-        gps = new ClassGPSTracker(getContext());
+        gps = new ServiceGPSTracker(getContext());
 
         // check if GPS enabled
         if(!gps.canGetLocation()){

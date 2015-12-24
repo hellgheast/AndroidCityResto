@@ -4,9 +4,17 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/maven/com.google.guava/guava/pom.properties'
+        exclude 'META-INF/maven/com.google.guava/guava/pom.xml'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
     defaultConfig {
         applicationId "iee3.he_arc.cityresto"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -29,5 +37,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.3.0'
     compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
-    compile 'net.sf.sprockets:sprockets-android:3.0.0'
+    compile ('net.sf.sprockets:sprockets-android:3.0.0')
+            {
+                exclude group: 'commons-logging', module: 'commons-logging'
+            }
 }
