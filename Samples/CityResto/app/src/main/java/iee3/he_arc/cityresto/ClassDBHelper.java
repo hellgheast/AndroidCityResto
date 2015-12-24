@@ -1,5 +1,7 @@
 package iee3.he_arc.cityresto;
 
+import android.net.nsd.NsdManager;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -129,7 +131,7 @@ public class ClassDBHelper
      * @param  _Owner : Indicate if the user created is an Owner of not
      * @return void
      */
-    public  void InsertUsernamePassword (String _Username,String _Password,int _Owner) throws SQLException {
+    public  void InsertUsernamePassword (String _Username,String _Password,int _Owner) throws java.sql.SQLException {
         Statement lStatement = null;
         int lRowWork=0;
 
@@ -159,7 +161,7 @@ public class ClassDBHelper
      * @param  _NewPassword : New Password of the user
      * @return void
      */
-    public void UpdateUsernamePassword (String _OldUsername,String _NewUserName,String _OldPassword,String _NewPassword) throws SQLException {
+    public void UpdateUsernamePassword (String _OldUsername,String _NewUserName,String _OldPassword,String _NewPassword) throws java.sql.SQLException {
         Statement lStatement = null;
         int lRowWork=0;
 
@@ -167,9 +169,9 @@ public class ClassDBHelper
 
 
         lRowWork=lStatement.executeUpdate
-                ("UPDATE" + UserTable +
-                        "SET"+ UserNameField+"="+_NewUserName+","+UserNamePwdField+"="+_NewPassword+
-                            "WHERE"+UserNameField+"="+_OldUsername + "AND"+UserNamePwdField +"="+_OldPassword + ";");
+                ( "UPDATE " + UserTable +
+                        " SET "+ UserNameField+"="+_NewUserName+","+UserNamePwdField+"="+_NewPassword+
+                            " WHERE "+UserNameField+"="+_OldUsername + " AND "+UserNamePwdField +"="+_OldPassword + ";");
 
         if(0==lRowWork)
         {
@@ -178,7 +180,41 @@ public class ClassDBHelper
         }
     }
 
-    //TODO Méthodes de lecture du user et vérification ainsi que suppression !
+    /**
+     * ReadUsername
+     * Read the entire row of the specified username
+     *
+     * @param  _Username : Username of the specified user
+     * @return ResultSet with the row of the user
+     */
+    public ResultSet ReadUsername(String _Username) throws java.sql.SQLException
+    {
+        Statement lStatement = null;
+        ResultSet lResultSet=null;
+        lStatement = mConnect.createStatement();
+        lResultSet=lStatement.executeQuery("SELECT * FROM "+UserTable+" WHERE "+UserNameField+"="+_Username+";");
+
+        return lResultSet;
+    }
+
+    /**
+     * DeleteUsername
+     * Delete the specified user
+     *
+     * @param  _Username : Username of the specified user
+     * @return void
+     */
+    public void DeleteUsername(String _Username) throws java.sql.SQLException
+    {
+        Statement lStatement = null;
+        lStatement = mConnect.createStatement();
+        lStatement.executeQuery(" DELETE FROM "+UserTable+" WHERE "+UserNameField+"="+_Username+";");
+
+
+    }
+
+
+
 
 
 
