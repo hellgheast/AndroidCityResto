@@ -28,7 +28,7 @@ import android.util.Log;
  * Created by vincent.meier on 23.12.2015.
  */
 
-public class ClassGPSTracker extends Service implements LocationListener {
+public class ServiceGPSTracker extends Service implements LocationListener {
 
     private final Context mContext;
     boolean isGPSEnabled = false;
@@ -41,7 +41,7 @@ public class ClassGPSTracker extends Service implements LocationListener {
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
 
-    public ClassGPSTracker(Context context) {
+    public ServiceGPSTracker(Context context) {
         this.mContext = context;
         getLocation();
     }
