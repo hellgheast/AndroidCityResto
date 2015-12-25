@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +26,9 @@ import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragMap extends Fragment {
 
@@ -47,6 +54,8 @@ public class FragMap extends Fragment {
     // GPSTracker class
     ServiceGPSTracker gps;
 
+    ListView listView;
+
     public FragMap() {
         // Required empty public constructor
     }
@@ -59,7 +68,9 @@ public class FragMap extends Fragment {
 
         // Initialize checkbox for switching between map and list
         cbList = (CheckBox) v.findViewById(R.id.cbSwitchList);
+        listView = (ListView) v.findViewById(R.id.listView);
 
+            // MAP ---------------------------------------------------------------------
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
 
@@ -103,8 +114,12 @@ public class FragMap extends Fragment {
             public void onClick(View arg0) {
                 // Check if user want to switch to List
                 if(cbList.isChecked()){
-                    ActMainResto.switchList(getContext());
-                    ActMainResto.setPage(getContext());
+                    mapView.setVisibility(mapView.GONE);
+                    listView.setVisibility(listView.VISIBLE);
+
+                }else{
+                    mapView.setVisibility(mapView.VISIBLE);
+                    listView.setVisibility(listView.GONE);
                 }
             }
         });
@@ -113,6 +128,7 @@ public class FragMap extends Fragment {
 
         return v;
     }
+
 
     @Override
     public void onResume() {
