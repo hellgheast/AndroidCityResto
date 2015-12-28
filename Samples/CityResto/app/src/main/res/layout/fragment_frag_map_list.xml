@@ -3,7 +3,7 @@
     android:id="@+id/fragMap"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="iee3.he_arc.cityresto.FragMap">
+    tools:context="iee3.he_arc.cityresto.FragMapList">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapView"
@@ -13,22 +13,33 @@
         android:enabled="true"
         android:layout_gravity="right|top" />
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/CbSwitchList"
-        android:textSize="20dp"
-        android:fontFamily="Arial"
-        android:id="@+id/cbSwitchList"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        android:layout_gravity="right|top" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner1" />
+        android:layout_gravity="right|top" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ibRefresh"
+        android:background="@null"
+        android:src="@drawable/refresh"
+        android:text="@string/IbRefresh"
+        android:layout_marginTop="60dp"
+        android:layout_marginRight="50dp"
+        android:layout_gravity="right|top" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/CbSwitchList"
+        android:id="@+id/cbSwitchList"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_gravity="right|top" />
+
 
 </FrameLayout>
 

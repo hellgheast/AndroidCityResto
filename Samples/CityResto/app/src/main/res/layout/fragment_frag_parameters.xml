@@ -2,6 +2,26 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="iee3.he_arc.cityresto.FragParameters">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/BtnAcceptParam"
+        android:id="@+id/btnAcceptParam"
+        android:textSize="20dp"
+        android:fontFamily="Arial"
+        android:layout_marginLeft="230dp"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/BtnCancelParam"
+        android:id="@+id/btnCancelParam"
+        android:textSize="20dp"
+        android:fontFamily="Arial"
+        android:layout_marginLeft="230dp"
+        android:layout_marginTop="70dp" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -166,29 +186,8 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="20dp"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/BtnAcceptParam"
-                android:id="@+id/btnAcceptParam"
-                android:textSize="20dp"
-                android:fontFamily="Arial"
-                android:layout_below="@+id/cbType10"
-                android:layout_marginRight="71dp"
-                android:layout_marginEnd="71dp"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/BtnCancelParam"
-                android:id="@+id/btnCancelParam"
-                android:textSize="20dp"
-                android:fontFamily="Arial"
-                android:layout_below="@+id/cbType10"
-                android:layout_toRightOf="@+id/etSetRadius"
-                android:layout_toEndOf="@+id/etSetRadius" />
-
         </RelativeLayout>
+
 
     </ScrollView>
 

@@ -53,7 +53,7 @@ public class ActMainResto extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager, ViewPagerAdapter adapter) {
-        adapter.addFragment(new FragMap(), "");
+        adapter.addFragment(new FragMapList(), "");
         adapter.addFragment(new FragParameters(), "");
         adapter.addFragment(new FragFavourites(), "");
         viewPager.setAdapter(adapter);
@@ -64,24 +64,6 @@ public class ActMainResto extends AppCompatActivity {
         viewPager.setCurrentItem(0);
     }
 
-    // Switch between Map and List Fragments
-    public static void switchList(Context c){
-        adapter.destroyItem(viewPager, 0, adapter.instantiateItem(viewPager, 0));
-        //adapter.addFragment(new FragList(), "");
-        adapter.setPrimaryItem(viewPager, 0, new FragList());
-
-        viewPager.setAdapter(adapter);
-
-
-    }
-
-    // Switch between List and Map Fragments
-    public static void switchMap(Context c) {
-        adapter.destroyItem(viewPager, 0, adapter.instantiateItem(viewPager, 0));
-       // adapter.setPrimaryItem(viewPager, 0, new FragMap());
-        viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(0);
-    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
