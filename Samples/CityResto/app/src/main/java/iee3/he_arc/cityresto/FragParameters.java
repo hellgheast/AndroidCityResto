@@ -87,6 +87,7 @@ public class FragParameters extends Fragment {
                 ScrollView scroll = (ScrollView) getActivity().findViewById(R.id.scrollView);
                 scroll.scrollTo(0, scroll.getTop());
 
+                FragMapList.updateFragMapList();
             }
         });
 

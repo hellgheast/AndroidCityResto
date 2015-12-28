@@ -1,5 +1,6 @@
 package iee3.he_arc.cityresto;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
 
     private Switch swList;
     MapView mapView;
-    GoogleMap map;
+    static GoogleMap map;
     LatLng CENTER = null;
 
     public LocationManager locationManager;
@@ -68,7 +69,7 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
     String imageURL;
 
     // GPSTracker class
-    ServiceGPSTracker gps;
+    static ServiceGPSTracker gps;
 
     ListView listView;
     private GoogleApiClient mGoogleApiClient;
@@ -78,10 +79,9 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
     final int PLACE_PICKER_REQUEST = 1;
     protected static final String TAG = "FragMapList";
 
-    private ImageButton ibRefresh = null;
 
-    private Circle circle;
-
+    private static Circle circle;
+    private static Context fragMapListContext;
 
     public FragMapList() {
         // Required empty public constructor
@@ -92,6 +92,8 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_frag_map_list, container, false);
+
+        fragMapListContext = getContext();
 
         // Initialize checkbox for switching between map and list
         swList = (Switch) v.findViewById(R.id.cbSwitchList);
@@ -138,7 +140,6 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
 
         }
 
-        // TODO : Actualiser le rayon lorsqu'on le modifie
         circle = map.addCircle(new CircleOptions()
                 .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
                 .radius(ClassMainStorageManager.getRadius(getContext()))
@@ -161,23 +162,21 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
             }
         });
 
-        ibRefresh.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                Toast.makeText(getActivity(), "cercle", Toast.LENGTH_SHORT).show();
-                circle.remove();
-                circle = map.addCircle(new CircleOptions()
-                        .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
-                        .radius(ClassMainStorageManager.getRadius(getContext()))
-                        .strokeColor(Color.CYAN));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 13));
-            }
-        });
 
         return v;
     }
 
+
+    // Update for example Circle's radius
+    public static void updateFragMapList(){
+        circle.remove();
+        circle = map.addCircle(new CircleOptions()
+                .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                .radius(ClassMainStorageManager.getRadius(fragMapListContext))
+                .strokeColor(Color.CYAN));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 13));
+
+    }
 
     @Override
     public void onStart()
