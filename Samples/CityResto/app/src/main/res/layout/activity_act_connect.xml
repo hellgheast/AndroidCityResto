@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/imConnect"
+        android:id="@+id/bg_act_connect"
         android:src="@drawable/bg_act_connect"
         android:scaleType="fitXY"
         android:alpha=".2"
@@ -65,10 +65,22 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/tvActConnectTitle"
+        android:id="@+id/tvActConnectTitle"
+        android:textStyle="bold"
+        android:textColor="#0C64A8"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/TvEditBoxUserName"
         android:id="@+id/tvUserName"
         android:textStyle="bold"
+        android:textColor="#09174F"
         android:layout_above="@+id/etUserName"
         android:layout_alignLeft="@+id/etUserName"
         android:layout_alignStart="@+id/etUserName" />
@@ -80,6 +92,7 @@
         android:text="@string/TvEditBoxPassword"
         android:id="@+id/tvPassword"
         android:textStyle="bold"
+        android:textColor="#09174F"
         android:layout_above="@+id/etPassword"
         android:layout_alignLeft="@+id/etPassword"
         android:layout_alignStart="@+id/etPassword" />
@@ -91,6 +104,7 @@
         android:text="@string/TvCheckBoxRemember"
         android:id="@+id/tvRememberMe"
         android:textStyle="bold"
+        android:textColor="#09174F"
         android:layout_alignBaseline="@+id/cbRememberMe"
         android:layout_toRightOf="@+id/cbRememberMe"
         android:layout_toEndOf="@+id/cbRememberMe" />

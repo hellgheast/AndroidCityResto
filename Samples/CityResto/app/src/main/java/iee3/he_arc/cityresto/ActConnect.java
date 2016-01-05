@@ -28,6 +28,10 @@ public class ActConnect extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_connect);
 
+        //startService(new Intent(ActConnect.this, ServiceGoogleHelper.class));
+        //ClassMainStorageManager.gps = new ServiceGoogleHelper();
+        //ClassMainStorageManager.gps.getLastLocationLatLng();
+
         btnOKConnect = (Button) findViewById(R.id.btnOKConnect);
 
         // Connection
@@ -43,11 +47,8 @@ public class ActConnect extends AppCompatActivity {
                 // Use GPS to find location
                 //ClassMainStorageManager.gps = new ServiceGPSTracker(ActConnect.this);
 
-                startService(new Intent(ActConnect.this, ServiceGoogleHelper.class));
 
-                ClassMainStorageManager.gps = new ServiceGoogleHelper(ActConnect.this);
 
-                ClassMainStorageManager.gps.getLastLocationLatLng();
 
                 // check if GPS enabled
                 if(ClassMainStorageManager.gps.getLastLocationLatLng().latitude != 0 &&

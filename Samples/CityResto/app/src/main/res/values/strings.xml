@@ -22,6 +22,7 @@
     <string name="TvVersionNb">v0.1</string>
 
     <!-- bg_act_connect  -->
+    <string name="tvActConnectTitle">Login</string>
     <string name="TvEditBoxUserName">Name :</string>
     <string name="TvEditBoxPassword">Password :</string>
     <string name="TvCheckBoxRemember">Remember me !</string>
@@ -30,10 +31,12 @@
     <string name="WaitBoxMessage">Please wait during localisation...</string>
 
     <!-- ActChoice  -->
+    <string name="tvActChoiceTitle">Choose if you are an owner or a client</string>
     <string name="BtnClient">Client</string>
     <string name="BtnOwner">Owner</string>
 
     <!-- ActSubscribe  -->
+    <string name="tvActSubscribeTitle">Create a new account</string>
     <string name="TvEditBoxUserNameSubsrc">Name :</string>
     <string name="TvEditBoxPasswordSubsrc">Password :</string>
     <string name="TvEditBoxConfirmPasswordSubsrc">Confirm password :</string>

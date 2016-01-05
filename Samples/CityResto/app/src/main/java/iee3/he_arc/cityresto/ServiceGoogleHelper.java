@@ -1,12 +1,15 @@
 package iee3.he_arc.cityresto;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,7 +30,6 @@ import java.util.concurrent.ExecutionException;
 public class ServiceGoogleHelper extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener
 {
 
-
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location        mLastLocation;
@@ -39,6 +41,8 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
     {
         super();
     }
+
+
 
     @Override
     public void onCreate()
@@ -251,5 +255,38 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         }
     }
 
+    /**
+     * Function to show settings alert dialog
+     * On pressing Settings button will lauch Settings Options
+     * */
+    public void showSettingsAlert(){
+        final Context mContext = this.getApplicationContext();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS activation");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to activate it ?");
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+
+                mContext.startActivity(intent);
+            }
+        });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 
 }
