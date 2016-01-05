@@ -33,11 +33,18 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                     + ClassPermanentData.FavoriteRestaurants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + PLACEID_TYPE + " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME + RESTO_NAME_TYPE+ " NOT NULL"
-                    + COMMA_SEP+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS + RESTO_ADDRESS+"NOT NULL"
+                    + COMMA_SEP+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS + RESTO_ADDRESS+" NOT NULL"
                     + " )";
 
     //Table InternSetting
-    //TODO Table pour les paramètres internes
+    private static final String LANG_TYPE = " VARCHAR(3)";
+
+    private static final String TABLE_INTERN_SQL_CREATE_ENTRIES =
+            "CREATE TABLE "+ClassPermanentData.InternSetting.TABLE_NAME + " ("
+                    + ClassPermanentData.InternSetting._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + ClassPermanentData.InternSetting.COLUMN_NAME_USERNAME + USERNAME_TYPE + " NOT NULL"
+                    + COMMA_SEP+ClassPermanentData.InternSetting.COLUMN_NAME_LANGUAGE + LANG_TYPE +" NOT NULL"
+                    + " )";
 
 
     //Main Settings

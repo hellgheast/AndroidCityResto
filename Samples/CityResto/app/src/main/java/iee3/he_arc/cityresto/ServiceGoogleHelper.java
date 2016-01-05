@@ -27,16 +27,17 @@ import java.util.concurrent.ExecutionException;
 public class ServiceGoogleHelper extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener
 {
 
-    private final Context mContext;
+
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location        mLastLocation;
     protected static final String TAG = "ServiceGoogleHelper";
 
 
-    public ServiceGoogleHelper(Context context)
+
+    public ServiceGoogleHelper()
     {
-        this.mContext = context;
+        super();
     }
 
     @Override
