@@ -54,7 +54,7 @@
         </activity>
 
         <service
-            android:name=".ClassGoogleHelper"
+            android:name=".ServiceGoogleHelper"
             android:enabled="true"
             android:exported="true" >
         </service>
