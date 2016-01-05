@@ -26,6 +26,8 @@
     <string name="TvEditBoxPassword">Password :</string>
     <string name="TvCheckBoxRemember">Remember me !</string>
     <string name="BtnOKConnect">Connect</string>
+    <string name="WaitBoxTitle">Localisation</string>
+    <string name="WaitBoxMessage">Please wait during localisation...</string>
 
     <!-- ActChoice  -->
     <string name="BtnClient">Client</string>
@@ -60,7 +62,8 @@
 
     <!-- FragMapList  -->
     <string name="CbSwitchList">List</string>
-    <string name="IbRefresh">Refresh</string>
+    <string name="TouchMapForUpdate">Touch the map for updating your position</string>
+
 
 
 <!-- TODO: Remove or change this placeholder text -->

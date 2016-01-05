@@ -1,9 +1,11 @@
 package iee3.he_arc.cityresto;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,13 +95,12 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_frag_map_list, container, false);
 
+
         fragMapListContext = getContext();
 
         // Initialize checkbox for switching between map and list
         swList = (Switch) v.findViewById(R.id.cbSwitchList);
         listView = (ListView) v.findViewById(R.id.listView);
-
-        ibRefresh = (ImageButton)v.findViewById(R.id.ibRefresh);
 
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getContext())
@@ -121,27 +122,69 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
+
+
+
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
+                .title("You are here"));
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
+        map.animateCamera(cameraUpdate);
+
+
+        // Update camera when user touche the map
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng point) {
+                Log.d("Map", "Map clicked");
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
+                map.animateCamera(cameraUpdate);
+            }
+        });
+
         // create class object
-        gps = new ServiceGPSTracker(getContext());
+        //ClassMainStorageManager.gps = new ServiceGPSTracker(getContext());
 
+        /*
         // check if GPS enabled
-        if(!gps.canGetLocation()){
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-
-        }else{
+        if(gps.canGetLocation()){
             // Updates the location and zoom of the MapView
             map.addMarker(new MarkerOptions()
-                    .position(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                    .position(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
                     .title("You are here"));
 
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 13);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
             map.animateCamera(cameraUpdate);
 
+
+        }else{
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+            Toast.makeText(getActivity(), (R.string.TouchMapForUpdate), Toast.LENGTH_LONG).show();
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                @Override
+                public void onMapClick(LatLng point) {
+                    Log.d("Map", "Map clicked");
+                    gps = new ServiceGPSTracker(getContext());
+                    // Updates the location and zoom of the MapView
+                    map.addMarker(new MarkerOptions()
+                            .position(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                            .title("You are here"));
+
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
+                    map.animateCamera(cameraUpdate);
+
+                }
+            });
         }
+*/
+
 
         circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                .center(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
                 .radius(ClassMainStorageManager.getRadius(getContext()))
                 .strokeColor(Color.CYAN));
 
@@ -171,10 +214,10 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
     public static void updateFragMapList(){
         circle.remove();
         circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(gps.getLatitude(), gps.getLongitude()))
+                .center(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
                 .radius(ClassMainStorageManager.getRadius(fragMapListContext))
                 .strokeColor(Color.CYAN));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13));
 
     }
 
