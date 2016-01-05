@@ -126,10 +126,12 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
 
 
         map.addMarker(new MarkerOptions()
-                .position(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
+                .position(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
                 .title("You are here"));
 
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
         map.animateCamera(cameraUpdate);
 
 
@@ -139,7 +141,8 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
             @Override
             public void onMapClick(LatLng point) {
                 Log.d("Map", "Map clicked");
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13);
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
                 map.animateCamera(cameraUpdate);
             }
         });
@@ -184,7 +187,8 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
 
 
         circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
+                .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
                 .radius(ClassMainStorageManager.getRadius(getContext()))
                 .strokeColor(Color.CYAN));
 
@@ -214,10 +218,12 @@ public class FragMapList extends Fragment implements ConnectionCallbacks,GoogleA
     public static void updateFragMapList(){
         circle.remove();
         circle = map.addCircle(new CircleOptions()
-                .center(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()))
+                .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
                 .radius(ClassMainStorageManager.getRadius(fragMapListContext))
                 .strokeColor(Color.CYAN));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLatitude(), ClassMainStorageManager.gps.getLongitude()), 13));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
 
     }
 

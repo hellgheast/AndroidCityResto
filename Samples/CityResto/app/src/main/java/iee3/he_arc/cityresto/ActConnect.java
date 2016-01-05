@@ -41,7 +41,51 @@ public class ActConnect extends AppCompatActivity {
                 progDialog = new ProgressDialog(ActConnect.this);
 
                 // Use GPS to find location
-                ClassMainStorageManager.gps = new ServiceGPSTracker(ActConnect.this);
+                //ClassMainStorageManager.gps = new ServiceGPSTracker(ActConnect.this);
+
+                startService(new Intent(ActConnect.this, ServiceGoogleHelper.class));
+
+                ClassMainStorageManager.gps = new ServiceGoogleHelper(ActConnect.this);
+
+                ClassMainStorageManager.gps.getLastLocationLatLng();
+
+                // check if GPS enabled
+                if(ClassMainStorageManager.gps.getLastLocationLatLng().latitude != 0 &&
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude != 0){
+
+                    new CountDownTimer(3000, 3000) {
+
+                        public void onTick(long millisUntilFinished) {
+
+                            progDialog = ProgressDialog.show(ActConnect.this,
+                                    "Localisation",
+                                    "Please wait during localisation...", true);
+
+                        }
+
+                        public void onFinish() {
+
+                            if (progDialog != null) {
+                                progDialog.dismiss();
+                                progDialog = null;
+                            }
+
+                            // Go to next activity
+                            Intent intent = new Intent(ActConnect.this, ActMainResto.class);
+                            startActivity(intent);
+                        }
+                    }.start();
+
+                }else{
+                    // Ask user to enable GPS/network in settings
+                    ClassMainStorageManager.gps.showSettingsAlert();
+
+
+                }
+
+
+                /*
+
 
                 // check if GPS enabled
                 if(ClassMainStorageManager.gps.canGetLocation()){
@@ -75,7 +119,7 @@ public class ActConnect extends AppCompatActivity {
 
 
                 }
-
+*/
             }
         });
     }

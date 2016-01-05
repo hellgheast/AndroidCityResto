@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/CbSwitchList"
         android:id="@+id/cbSwitchList"
+        android:textStyle="bold"
         android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
         android:layout_gravity="right|top" />

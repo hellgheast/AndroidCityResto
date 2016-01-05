@@ -21,7 +21,7 @@
     <string name="BtnSubscribe">Subscribe</string>
     <string name="TvVersionNb">v0.1</string>
 
-    <!-- ActConnect  -->
+    <!-- bg_act_connect  -->
     <string name="TvEditBoxUserName">Name :</string>
     <string name="TvEditBoxPassword">Password :</string>
     <string name="TvCheckBoxRemember">Remember me !</string>

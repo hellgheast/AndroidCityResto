@@ -6,6 +6,15 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="iee3.he_arc.cityresto.ActConnect">
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imConnect"
+        android:src="@drawable/bg_act_connect"
+        android:scaleType="fitXY"
+        android:alpha=".2"
+        android:layout_centerHorizontal="true" />
+
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +52,12 @@
         android:layout_height="wrap_content"
         android:text="@string/BtnOKConnect"
         android:id="@+id/btnOKConnect"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
         android:layout_alignTop="@+id/cbRememberMe"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp" />
@@ -53,6 +68,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/TvEditBoxUserName"
         android:id="@+id/tvUserName"
+        android:textStyle="bold"
         android:layout_above="@+id/etUserName"
         android:layout_alignLeft="@+id/etUserName"
         android:layout_alignStart="@+id/etUserName" />
@@ -63,6 +79,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/TvEditBoxPassword"
         android:id="@+id/tvPassword"
+        android:textStyle="bold"
         android:layout_above="@+id/etPassword"
         android:layout_alignLeft="@+id/etPassword"
         android:layout_alignStart="@+id/etPassword" />
@@ -73,7 +90,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/TvCheckBoxRemember"
         android:id="@+id/tvRememberMe"
-        android:layout_alignBottom="@+id/cbRememberMe"
+        android:textStyle="bold"
+        android:layout_alignBaseline="@+id/cbRememberMe"
         android:layout_toRightOf="@+id/cbRememberMe"
         android:layout_toEndOf="@+id/cbRememberMe" />
 
