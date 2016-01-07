@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ScrollView;
 
 public class FragParameters extends Fragment {
 
+    public static final String ACCEPTPARAMETERS = "ACCEPTPARAM" ;
     private Button BtnAcceptParameters;
     private Button BtnCancelParameters;
     private CheckBox chk1, chk2, chk3, chk4, chk5, chk6, chk7, chk8, chk9, chk10;
@@ -80,6 +82,8 @@ public class FragParameters extends Fragment {
                 lRadius = Integer.parseInt(etRadius.getText().toString());
                 ClassMainStorageManager.setRadius(lRadius, getContext());
 
+
+
                 // Go to Map/List fragment
                 ActMainResto.setPage(getContext());
 
@@ -87,7 +91,13 @@ public class FragParameters extends Fragment {
                 ScrollView scroll = (ScrollView) getActivity().findViewById(R.id.scrollView);
                 scroll.scrollTo(0, scroll.getTop());
 
-                FragMapList.updateFragMapList();
+                //FragMapList.updateFragMapList();
+
+                //Send
+                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(new Intent(ACCEPTPARAMETERS));
+                //Envoi du message en broadcast afin que l'on puisse rajouter les markeurs correctement
+                //Raison : Recreation des markeurs dynamique
+
             }
         });
 

@@ -1,8 +1,13 @@
 package iee3.he_arc.cityresto;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,12 +27,15 @@ public class ActConnect extends AppCompatActivity {
     String lUserName = "name";
     String lPassword = "password";
     private ProgressDialog progDialog;
+    private LocationManager lm;
+    final Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_connect);
 
+        lm = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         //startService(new Intent(ActConnect.this, ServiceGoogleHelper.class));
         //ClassMainStorageManager.gps = new ServiceGoogleHelper();
         //ClassMainStorageManager.gps.getLastLocationLatLng();
@@ -48,11 +56,9 @@ public class ActConnect extends AppCompatActivity {
                 //ClassMainStorageManager.gps = new ServiceGPSTracker(ActConnect.this);
 
 
-
-
                 // check if GPS enabled
-                if(ClassMainStorageManager.gps.getLastLocationLatLng().latitude != 0 &&
-                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude != 0){
+                if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                {
 
                     new CountDownTimer(3000, 3000) {
 
@@ -79,48 +85,9 @@ public class ActConnect extends AppCompatActivity {
 
                 }else{
                     // Ask user to enable GPS/network in settings
-                    ClassMainStorageManager.gps.showSettingsAlert();
-
-
+                    showSettingsAlert();
                 }
 
-
-                /*
-
-
-                // check if GPS enabled
-                if(ClassMainStorageManager.gps.canGetLocation()){
-
-                    new CountDownTimer(4000, 4000) {
-
-                        public void onTick(long millisUntilFinished) {
-
-                            progDialog = ProgressDialog.show(ActConnect.this,
-                                    "Localisation",
-                                    "Please wait during localisation...", true);
-
-                        }
-
-                        public void onFinish() {
-
-                            if (progDialog != null) {
-                                progDialog.dismiss();
-                                progDialog = null;
-                            }
-
-                            // Go to next activity
-                            Intent intent = new Intent(ActConnect.this, ActMainResto.class);
-                            startActivity(intent);
-                        }
-                    }.start();
-
-                }else{
-                    // Ask user to enable GPS/network in settings
-                    ClassMainStorageManager.gps.showSettingsAlert();
-
-
-                }
-*/
             }
         });
     }
@@ -145,5 +112,36 @@ public class ActConnect extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void showSettingsAlert(){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+
+        // Setting Dialog Title
+        alertDialog.setTitle("GPS activation");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("GPS is not enabled. Do you want to activate it ?");
+
+        // On pressing Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+
+                context.startActivity(intent);
+            }
+        });
+
+        // on pressing cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 }

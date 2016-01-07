@@ -7,9 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -27,19 +29,71 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 
-public class ServiceGoogleHelper extends Service implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener
+public class ServiceGoogleHelper extends Service implements LocationListener,GoogleApiClient.ConnectionCallbacks
 {
 
+    public static final String GOOGLEAPICONNECTED = "ISCONNECTED";
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location        mLastLocation;
     protected static final String TAG = "ServiceGoogleHelper";
+
+    //Remplacement des différents Implementations
 
 
 
     public ServiceGoogleHelper()
     {
         super();
+    }
+
+
+    //Partie communication via Binding
+
+    final IBinder mBinder = new LocalBinder();
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle)
+    {
+        createLocationRequest();
+        startLocationUpdates();
+        Log.i(TAG, "Google API Connected");
+
+
+        LocalBroadcastManager.getInstance(this.getApplicationContext()).sendBroadcast(new Intent(GOOGLEAPICONNECTED)); //Envoi du message en broadcast afin que l'on puisse rajouter les markeurs correctement
+        //Raison : Ordre d'execution sur ServiceConnection qui se lance après le onStart
+
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
+        // The connection to Google Play services was lost for some reason. We call connect() to
+        // attempt to re-establish the connection.
+        Log.i(TAG, "Connection suspended");
+        mGoogleApiClient.connect();
+
+    }
+
+
+    public class LocalBinder extends Binder {
+        ServiceGoogleHelper getService() {
+            // Return this instance of LocalService so clients can call public methods
+            return ServiceGoogleHelper.this;
+        }
+    }
+
+
+    @Override
+    public IBinder onBind(Intent intent)
+    {
+        mGoogleApiClient.connect();
+        Log.i(TAG, "Google API try Connection");
+        return mBinder;
     }
 
 
@@ -53,18 +107,23 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
                 .addApi(com.google.android.gms.location.places.Places.GEO_DATA_API)
                 .addApi(LocationServices.API) // On rajoute le service de localisation
                 .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+                        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
+                    }
+                })
                 .build();
     }
-
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         //TODO Implémenter des fonctions de gestions des paramètres
+        Log.i("LocalService", "Received start id " + startId + ": " + intent);
         mGoogleApiClient.connect();
-        Log.i(TAG,"Google API Connected");
+        Log.i(TAG, "Google API Connected");
         return START_STICKY;
     }
 
@@ -75,36 +134,13 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         mGoogleApiClient.disconnect();
     }
 
-    @Override
-    public IBinder onBind(Intent intent)
-    {
-        return null;
-    }
-
-    @Override
-    public void onConnected(Bundle bundle)
-    {
-        createLocationRequest();
-        startLocationUpdates();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-    }
 
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        // The connection to Google Play services was lost for some reason. We call connect() to
-        // attempt to re-establish the connection.
-        Log.i(TAG, "Connection suspended");
-        mGoogleApiClient.connect();
-    }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult)
-    {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
-    }
 
     //Méthodes
+
+
 
     //Localisation
     protected void createLocationRequest() {
@@ -114,10 +150,6 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-    }
 
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -172,6 +204,24 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         return null;
     }
 
+    public List<Place> getPlaceNoArg()
+    {
+        List<Place> mResultPlace;
+        try{
+            mResultPlace=new GetPlacesTask().execute(new SearchParams(ClassMainStorageManager.getRadius(getApplicationContext()),null)).get();
+            return mResultPlace;
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /**
      * Private class used to send the parameters to the AsyncTask
      */
@@ -184,7 +234,15 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         SearchParams(Integer _Radius,String [] _Keywords)
         {
             mRadius=_Radius;
-            mKeywords = _Keywords.clone();
+            if(_Keywords==null)
+            {
+                mKeywords=null;
+            }
+            else
+            {
+                mKeywords = _Keywords.clone();
+            }
+
         }
 
         /*Getters*/
@@ -196,6 +254,8 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         public Integer getmRadius() {
             return mRadius;
         }
+
+
     }
 
     private class GetPlacesTask extends AsyncTask<SearchParams,Void,List<Place>>
@@ -210,11 +270,19 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
         {
             try
             {
-                mKeywords = params[0].getmKeywords().clone();
-                for(String i:mKeywords)
+                if(params[0].getmKeywords()==null)
                 {
-                    mKeywordString += i+",";
+                    mKeywordString="";
                 }
+                else
+                {
+                    mKeywords = params[0].getmKeywords().clone();
+                    for(String i:mKeywords)
+                    {
+                        mKeywordString += i+",";
+                    }
+                }
+
 
 
                 mResp = Places.nearbySearch(
@@ -260,7 +328,7 @@ public class ServiceGoogleHelper extends Service implements GoogleApiClient.Conn
      * On pressing Settings button will lauch Settings Options
      * */
     public void showSettingsAlert(){
-        final Context mContext = this.getApplicationContext();
+        final Context mContext = getApplicationContext();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         // Setting Dialog Title

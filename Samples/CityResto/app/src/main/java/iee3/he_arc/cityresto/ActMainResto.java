@@ -1,6 +1,11 @@
 package iee3.he_arc.cityresto;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.renderscript.ScriptGroup;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,12 +15,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActMainResto extends AppCompatActivity {
 
+    private static final String TAG = "ActMainResto" ;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private static ViewPager viewPager;
@@ -27,11 +34,51 @@ public class ActMainResto extends AppCompatActivity {
     };
 
 
-    @Override
+    //Service
+    private boolean mBound=false;
+    private ServiceConnection mConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            Log.i(TAG,"Service Connected");
+            ClassMainStorageManager.gps = ((ServiceGoogleHelper.LocalBinder) service).getService();
+            mBound=true;
+
+        }
+
+        /**
+         * Called when a connection to the Service has been lost.  This typically
+         * happens when the process hosting the service has crashed or been killed.
+         * This does <em>not</em> remove the ServiceConnection itself -- this
+         * binding to the service will remain active, and you will receive a call
+         * to {@link #onServiceConnected} when the Service is next running.
+         *
+         * @param name The concrete component name of the service whose
+         *             connection has been lost.
+         */
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Log.i(TAG,"Service Disconnected");
+            ClassMainStorageManager.gps = null;
+        }
+
+    };
+        @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_main_resto);
+        //Binding du service
+        getApplicationContext().bindService(new Intent(ActMainResto.this, ServiceGoogleHelper.class), this.mConnection, Context.BIND_AUTO_CREATE);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -45,6 +92,24 @@ public class ActMainResto extends AppCompatActivity {
         setupTabIcons();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mBound)
+        {
+            unbindService(mConnection);
+            mBound=false;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mBound) {
+            unbindService(mConnection);
+            mBound = false;
+        }
+    }
 
     private void setupTabIcons() {
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
