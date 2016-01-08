@@ -34,6 +34,11 @@ public class ClassPermanentData
     public ClassPermanentData(){};
 
     /**
+     * Attributs qui permet d'avoir le nom
+     */
+    public static final String Name = "PermanentData";
+
+    /**
      * Inner class that defines the table contents
      */
     public static abstract class UserEntry implements BaseColumns
@@ -65,10 +70,19 @@ public class ClassPermanentData
         public static final String COLUMN_NAME_ADDRESS =  "Address";
 
         //TODO il faut mettre les autres colonnes du restaurant
-
     }
 
+    /**
+     * Inner class that defines the table contents
+     */
+    public static abstract class PhotoRestaurants implements BaseColumns
+    {
+        public static final String TABLE_NAME = "TLocalPhotoRestaurants";
+        public static final String COLUMN_NAME_PLACEID      =  "PlaceID";
+        public static final String COLUMN_PHOTO_REFERENCE    =  "Reference";
+        public static final String COLUMN_PHOTO_URI         =  "URI";
 
+    }
 
 
 }
