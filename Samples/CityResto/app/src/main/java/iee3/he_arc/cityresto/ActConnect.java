@@ -5,8 +5,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.CountDownTimer;
+import android.provider.Browser;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,8 +27,10 @@ public class ActConnect extends AppCompatActivity {
 
     private Button btnOKConnect;
     private CheckBox cbRememberMe;
-    String lUserName = "name";
-    String lPassword = "password";
+    private String lUserName = "name";
+    private String lPassword = "password";
+    private String lRegisteredName = "name";
+    private String lRegisteredPassword = "password";
     private ProgressDialog progDialog;
     private LocationManager lm;
     final Context context = this;
@@ -36,9 +41,6 @@ public class ActConnect extends AppCompatActivity {
         setContentView(R.layout.activity_act_connect);
 
         lm = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
-        //startService(new Intent(ActConnect.this, ServiceGoogleHelper.class));
-        //ClassMainStorageManager.gps = new ServiceGoogleHelper();
-        //ClassMainStorageManager.gps.getLastLocationLatLng();
 
         btnOKConnect = (Button) findViewById(R.id.btnOKConnect);
 
@@ -52,43 +54,72 @@ public class ActConnect extends AppCompatActivity {
 
                 progDialog = new ProgressDialog(ActConnect.this);
 
-                // Use GPS to find location
-                //ClassMainStorageManager.gps = new ServiceGPSTracker(ActConnect.this);
+                // Retrieve user records
+                String URL = "content://iee3.he_arc.cityresto.provider.Profile/users";
 
+                Uri user = Uri.parse(URL);
 
-                // check if GPS enabled
-                if(lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                {
+                Cursor c = managedQuery(user, null, null, null, "name");
+                // Cursor c = context.getContentResolver().query(user,null, null, null, "name");
 
-                    new CountDownTimer(3000, 3000) {
+                // First check if a profile exists
+                if (c.moveToFirst()) { //moveToFirst return false if no profile exists
 
-                        public void onTick(long millisUntilFinished) {
+                    lRegisteredName = c.getString(c.getColumnIndex(ClassPermanentDataProvider.NAME));
+                    lRegisteredPassword = c.getString(c.getColumnIndex(ClassPermanentDataProvider.PASSWORD));
 
-                            progDialog = ProgressDialog.show(ActConnect.this,
-                                    "Localisation",
-                                    "Please wait during localisation...", true);
+                    //Then check name and password
+                    if (lUserName.equals(lRegisteredName)){
+                        if (lPassword.equals(lRegisteredPassword)){
 
-                        }
+                            // Login accepted !
 
-                        public void onFinish() {
+                            // check if GPS enabled
+                            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                new CountDownTimer(3000, 3000) {
 
-                            if (progDialog != null) {
-                                progDialog.dismiss();
-                                progDialog = null;
+                                    public void onTick(long millisUntilFinished) {
+
+                                        progDialog = ProgressDialog.show(ActConnect.this,
+                                                "Localisation",
+                                                "Please wait during localisation...", true);
+                                    }
+
+                                    public void onFinish() {
+
+                                        if (progDialog != null) {
+                                            progDialog.dismiss();
+                                            progDialog = null;
+                                        }
+
+                                        // Go to next activity
+                                        Intent intent = new Intent(ActConnect.this, ActMainResto.class);
+                                        startActivity(intent);
+                                    }
+                                }.start();
+
+                            } else {
+                                // Ask user to enable GPS/network in settings
+                                showSettingsAlert();
                             }
 
-                            // Go to next activity
-                            Intent intent = new Intent(ActConnect.this, ActMainResto.class);
-                            startActivity(intent);
+                        } else{
+                            Toast.makeText(getBaseContext(),
+                                    (R.string.LoginPasswordError), Toast.LENGTH_LONG).show();
                         }
-                    }.start();
+                    } else {
+                        Toast.makeText(getBaseContext(),
+                                (R.string.LoginNameError), Toast.LENGTH_LONG).show();
+                    }
 
-                }else{
-                    // Ask user to enable GPS/network in settings
-                    showSettingsAlert();
+
+                } else{
+                    Toast.makeText(getBaseContext(),
+                            (R.string.NoProfileCreated), Toast.LENGTH_LONG).show();
                 }
 
             }
+
         });
     }
 

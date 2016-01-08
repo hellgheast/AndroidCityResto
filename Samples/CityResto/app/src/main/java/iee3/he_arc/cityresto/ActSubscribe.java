@@ -1,6 +1,8 @@
 package iee3.he_arc.cityresto;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,13 +36,26 @@ public class ActSubscribe extends AppCompatActivity {
                 lPasswordConfirmed = ((EditText) findViewById(R.id.etConfirmPassword)).getText().toString();
 
                 if(lPassword.equals(lPasswordConfirmed)) {
+
+                    // Delete old data
+                   // getContentResolver().delete(ClassPermanentDataProvider.CONTENT_URI, ClassPermanentDataProvider.NAME, null);
+                   // getContentResolver().delete(ClassPermanentDataProvider.CONTENT_URI, ClassPermanentDataProvider.PASSWORD, null);
+
+                    // Add a new student record
+                    ContentValues login = new ContentValues();
+
+                    login.put(ClassPermanentDataProvider.NAME, lUserName);
+
+                    login.put(ClassPermanentDataProvider.PASSWORD, lPassword);
+
+                    Uri uri = getContentResolver().insert(
+                            ClassPermanentDataProvider.CONTENT_URI, login);
+
                     Intent intent = new Intent(ActSubscribe.this, ActMainResto.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(ActSubscribe.this, getString(R.string.NoMatchPassword),
                             Toast.LENGTH_LONG).show();
-                    //lPassword.setText("");
-                    //lPasswordConfirmed.setTect("");
 
                 }
 

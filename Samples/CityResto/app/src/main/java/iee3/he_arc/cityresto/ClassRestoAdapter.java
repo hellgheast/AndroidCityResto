@@ -138,9 +138,6 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
             StreetView.Response<InputStream> imagestreet = null;
             Places.Response<InputStream> imageplace = null;
             try {
-
-
-
                 //Méthode Place
                 List<Place.Photo> photos = params[0].getPhotos();
                 if(!photos.isEmpty())

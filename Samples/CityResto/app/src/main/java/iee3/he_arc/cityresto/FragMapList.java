@@ -107,8 +107,6 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         listView.setVisibility(listView.GONE);
 
 
-
-
         // MAP ---------------------------------------------------------------------
         mapView = (MapView) v.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -120,9 +118,6 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
-
-
-
 
 
         // Switch to List
@@ -229,9 +224,8 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                         .title("You are here")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
-                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
-                map.animateCamera(cameraUpdate);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
 
 
                 // Update camera when user touche the map
@@ -240,9 +234,13 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                     @Override
                     public void onMapClick(LatLng point) {
                         Log.d("Map", "Map clicked");
-                        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
-                                ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
-                        map.animateCamera(cameraUpdate);
+
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                                ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
+
+                       // CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                       //         ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
+                       // map.animateCamera(cameraUpdate);
                     }
                 });
 
@@ -254,6 +252,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                         .strokeWidth(1));
 
                 //Partie population de la listview
+
                 listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
 
                 ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
@@ -266,12 +265,10 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                             .title(place.getName()));
                 }
 
-
-
             }
             else if (intent.getAction().equalsIgnoreCase(FragParameters.ACCEPTPARAMETERS))
             {
-                Toast.makeText(getContext(),"FragParamOk",1000).show();
+                Toast.makeText(getContext(),"FragParamOk",Toast.LENGTH_LONG).show();
                 map.clear();
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
@@ -279,9 +276,11 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                         .title("You are here")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
-                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
-                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
-                map.animateCamera(cameraUpdate);
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
+                //CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                //        ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
+                //map.animateCamera(cameraUpdate);
 
 
                 circle = map.addCircle(new CircleOptions()
