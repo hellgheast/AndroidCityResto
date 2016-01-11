@@ -141,7 +141,7 @@ public class ClassDiskLruImageCache {
         boolean contained = false;
         DiskLruCache.Snapshot snapshot = null;
         try {
-            snapshot = mDiskCache.get( key );
+            snapshot = mDiskCache.get( String.valueOf(key.hashCode()));
             contained = snapshot != null;
         } catch (IOException e) {
             e.printStackTrace();

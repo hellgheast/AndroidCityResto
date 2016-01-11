@@ -52,6 +52,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                     + ClassPermanentData.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME+ USERNAME_TYPE+ " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD+PASSWORD_TYPE + " NOT NULL"
+                    + COMMA_SEP+"UNIQUE("+ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME +")"
+                    + "ON CONFLICT REPLACE"
                     + " )";
 
     //Table Restaurants
@@ -65,6 +67,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                     + ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + PLACEID_TYPE + " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME + RESTO_NAME_TYPE+ " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS + RESTO_ADDRESS+" NOT NULL"
+                    + COMMA_SEP+"UNIQUE("+ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID +")"
+                    + "ON CONFLICT REPLACE"
                     + " )";
 
     //Table InternSetting
@@ -88,6 +92,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                     + ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + PHOTO_PLACEID_TYPE + " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + PHOTO_REFERENCE_TYPE+" NOT NULL"
                     + COMMA_SEP+ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI + PHOTO_URI_TYPE+" NOT NULL"
+                    + COMMA_SEP+"UNIQUE("+ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID +")"
                     + " )";
 
 
@@ -364,5 +369,13 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         db.close();
     }
 
+    /***
+     * CRUD Operation for the save of the restaurants
+     */
+
+    public void addRestaurant()
+    {
+
+    }
 
 }

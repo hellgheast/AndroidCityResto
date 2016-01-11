@@ -6,9 +6,9 @@ package iee3.he_arc.cityresto.InternDB;
 public class ClassInternPhotoResto
 {
     //Attributs privés
-    public  String PlaceID;
-    public  String PhotoReference;
-    public  String PhotoUri;
+    private  String PlaceID;
+    private  String PhotoReference;
+    private  String PhotoUri;
 
     //Constructeurs
     public ClassInternPhotoResto()

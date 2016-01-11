@@ -76,58 +76,53 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
 
     }
 
-    static class ViewHolder {
-        protected TextView text;
-        protected ImageView image;
-        protected ProgressBar pb;
+
+    private static class ViewHolder
+    {
+        protected TextView mText;
+        protected ImageView mImage;
+        protected int mPosition;
     }
 
+    private class HolderPlace
+    {
+       protected ViewHolder mViewHolder;
+       protected Place      mPlace;
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         View view = null;
 
-        if (convertView == null) {
+        if (convertView == null)
+        {
             LayoutInflater inflator = context.getLayoutInflater();
             view = inflator.inflate(R.layout.row_restos, null);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.text = (TextView) view.findViewById(R.id.label);
-            viewHolder.text.setTextColor(Color.BLACK);
-            viewHolder.image = (ImageView) view.findViewById(R.id.image);
-           // viewHolder.image.setVisibility(View.GONE);
-            //viewHolder.pb = (ProgressBar) view.findViewById(R.id.progressBar1);
+            viewHolder.mText = (TextView) view.findViewById(R.id.text);
+            viewHolder.mText.setTextColor(Color.BLACK);
+            viewHolder.mImage = (ImageView) view.findViewById(R.id.image);
+
             view.setTag(viewHolder);
-        } else {
+        }
+        else
+        {
             view = convertView;
         }
 
 
         Place resto = getItem(position);
-
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.text.setText(list.get(position).getName());
+        holder.mText.setText(list.get(position).getName());
+        holder.mPosition = position;
 
-        try
-        {
-            Bitmap bitmapPhoto = null;
-            //InputStream in = new GetPlacePhotoTask().execute(restoLatLng).get();
-            InputStream in = new GetPlacePhotoTask().execute(resto).get();
 
-            holder.image.setImageBitmap(getResizedBitmap(ActMainResto.mDiskLruImageCache.getBitmap(resto.getPlaceId().getId()), 50, 50));
-           // holder.image.setImageBitmap(mDiskLruImageCache.getBitmap(resto.getPlaceId().getId())); // Get an image from disk cache
-            //viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
-            Closeables.closeQuietly(in);
-        }
-        catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        catch(ExecutionException e)
-        {
-            e.printStackTrace();
-        }
-
+        new GetPlacePhotoTask(position,holder,resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null);
         return view;
+
+
+
     }
 
 
@@ -201,10 +196,25 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
     }
 */
 
-    private class GetPlacePhotoTask extends AsyncTask<Place,Void,InputStream>
+    private class GetPlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
     {
+        private ViewHolder mViewHolder;
+        private Place      mPlace;
+        private int        mPosition;
+
+
+        public GetPlacePhotoTask (int _Position,ViewHolder _Holder,Place _Place)
+        {
+           mPlace = _Place;
+           mViewHolder = _Holder;
+           mPosition = _Position;
+        }
+
+
+
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -225,25 +235,25 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
          * @see #publishProgress
          */
         @Override
-        protected InputStream doInBackground(Place... params) {
+        protected Bitmap doInBackground(Void... params) {
             StreetView.Response<InputStream> imagestreet = null;
             Places.Response<InputStream> imageplace = null;
             try {
                 //Méthode Place
-                List<Place.Photo> photos = params[0].getPhotos();
+                List<Place.Photo> photos = mPlace.getPhotos();
                 if(!photos.isEmpty())
                 {
                     Place.Photo photo = photos.get(0);
-                    PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(photo.getHeight()).maxWidth(photo.getWidth());
+                    PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(80).maxWidth(80);
                     imageplace = Places.photo(placesparams);
                 }
                 else
                 {
                     //Méthode stretview
                     imagestreet = StreetView.image(StreetView.Params.create()
-                        .longitude(params[0].getLongitude())
-                        .latitude(params[0].getLatitude()).height(50)
-                        .width(50));
+                        .longitude(mPlace.getLongitude())
+                        .latitude(mPlace.getLatitude()).height(80)
+                        .width(80));
                 }
 
 
@@ -259,8 +269,10 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
 
                 if (status == HttpURLConnection.HTTP_OK && in != null) {
                     Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
-                    ActMainResto.mDiskLruImageCache.put(params[0].getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
-                    return in;
+                    Closeables.closeQuietly(in);
+
+                    return bitmapPhoto;
+
                 } else {
                     System.out.println("error, HTTP status code: " + status);
                     return null;
@@ -269,20 +281,46 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
             }
             else
             {
-                InputStream in = imageplace.getResult();
-                String status = imageplace.getStatus();
+                if(imageplace!=null)
+                {
+                    InputStream in = imageplace.getResult();
+                    String status = imageplace.getStatus();
 
-                if (Places.Response.STATUS_OK.equals(status) && in != null) {
-                    Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
-                    ActMainResto.mDiskLruImageCache.put(params[0].getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
-                    return in;
-                } else {
-                    System.out.println("error: " + imageplace.getErrorMessage() );
-                    return null;
+                    if (Places.Response.STATUS_OK.equals(status) && in != null) {
+                        Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+                        Closeables.closeQuietly(in);
+                        return bitmapPhoto;
+                    } else {
+                        System.out.println("error: " + imageplace.getErrorMessage());
+                        return null;
+                    }
                 }
+                return null;
             }
         }
 
+        @Override
+        protected  void onPostExecute(Bitmap result)
+        {
+            if (result!=null)
+            {
+                if(mViewHolder.mPosition == this.mPosition)
+                {
+                    //Check if image is already in cache
+                    if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        mViewHolder.mImage.setImageBitmap(getResizedBitmap(result,80,80));
+                    }
+                    else
+                    {
+                        ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId(), result); // Save image in disk cache
+                        mViewHolder.mImage.setImageBitmap(getResizedBitmap(result,80,80));
+                    }
+
+                }
+            }
+
+        }
     }
 
 
