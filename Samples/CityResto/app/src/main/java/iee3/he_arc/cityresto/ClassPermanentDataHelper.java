@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import iee3.he_arc.cityresto.InternDB.ClassInternPhotoResto;
 import iee3.he_arc.cityresto.InternDB.ClassInternUser;
 
 /**
@@ -175,6 +176,126 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
 
         //Delete the row
         db.delete(ClassPermanentData.UserEntry.TABLE_NAME,ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " = " + _User.getUsername(),null);
+        db.close();
+    }
+
+    /**
+     * Table Restaurants photo
+     */
+    public void addPhoto(ClassInternPhotoResto _Photo)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,_Photo.getPlaceID());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoReference());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoUri());
+
+
+        //Insertion
+        db.insert(ClassPermanentData.PhotoRestaurants.TABLE_NAME, null, values);
+        db.close();
+
+    }
+    public ClassInternPhotoResto readPhoto( ClassInternPhotoResto _Photo)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.UserEntry.TABLE_NAME,
+                new String[]{ClassPermanentData.PhotoRestaurants._ID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
+                ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
+                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "= "+_Photo.getPlaceID(),
+                null,
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            cursor.moveToFirst();
+        }
+        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+    }
+
+    public ClassInternPhotoResto readPhotoReference (String _PhotoReference)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.UserEntry.TABLE_NAME,
+                new String[]{ClassPermanentData.PhotoRestaurants._ID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
+                ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + "= "+_PhotoReference,
+                null,
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            cursor.moveToFirst();
+        }
+        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+    }
+
+    public ClassInternPhotoResto readPhotoPlaceID (String _PlaceID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.UserEntry.TABLE_NAME,
+                new String[]{ClassPermanentData.PhotoRestaurants._ID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
+                        ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
+                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "= "+_PlaceID,
+                null,
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            cursor.moveToFirst();
+        }
+        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+    }
+
+    public int updatePhoto(ClassInternPhotoResto _Photo)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,_Photo.getPlaceID());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoReference());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoUri());
+
+
+        //Update of the row
+        return db.update(ClassPermanentData.PhotoRestaurants.TABLE_NAME, values, ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + " = " + _Photo.getPlaceID(), null);
+
+    }
+
+    public void deletePhoto(ClassInternPhotoResto _Photo)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME,ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + " = " + _Photo.getPlaceID(),null);
+        db.close();
+    }
+
+    public void deletePhotoReference(String _Reference)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME,ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + " = " + _Reference,null);
+        db.close();
+    }
+    public void deletePhotoPlaceID(String _PlaceID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME,ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + " = " + _PlaceID,null);
         db.close();
     }
 
