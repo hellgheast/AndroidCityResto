@@ -4,13 +4,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
 
 public class ActRestoProfile extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_resto_profile);
+
+        RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingBar);
+        ratingbar.setRating(3.67f);
+
+        TextView lRestoName = new TextView(this);
+        lRestoName = (TextView) findViewById(R.id.tvProfileRestoName);
+        lRestoName.setText("Macdo");
+
+        TextView lRestoAddress = new TextView(this);
+        lRestoAddress = (TextView) findViewById(R.id.tvProfileRestoAddress);
+        lRestoAddress.setText("Rue de bli");
+
+        TextView lRestoCity = new TextView(this);
+        lRestoCity = (TextView) findViewById(R.id.tvProfileRestoCity);
+        lRestoCity.setText("2000 Neuchâtel");
     }
 
     @Override

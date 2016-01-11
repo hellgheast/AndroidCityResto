@@ -112,9 +112,7 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
             Bitmap bitmapPhoto = null;
             //InputStream in = new GetPlacePhotoTask().execute(restoLatLng).get();
             InputStream in = new GetPlacePhotoTask().execute(resto).get();
-            bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
 
-            ActMainResto.mDiskLruImageCache.put(resto.getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
             holder.image.setImageBitmap(getResizedBitmap(ActMainResto.mDiskLruImageCache.getBitmap(resto.getPlaceId().getId()), 50, 50));
            // holder.image.setImageBitmap(mDiskLruImageCache.getBitmap(resto.getPlaceId().getId())); // Get an image from disk cache
             //viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
@@ -260,6 +258,8 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
                 InputStream in = imagestreet.getResult();
 
                 if (status == HttpURLConnection.HTTP_OK && in != null) {
+                    Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+                    ActMainResto.mDiskLruImageCache.put(params[0].getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
                     return in;
                 } else {
                     System.out.println("error, HTTP status code: " + status);
@@ -273,6 +273,8 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
                 String status = imageplace.getStatus();
 
                 if (Places.Response.STATUS_OK.equals(status) && in != null) {
+                    Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+                    ActMainResto.mDiskLruImageCache.put(params[0].getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
                     return in;
                 } else {
                     System.out.println("error: " + imageplace.getErrorMessage() );
