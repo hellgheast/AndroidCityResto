@@ -22,8 +22,10 @@ import android.location.LocationManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import net.sf.sprockets.google.Place;
@@ -97,7 +100,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_frag_map_list, container, false);
-
+        View vMarker = inflater.inflate(R.layout.marker_window, null);
 
         fragMapListContext = getContext();
 
@@ -214,8 +217,9 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
     //BroadcastReceiver qui nous permet de rajouter correctement les markeurs sur la carte!
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
+
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(final Context context, Intent intent) {
             if(intent.getAction().equalsIgnoreCase(ServiceGoogleHelper.GOOGLEAPICONNECTED))
             {
                 map.addMarker(new MarkerOptions()
@@ -265,7 +269,53 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                             .title(place.getName()));
                 }
 
+                map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                    // Use default InfoWindow frame
+                    @Override
+                    public View getInfoWindow(Marker args) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+
+                        // Getting view from the layout file info_window_layout
+                        LayoutInflater mInflater = LayoutInflater.from(context);
+                        View v = mInflater.inflate(R.layout.marker_window, null);
+
+                        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                            public void onInfoWindowClick(Marker marker)
+                            {
+                                int i;
+                                // Find which Resto correspond to the marker
+                                for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
+
+                                    // Create LAtLng object for comparison
+                                    LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude(),
+                                            ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude());
+                                    // If the resto has the same position as marker
+                                    if(latlng.equals(marker.getPosition())){
+                                        i = ClassMainStorageManager.lListOfRestaurants.size();
+                                        String ID = "markerID";
+                                        Intent intent = new Intent(getContext() ,ActRestoProfile.class);
+                                        intent.putExtra(ID, ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId());
+                                        startActivity(intent);
+                                    }
+                                }
+
+
+                            }
+                        });
+                        // Returning the view containing InfoWindow contents
+                        return v;
+
+                    }
+                });
+
             }
+
+
             else if (intent.getAction().equalsIgnoreCase(FragParameters.ACCEPTPARAMETERS))
             {
                 Toast.makeText(getContext(),"FragParamOk",Toast.LENGTH_LONG).show();
@@ -305,6 +355,8 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
 
 
+
+
                 //Partie population de la listview
                 listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
 
@@ -321,4 +373,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
             }
         }
     };
+
+
+
 }

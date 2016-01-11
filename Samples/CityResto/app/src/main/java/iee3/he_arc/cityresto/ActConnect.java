@@ -62,7 +62,6 @@ public class ActConnect extends AppCompatActivity {
                 progDialog = new ProgressDialog(ActConnect.this);
 
                 mClassInternUser = mClassPermanentDataHelper.readUser(lUserName);
-                // mClassInternUser = mClassPermanentDataHelper.updateUser(lUserName);
 
                 // Check User's password
                 if(lPassword.equals(mClassInternUser.getPassword())){
@@ -107,6 +106,12 @@ public class ActConnect extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do something on back.
+        return;
     }
 
     @Override
@@ -160,5 +165,20 @@ public class ActConnect extends AppCompatActivity {
 
         // Showing Alert Message
         alertDialog.show();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

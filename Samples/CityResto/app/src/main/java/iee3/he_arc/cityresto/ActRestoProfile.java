@@ -1,5 +1,6 @@
 package iee3.he_arc.cityresto;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -7,15 +8,23 @@ import android.view.MenuItem;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import net.sf.sprockets.google.Place;
+
 
 public class ActRestoProfile extends AppCompatActivity {
 
-
+    private String restoID;
+    private Place
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_resto_profile);
+
+        Intent intent = getIntent();
+        restoID = intent.getStringExtra("markerID");
 
         RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingBar);
         ratingbar.setRating(3.67f);

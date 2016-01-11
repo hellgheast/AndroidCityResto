@@ -36,7 +36,7 @@ public class ActAcceuil extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                Intent intent = new Intent(ActAcceuil.this, ActChoice.class);
+                Intent intent = new Intent(ActAcceuil.this, ActSubscribe.class);
                 startActivity(intent);
             }
         });
@@ -65,5 +65,17 @@ public class ActAcceuil extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

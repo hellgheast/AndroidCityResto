@@ -49,12 +49,11 @@ public class ActSubscribe extends AppCompatActivity {
 
                     mClassPermanentDataHelper.insertUser(mClassInternUser);
 
-                    Intent intent = new Intent(ActSubscribe.this, ActMainResto.class);
+                    Intent intent = new Intent(ActSubscribe.this, ActConnect.class);
                     startActivity(intent);
                 }else{
                     Toast.makeText(ActSubscribe.this, getString(R.string.NoMatchPassword),
                             Toast.LENGTH_LONG).show();
-
                 }
 
             }
@@ -82,5 +81,20 @@ public class ActSubscribe extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
