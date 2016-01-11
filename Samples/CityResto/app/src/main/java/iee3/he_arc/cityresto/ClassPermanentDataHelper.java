@@ -5,6 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.io.File;
+import java.util.ArrayList;
 
 import iee3.he_arc.cityresto.InternDB.ClassInternPhotoResto;
 import iee3.he_arc.cityresto.InternDB.ClassInternUser;
@@ -27,12 +31,15 @@ import iee3.he_arc.cityresto.InternDB.ClassInternUser;
  | @version : 1.1
  |
  | Mofification tag : Modification 08012015 : Mise en place d'une certaine généricité
+                      Modification 11012015 : Mise en place d'une méthode de vérification des tables et fabrication des requêtes correctes.
  |
  *=====================================================================*/
 
 
 public class ClassPermanentDataHelper extends SQLiteOpenHelper
 {
+
+    private static final String TAG = "DataHelper";
     //SQL Variables
     private static final String COMMA_SEP = ",";
 
@@ -76,7 +83,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
     private static final String PHOTO_URI_TYPE = " TEXT";
 
     private static final String TABLE_PHOTO_SQL_CREATE_ENTRIES=
-            "CREATE TABLE "+ClassPermanentData.InternSetting.TABLE_NAME + " ("
+            "CREATE TABLE "+ClassPermanentData.PhotoRestaurants.TABLE_NAME + " ("
                     + ClassPermanentData.PhotoRestaurants._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + PHOTO_PLACEID_TYPE + " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + PHOTO_REFERENCE_TYPE+" NOT NULL"
@@ -85,10 +92,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
 
 
     //Main Settings
-    public static final int     DATABASE_VERSION = 1;
+    public static final int     DATABASE_VERSION = 2;
     public static final String  DATABASE_NAME="PermanentData.db";
 
     //TODO Tout ce qu'il faut pour manipuler ça !
+
+
 
     /**
      *
@@ -99,13 +108,68 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    public boolean isTableExists(String tableName, boolean openDb,SQLiteDatabase mDatabase) {
+        if(openDb) {
+            if(mDatabase == null || !mDatabase.isOpen()) {
+                mDatabase = this.getReadableDatabase();
+            }
+
+            if(!mDatabase.isReadOnly()) {
+                mDatabase.close();
+                mDatabase = this.getReadableDatabase();
+            }
+        }
+
+        Cursor cursor = mDatabase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        db.execSQL(TABLE_USER_SQL_CREATE_ENTRIES);;
-        db.execSQL(TABLE_INTERN_SQL_CREATE_ENTRIES);
-        db.execSQL(TABLE_RESTAURANT_SQL_CREATE_ENTRIES);
-        db.execSQL(TABLE_PHOTO_SQL_CREATE_ENTRIES);
+        File temp = new File(db.getPath());
+        //Véfification si les tables existent
+
+        if(temp.exists()==false)
+        {
+            db.execSQL(TABLE_USER_SQL_CREATE_ENTRIES);
+            db.execSQL(TABLE_INTERN_SQL_CREATE_ENTRIES);
+            db.execSQL(TABLE_RESTAURANT_SQL_CREATE_ENTRIES);
+            db.execSQL(TABLE_PHOTO_SQL_CREATE_ENTRIES);
+        }
+        else
+        {
+            if(!isTableExists(ClassPermanentData.UserEntry.TABLE_NAME,false,db))
+            {
+                db.execSQL(TABLE_USER_SQL_CREATE_ENTRIES);
+                Log.d(TAG, "onCreate " + "USER");
+            }
+            if(!isTableExists(ClassPermanentData.InternSetting.TABLE_NAME,false,db))
+            {
+                db.execSQL(TABLE_INTERN_SQL_CREATE_ENTRIES);
+                Log.d(TAG, "onCreate " + "INTERN");
+            }
+            if(!isTableExists(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,false,db))
+            {
+                db.execSQL(TABLE_RESTAURANT_SQL_CREATE_ENTRIES);
+                Log.d(TAG, "onCreate " + "RESTAURANT");
+            }
+            if(!isTableExists(ClassPermanentData.PhotoRestaurants.TABLE_NAME,false,db))
+            {
+                db.execSQL(TABLE_PHOTO_SQL_CREATE_ENTRIES);
+                Log.d(TAG, "onCreate " + "PHOTO");
+            }
+
+        }
+
+
     }
 
     @Override
@@ -133,10 +197,11 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
 
         values.put(ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,_User.getUsername());
-        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD,_User.getPassword());
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD, _User.getPassword());
 
         //Insertion
         db.insert(ClassPermanentData.UserEntry.TABLE_NAME,null,values);
+        Log.i("DataHelper", "insertUser " + _User.getPassword() + _User.getUsername());
         db.close();
     }
     public ClassInternUser readUser(String _UserName)
@@ -146,8 +211,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                                 new String[]{ClassPermanentData.UserEntry._ID,
                                             ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,
                                             ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD},
-                                     ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + "= "+_UserName,
-                                    null,
+                                     ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + "=?",
+                                    new String[] {_UserName},
                                     null,
                                     null,
                                     null
@@ -204,8 +269,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                         ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
                         ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
                 ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
-                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "= "+_Photo.getPlaceID(),
-                null,
+                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "=?",
+                new String[]{_Photo.getPlaceID()},
                 null,
                 null,
                 null
@@ -225,8 +290,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                         ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
                         ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
                         ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
-                ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + "= "+_PhotoReference,
-                null,
+                ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + "=?",
+                new String[]{_PhotoReference},
                 null,
                 null,
                 null
@@ -246,8 +311,8 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
                         ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,
                         ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,
                         ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_URI},
-                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "= "+_PlaceID,
-                null,
+                ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + "=?",
+                new String[]{_PlaceID},
                 null,
                 null,
                 null

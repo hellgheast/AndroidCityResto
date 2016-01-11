@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import iee3.he_arc.cityresto.InternDB.ClassInternUser;
+
 public class ActSubscribe extends AppCompatActivity {
 
     private Button btnOKSubscribe;
@@ -23,6 +25,11 @@ public class ActSubscribe extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_subscr);
+
+        // Declare PermanentDataHelper object
+        final ClassPermanentDataHelper mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
+
+
 
         btnOKSubscribe = (Button) findViewById(R.id.btnOKSubscribe);
 
@@ -37,19 +44,10 @@ public class ActSubscribe extends AppCompatActivity {
 
                 if(lPassword.equals(lPasswordConfirmed)) {
 
-                    // Delete old data
-                   // getContentResolver().delete(ClassPermanentDataProvider.CONTENT_URI, ClassPermanentDataProvider.NAME, null);
-                   // getContentResolver().delete(ClassPermanentDataProvider.CONTENT_URI, ClassPermanentDataProvider.PASSWORD, null);
+                    // Declare ClassInternUser object
+                    ClassInternUser mClassInternUser = new ClassInternUser(lUserName, lPassword);
 
-                    // Add a new student record
-                    ContentValues login = new ContentValues();
-
-                    login.put(ClassPermanentDataProvider.NAME, lUserName);
-
-                    login.put(ClassPermanentDataProvider.PASSWORD, lPassword);
-
-                    Uri uri = getContentResolver().insert(
-                            ClassPermanentDataProvider.CONTENT_URI, login);
+                    mClassPermanentDataHelper.insertUser(mClassInternUser);
 
                     Intent intent = new Intent(ActSubscribe.this, ActMainResto.class);
                     startActivity(intent);
