@@ -7,14 +7,37 @@
     android:descendantFocusability="blocksDescendants"
     >
 
+
+
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:id="@+id/image"
+        android:contentDescription="@drawable/ic_launcher">
+    </ImageView>
+
+    <TextView
+        android:text="@+id/label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/label"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:textSize="20sp">
+    </TextView>
+
+
+
+
     <ImageView
         android:id="@+id/avatar"
         android:layout_width="50dp"
         android:layout_height="50dp"
         tools:background="#AAA"/>
-
-
-
 
     <TextView
         android:id="@+id/pseudo"

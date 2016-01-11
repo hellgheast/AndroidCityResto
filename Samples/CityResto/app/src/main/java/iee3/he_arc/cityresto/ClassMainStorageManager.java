@@ -1,6 +1,7 @@
 package iee3.he_arc.cityresto;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.widget.CheckBox;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -15,6 +16,8 @@ import java.util.List;
  */
 public class ClassMainStorageManager {
 
+
+
     private static int lRadius = 500; // Radius of research in meters
     private static String[] lTypesChecked = new String[10]; // All types checked are put in a String array.
     private static String[] lTypesNames = new String[10]; // Array containing types names
@@ -22,6 +25,8 @@ public class ClassMainStorageManager {
     public static List<Place> lListOfRestaurants;
     public static LatLng lCoordonates;
     public static ServiceGoogleHelper gps;
+
+
 
     // We use a Hashmap for saving choices of types of restaurants
     // The key is the type of restaurant, and the value is a boolean who said if it's checked or not.

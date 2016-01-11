@@ -37,6 +37,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.3.0'
     compile 'com.google.android.gms:play-services-maps:8.3.0'
     compile files('libs/mysql-connector-java-3.0.17-ga-bin.jar')
+    compile 'com.jakewharton:disklrucache:2.0.2'
     compile ('net.sf.sprockets:sprockets-android:3.0.0')
             {
                 exclude group: 'commons-logging', module: 'commons-logging'

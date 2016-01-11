@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.renderscript.ScriptGroup;
 import android.support.v4.view.ViewPager;
@@ -21,6 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActMainResto extends AppCompatActivity {
+
+
+    public static ClassDiskLruImageCache mDiskLruImageCache;
+    private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
+    private static final String DISK_CACHE_SUBDIR = "thumbnails";
+
 
     private static final String TAG = "ActMainResto" ;
     private Toolbar toolbar;
@@ -73,7 +80,11 @@ public class ActMainResto extends AppCompatActivity {
         setContentView(R.layout.activity_act_main_resto);
         //Binding du service
         getApplicationContext().bindService(new Intent(ActMainResto.this, ServiceGoogleHelper.class), this.mConnection, Context.BIND_AUTO_CREATE);
-
+            mDiskLruImageCache = new ClassDiskLruImageCache(getApplicationContext(),
+                    DISK_CACHE_SUBDIR,
+                    DISK_CACHE_SIZE,
+                    Bitmap.CompressFormat.JPEG,
+                    100);
     }
 
     @Override

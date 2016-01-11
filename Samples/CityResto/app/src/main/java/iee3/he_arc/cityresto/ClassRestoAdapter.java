@@ -1,10 +1,13 @@
 package iee3.he_arc.cityresto;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
@@ -12,11 +15,13 @@ import android.os.Environment;
 import android.os.Looper;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -25,6 +30,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Closeables;
 import com.google.common.io.Closer;
 import com.google.common.io.Files;
+import com.squareup.okhttp.internal.DiskLruCache;
 
 import net.sf.sprockets.google.ImmutablePhoto;
 import net.sf.sprockets.google.Place;
@@ -38,10 +44,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Handler;
+
+import android.app.Activity;
 
 import static net.sf.sprockets.google.Places.URL_PHOTO;
 import static net.sf.sprockets.io.MoreFiles.DOT_PART;
@@ -51,11 +60,93 @@ import static net.sf.sprockets.io.MoreFiles.DOT_PART;
  */
 public class ClassRestoAdapter extends ArrayAdapter<Place> {
 
-    //tweets est la liste des models à afficher
-    public ClassRestoAdapter(Context context, List<Place> resto) {
-        super(context, 0, resto);
+    // Memory cache
+    private LruCache<String, Bitmap> mMemoryCache;
+
+
+
+    private final Activity context;
+    private final List<Place> list;
+
+
+    public ClassRestoAdapter(Activity context, List<Place> list) {
+        super(context, R.layout.row_restos, list);
+        this.context = context;
+        this.list = list;
+
     }
 
+    static class ViewHolder {
+        protected TextView text;
+        protected ImageView image;
+        protected ProgressBar pb;
+    }
+
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = null;
+
+        if (convertView == null) {
+            LayoutInflater inflator = context.getLayoutInflater();
+            view = inflator.inflate(R.layout.row_restos, null);
+            final ViewHolder viewHolder = new ViewHolder();
+            viewHolder.text = (TextView) view.findViewById(R.id.label);
+            viewHolder.text.setTextColor(Color.BLACK);
+            viewHolder.image = (ImageView) view.findViewById(R.id.image);
+           // viewHolder.image.setVisibility(View.GONE);
+            //viewHolder.pb = (ProgressBar) view.findViewById(R.id.progressBar1);
+            view.setTag(viewHolder);
+        } else {
+            view = convertView;
+        }
+
+
+        Place resto = getItem(position);
+
+        ViewHolder holder = (ViewHolder) view.getTag();
+        holder.text.setText(list.get(position).getName());
+
+        try
+        {
+            Bitmap bitmapPhoto = null;
+            //InputStream in = new GetPlacePhotoTask().execute(restoLatLng).get();
+            InputStream in = new GetPlacePhotoTask().execute(resto).get();
+            bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+
+            ActMainResto.mDiskLruImageCache.put(resto.getPlaceId().getId(), bitmapPhoto); // Save image in disk cache
+            holder.image.setImageBitmap(getResizedBitmap(ActMainResto.mDiskLruImageCache.getBitmap(resto.getPlaceId().getId()), 50, 50));
+           // holder.image.setImageBitmap(mDiskLruImageCache.getBitmap(resto.getPlaceId().getId())); // Get an image from disk cache
+            //viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
+            Closeables.closeQuietly(in);
+        }
+        catch(InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch(ExecutionException e)
+        {
+            e.printStackTrace();
+        }
+
+        return view;
+    }
+
+
+
+
+
+/*
+    public ClassRestoAdapter(Context context, List<Place> resto, Activity context1, List<Place> list) {
+        super(context, 0, resto);
+        this.context = context1;
+        this.list = list;
+    }
+*/
+
+
+
+    /*
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -86,7 +177,8 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
         {
             //InputStream in = new GetPlacePhotoTask().execute(restoLatLng).get();
             InputStream in = new GetPlacePhotoTask().execute(resto).get();
-            viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
+            viewHolder.avatar.setImageBitmap(getResizedBitmap((BitmapFactory.decodeStream(in)), 50, 50)); // set an image resized
+            //viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
             Closeables.closeQuietly(in);
 
         }
@@ -103,12 +195,13 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
         return convertView;
     }
 
+
     private class RestoViewHolder{
         public TextView pseudo;
         public TextView text;
         public ImageView avatar;
     }
-
+*/
 
     private class GetPlacePhotoTask extends AsyncTask<Place,Void,InputStream>
     {
@@ -186,10 +279,25 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
                     return null;
                 }
             }
-
-
-
         }
+
+    }
+
+
+
+    // decodes image and scales it to reduce memory consumption
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+        // RECREATE THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return resizedBitmap;
     }
 
 }
