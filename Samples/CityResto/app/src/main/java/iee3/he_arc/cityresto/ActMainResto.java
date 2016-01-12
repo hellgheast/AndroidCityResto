@@ -107,21 +107,20 @@ public class ActMainResto extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //if(mBound)
-        //{
-        //    unbindService(mConnection);
-        //    mBound=false;
-        //}
+        if(mBound)
+        {
+            unbindService(mConnection);
+            mBound=false;
+        }
     }
-
     @Override
-    public void onPause() {
+   public void onPause() {
         super.onPause();
-        //if(mBound)
-        //{
-         //   unbindService(mConnection);
-         //   mBound=false;
-        //}
+        if(mBound)
+        {
+            unbindService(mConnection);
+            mBound=false;
+        }
     }
 
 

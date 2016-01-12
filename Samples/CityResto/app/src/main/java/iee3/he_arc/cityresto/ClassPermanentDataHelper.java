@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import iee3.he_arc.cityresto.InternDB.ClassInternPhotoResto;
+import iee3.he_arc.cityresto.InternDB.ClassInternRestaurant;
 import iee3.he_arc.cityresto.InternDB.ClassInternUser;
 
 /**
@@ -213,15 +214,15 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
     {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(ClassPermanentData.UserEntry.TABLE_NAME,
-                                new String[]{ClassPermanentData.UserEntry._ID,
-                                            ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,
-                                            ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD},
-                                     ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + "=?",
-                                    new String[] {_UserName},
-                                    null,
-                                    null,
-                                    null
-                                );
+                new String[]{ClassPermanentData.UserEntry._ID,
+                        ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,
+                        ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD},
+                ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + "=?",
+                new String[]{_UserName},
+                null,
+                null,
+                null
+        );
         if(cursor!=null)
         {
             cursor.moveToFirst();
@@ -234,7 +235,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,_User.getUsername());
-        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD,_User.getPassword());
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD, _User.getPassword());
 
         //Update of the row
         return db.update(ClassPermanentData.UserEntry.TABLE_NAME, values, ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " = " + _User.getUsername() ,null);
@@ -245,7 +246,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Delete the row
-        db.delete(ClassPermanentData.UserEntry.TABLE_NAME,ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " = " + _User.getUsername(),null);
+        db.delete(ClassPermanentData.UserEntry.TABLE_NAME, ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " = " + _User.getUsername(), null);
         db.close();
     }
 
@@ -258,7 +259,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         values.put(ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,_Photo.getPlaceID());
         values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoReference());
-        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoUri());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE, _Photo.getPhotoUri());
 
 
         //Insertion
@@ -335,7 +336,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         ContentValues values = new ContentValues();
         values.put(ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID,_Photo.getPlaceID());
         values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoReference());
-        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE,_Photo.getPhotoUri());
+        values.put(ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE, _Photo.getPhotoUri());
 
 
         //Update of the row
@@ -365,7 +366,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Delete the row
-        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME,ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + " = " + _PlaceID,null);
+        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME, ClassPermanentData.PhotoRestaurants.COLUMN_NAME_PLACEID + " = " + _PlaceID, null);
         db.close();
     }
 
@@ -373,9 +374,131 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
      * CRUD Operation for the save of the restaurants
      */
 
-    public void addRestaurant()
+    public void addRestaurant( ClassInternRestaurant _Restaurant)
     {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID,_Restaurant.getPlaceID());
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS,_Restaurant.getAdress());
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME,_Restaurant.getName());
+
+        //Insertion
+        db.insert(ClassPermanentData.FavoriteRestaurants.TABLE_NAME, null, values);
+        db.close();
 
     }
+
+    public ClassInternRestaurant readRestaurantPlaceID (String _PlaceID)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,
+                new String[]{ClassPermanentData.FavoriteRestaurants._ID,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS},
+                ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + "=?",
+                new String[]{_PlaceID},
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            cursor.moveToFirst();
+        }
+
+        return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+    }
+
+    public ClassInternRestaurant readRestaurantName(String _Name)
+    {
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.query(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,
+                    new String[]{ClassPermanentData.FavoriteRestaurants._ID,
+                            ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID,
+                            ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME,
+                            ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS},
+                    ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME+ "=?",
+                    new String[]{_Name},
+                    null,
+                    null,
+                    null
+            );
+            if(cursor!=null)
+            {
+                cursor.moveToFirst();
+            }
+
+            return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+
+    }
+
+    public ClassInternRestaurant readRestaurantAdress(String _Adress)
+    {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,
+                new String[]{ClassPermanentData.FavoriteRestaurants._ID,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME,
+                        ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS},
+                ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS+ "=?",
+                new String[]{_Adress},
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            cursor.moveToFirst();
+        }
+
+        return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+
+    }
+
+    public int updateRestaurant(ClassInternRestaurant _Restaurant)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID,_Restaurant.getPlaceID());
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_ADDRESS,_Restaurant.getAdress());
+        values.put(ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME,_Restaurant.getName());
+
+
+        //Update of the row
+        return db.update(ClassPermanentData.FavoriteRestaurants.TABLE_NAME, values, ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + " = " + _Restaurant.getPlaceID(), null);
+
+    }
+
+    public void deleteRestaurant(ClassInternRestaurant _Restaurant)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + " = " + _Restaurant.getPlaceID(),null);
+        db.close();
+    }
+
+    public void deleteRestaurantPlaceID(String _PlaceID)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.FavoriteRestaurants.TABLE_NAME,ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_PLACEID + " = " + _PlaceID,null);
+        db.close();
+    }
+
+    public void deleteRestaurantName(String _Name)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Delete the row
+        db.delete(ClassPermanentData.FavoriteRestaurants.TABLE_NAME, ClassPermanentData.FavoriteRestaurants.COLUMN_NAME_RESTO_NAME + " = " + _Name, null);
+        db.close();
+    }
+
 
 }

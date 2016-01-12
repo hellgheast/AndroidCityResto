@@ -100,9 +100,9 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
             LayoutInflater inflator = context.getLayoutInflater();
             view = inflator.inflate(R.layout.row_restos, null);
             final ViewHolder viewHolder = new ViewHolder();
-            viewHolder.mText = (TextView) view.findViewById(R.id.text);
+            viewHolder.mText = (TextView) view.findViewById(R.id.pseudo);
             viewHolder.mText.setTextColor(Color.BLACK);
-            viewHolder.mImage = (ImageView) view.findViewById(R.id.image);
+            viewHolder.mImage = (ImageView) view.findViewById(R.id.avatar);
 
             view.setTag(viewHolder);
         }
@@ -118,7 +118,7 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
         holder.mPosition = position;
 
 
-        new GetPlacePhotoTask(position,holder,resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null);
+        new GetPlacePhotoTask(position,holder,resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,(Void)null);
         return view;
 
 
@@ -243,17 +243,23 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
                 List<Place.Photo> photos = mPlace.getPhotos();
                 if(!photos.isEmpty())
                 {
-                    Place.Photo photo = photos.get(0);
-                    PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(80).maxWidth(80);
-                    imageplace = Places.photo(placesparams);
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        Place.Photo photo = photos.get(0);
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(200).maxWidth(200);
+                        imageplace = Places.photo(placesparams);
+                    }
                 }
                 else
                 {
-                    //Méthode stretview
-                    imagestreet = StreetView.image(StreetView.Params.create()
-                        .longitude(mPlace.getLongitude())
-                        .latitude(mPlace.getLatitude()).height(80)
-                        .width(80));
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        //Méthode stretview
+                        imagestreet = StreetView.image(StreetView.Params.create()
+                                .longitude(mPlace.getLongitude())
+                                .latitude(mPlace.getLatitude()).height(200)
+                                .width(200));
+                    }
                 }
 
 
@@ -318,6 +324,11 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
                     }
 
                 }
+            }
+            //Check if image is already in cache
+            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+            {
+                mViewHolder.mImage.setImageBitmap(getResizedBitmap(ActMainResto.mDiskLruImageCache.getBitmap(mPlace.getPlaceId().getId()),80,80));
             }
 
         }
