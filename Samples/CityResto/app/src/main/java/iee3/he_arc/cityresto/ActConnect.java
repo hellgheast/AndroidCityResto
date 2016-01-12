@@ -54,6 +54,7 @@ public class ActConnect extends AppCompatActivity {
         // Connection
         btnOKConnect.setOnClickListener(new View.OnClickListener() {
 
+            // TODO Sauvegarder l'état de la checkbox "Remember Me" en base de donnée permanente !!
             @Override
             public void onClick(View arg0) {
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();

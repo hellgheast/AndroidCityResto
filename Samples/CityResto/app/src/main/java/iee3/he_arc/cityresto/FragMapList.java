@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import android.location.Location;
 import android.location.LocationManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -257,7 +258,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                 //Partie population de la listview
 
-                listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
+                listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)));
 
                 ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
 
@@ -371,6 +372,22 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                 }
 
             }
+
+
+            // listView Listener
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                @Override
+                public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+
+                    // Find which Resto correspond to the position
+                    String restoID = ClassMainStorageManager.lListOfRestaurants.get(position).getPlaceId().getId();
+
+                    Intent intent = new Intent(getContext(), ActRestoProfile.class);
+                    intent.putExtra("markerID", restoID);
+                    startActivity(intent);
+                }
+            });
         }
     };
 
