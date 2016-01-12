@@ -108,11 +108,7 @@ public class ActConnect extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        // do something on back.
-        return;
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -292,14 +292,14 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                                 for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
 
                                     // Create LAtLng object for comparison
-                                    LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude(),
-                                            ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude());
+                                    LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
+                                            ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
                                     // If the resto has the same position as marker
                                     if(latlng.equals(marker.getPosition())){
-                                        i = ClassMainStorageManager.lListOfRestaurants.size();
                                         String ID = "markerID";
                                         Intent intent = new Intent(getContext() ,ActRestoProfile.class);
                                         intent.putExtra(ID, ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId());
+                                        i = ClassMainStorageManager.lListOfRestaurants.size();
                                         startActivity(intent);
                                     }
                                 }
