@@ -98,7 +98,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
 
 
     //Main Settings
-    public static final int     DATABASE_VERSION = 2;
+    public static final int     DATABASE_VERSION = 4;
     public static final String  DATABASE_NAME="PermanentData.db";
 
     //TODO Tout ce qu'il faut pour manipuler ça !

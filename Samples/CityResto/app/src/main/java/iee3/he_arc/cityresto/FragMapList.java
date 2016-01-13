@@ -260,61 +260,65 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                 //Partie population de la listview
 
-                listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)));
-
-                ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
-
-                //Population de markeurs
-                for(Place place : ClassMainStorageManager.lListOfRestaurants )
+                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)!=null)
                 {
-                    map.addMarker(new MarkerOptions()
-                            .position(new LatLng(place.getLatitude(),place.getLongitude()))
-                            .title(place.getName()));
+                    listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)));
+
+                    ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
+
+                    //Population de markeurs
+                    for(Place place : ClassMainStorageManager.lListOfRestaurants )
+                    {
+                        map.addMarker(new MarkerOptions()
+                                .position(new LatLng(place.getLatitude(),place.getLongitude()))
+                                .title(place.getName()));
+                    }
+
+                    map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                        // Use default InfoWindow frame
+                        @Override
+                        public View getInfoWindow(Marker args) {
+                            return null;
+                        }
+
+                        @Override
+                        public View getInfoContents(Marker marker) {
+
+                            // Getting view from the layout file info_window_layout
+                            LayoutInflater mInflater = LayoutInflater.from(context);
+                            View v = mInflater.inflate(R.layout.marker_window, null);
+
+                            map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                                public void onInfoWindowClick(Marker marker)
+                                {
+                                    int i;
+                                    // Find which Resto correspond to the marker
+                                    for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
+
+                                        // Create LAtLng object for comparison
+                                        LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
+                                                ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
+                                        // If the resto has the same position as marker
+                                        if(latlng.equals(marker.getPosition())){
+                                            String ID = "markerID";
+                                            Intent intent = new Intent(getContext() ,ActRestoProfile.class);
+                                            intent.putExtra(ID, ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId());
+                                            i = ClassMainStorageManager.lListOfRestaurants.size();
+                                            startActivity(intent);
+                                        }
+                                    }
+
+
+                                }
+                            });
+                            // Returning the view containing InfoWindow contents
+                            return v;
+
+                        }
+                    });
                 }
 
-                map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-
-                    // Use default InfoWindow frame
-                    @Override
-                    public View getInfoWindow(Marker args) {
-                        return null;
-                    }
-
-                    @Override
-                    public View getInfoContents(Marker marker) {
-
-                        // Getting view from the layout file info_window_layout
-                        LayoutInflater mInflater = LayoutInflater.from(context);
-                        View v = mInflater.inflate(R.layout.marker_window, null);
-
-                        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                            public void onInfoWindowClick(Marker marker)
-                            {
-                                int i;
-                                // Find which Resto correspond to the marker
-                                for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
-
-                                    // Create LAtLng object for comparison
-                                    LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
-                                            ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
-                                    // If the resto has the same position as marker
-                                    if(latlng.equals(marker.getPosition())){
-                                        String ID = "markerID";
-                                        Intent intent = new Intent(getContext() ,ActRestoProfile.class);
-                                        intent.putExtra(ID, ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId());
-                                        i = ClassMainStorageManager.lListOfRestaurants.size();
-                                        startActivity(intent);
-                                    }
-                                }
-
-
-                            }
-                        });
-                        // Returning the view containing InfoWindow contents
-                        return v;
-
-                    }
-                });
 
             }
 
@@ -358,20 +362,24 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
 
 
-
-
-                //Partie population de la listview
-                listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
-
-                ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
-
-                //Population de markeurs
-                for(Place place : ClassMainStorageManager.lListOfRestaurants )
+                //Vérification si on obtiens des restaurants
+                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)!=null)
                 {
-                    map.addMarker(new MarkerOptions()
-                            .position(new LatLng(place.getLatitude(),place.getLongitude()))
-                            .title(place.getName()));
+
+                    //Partie population de la listview
+                    listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
+
+                    ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
+
+                    //Population de markeurs
+                    for(Place place : ClassMainStorageManager.lListOfRestaurants )
+                    {
+                        map.addMarker(new MarkerOptions()
+                                .position(new LatLng(place.getLatitude(),place.getLongitude()))
+                                .title(place.getName()));
+                    }
                 }
+
 
             }
 
