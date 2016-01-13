@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -26,16 +29,26 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import iee3.he_arc.cityresto.InternDB.ClassInternRestaurant;
+import iee3.he_arc.cityresto.InternDB.ClassInternUser;
+
 
 public class ActRestoProfile extends AppCompatActivity {
 
     private String restoID;
     private Place resto;
+    private float lRestoRating;
+    private ImageButton lStarButton;
+    private boolean lIsFavourite = false;
+
+    private ClassInternRestaurant mClassInternRestaurant;
+    private ClassPermanentDataHelper mClassPermanentDataHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_resto_profile);
+        lStarButton = (ImageButton) findViewById(R.id.ibStar);
 
         Intent intent = getIntent();
         restoID = intent.getStringExtra("markerID");
@@ -51,10 +64,12 @@ public class ActRestoProfile extends AppCompatActivity {
 
 
 
+
         // Find which Resto correspond to the ID
 
         RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingBar);
-        ratingbar.setRating(3.67f);
+        lRestoRating = resto.getRating();
+        ratingbar.setRating(lRestoRating);
 
         TextView lRestoName = new TextView(this);
         lRestoName = (TextView) findViewById(R.id.tvProfileRestoName);
@@ -64,10 +79,47 @@ public class ActRestoProfile extends AppCompatActivity {
         lRestoAddress = (TextView) findViewById(R.id.tvProfileRestoAddress);
         lRestoAddress.setText(resto.getVicinity());
 
-      /*  TextView lRestoCity = new TextView(this);
-        lRestoCity = (TextView) findViewById(R.id.tvProfileRestoCity);
-        lRestoCity.setText(resto.getVicinity());
-   */
+        mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
+        mClassInternRestaurant = mClassPermanentDataHelper.readRestaurantPlaceID(resto.getPlaceId().getId());
+       // mClassInternRestaurant = null if resto isn't saved
+
+
+        if(null == mClassInternRestaurant){
+            // This resto is not saved, it's not a favourite
+            lStarButton.setBackgroundResource(R.drawable.empty_star2);
+            lIsFavourite = false;
+        }
+        else {
+            lStarButton.setBackgroundResource(R.drawable.full_star);
+            lIsFavourite = true;
+        }
+
+        // Now create an object for this resto, for delete or add it to the database
+        mClassInternRestaurant = new ClassInternRestaurant(resto.getPlaceId().getId(),
+                                                            resto.getName(),
+                                                            resto.getAddress().toString());
+
+        lStarButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+
+                if(lIsFavourite) {
+                    // If favourite, toggle favorite to false and put empty star
+                    lIsFavourite = false;
+                    lStarButton.setBackgroundResource(R.drawable.empty_star2);
+
+                    // Remove this resto frome the database
+                    mClassPermanentDataHelper.deleteRestaurant(mClassInternRestaurant);
+                }
+                else{
+                    lIsFavourite = true;
+                    lStarButton.setBackgroundResource(R.drawable.full_star);
+
+                    // Add this resto to the database
+                    mClassPermanentDataHelper.addRestaurant(mClassInternRestaurant);
+                }
+            }
+        });
     }
 
     @Override
