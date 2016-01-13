@@ -226,8 +226,10 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternUser(cursor.getString(1),cursor.getString(2));
         }
-        return new ClassInternUser(cursor.getString(1),cursor.getString(2));
+
+        return null;
     }
 
     public int updateUser(ClassInternUser _User )
@@ -284,8 +286,9 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
         }
-        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+        return null;
     }
 
     public ClassInternPhotoResto readPhotoReference (String _PhotoReference)
@@ -305,8 +308,9 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
         }
-        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+        return null;
     }
 
     public ClassInternPhotoResto readPhotoPlaceID (String _PlaceID)
@@ -326,8 +330,9 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
         }
-        return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+        return null;
     }
 
     public int updatePhoto(ClassInternPhotoResto _Photo)
@@ -406,9 +411,10 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
         }
 
-        return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+        return null;
     }
 
     public ClassInternRestaurant readRestaurantName(String _Name)
@@ -429,9 +435,10 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
             if(cursor!=null)
             {
                 cursor.moveToFirst();
+                return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
             }
 
-            return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            return null;
 
     }
 
@@ -453,9 +460,10 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         if(cursor!=null)
         {
             cursor.moveToFirst();
+            return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
         }
+        return null;
 
-        return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
 
     }
 

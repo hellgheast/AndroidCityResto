@@ -56,6 +56,8 @@ import net.sf.sprockets.google.Places;
 import java.io.IOException;
 import java.util.List;
 
+import iee3.he_arc.cityresto.Utils.ClassSerialPlace;
+
 public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMap.OnMapClickListener
 {
 
@@ -385,6 +387,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                     Intent intent = new Intent(getContext(), ActRestoProfile.class);
                     intent.putExtra("markerID", restoID);
+                    intent.putExtra("PlaceParam",new ClassSerialPlace(ClassMainStorageManager.lListOfRestaurants.get(position)));
                     startActivity(intent);
                 }
             });
