@@ -225,11 +225,16 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
-            return new ClassInternUser(cursor.getString(1),cursor.getString(2));
+            boolean result;
+            result = cursor.moveToFirst();
+            if(result)
+            {
+                return new ClassInternUser(cursor.getString(1),cursor.getString(2));
+            }
+            return null;
         }
-
         return null;
+
     }
 
     public int updateUser(ClassInternUser _User )
@@ -285,8 +290,13 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
-            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            boolean result;
+            result =cursor.moveToFirst();
+            if(result)
+            {
+                return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            }
+            return null;
         }
         return null;
     }
@@ -307,8 +317,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
-            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            boolean result;
+            result=cursor.moveToFirst();
+            if(result) {
+                return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            }
+            return null;
         }
         return null;
     }
@@ -329,8 +343,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
-            return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            boolean result;
+            result=cursor.moveToFirst();
+            if(result) {
+                return new ClassInternPhotoResto(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            }
+            return null;
         }
         return null;
     }
@@ -410,8 +428,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
-            return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            boolean result;
+            result=cursor.moveToFirst();
+            if(result) {
+                return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+            }
+            return null;
         }
 
         return null;
@@ -434,8 +456,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
             );
             if(cursor!=null)
             {
-                cursor.moveToFirst();
-                return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+                boolean result;
+                result=cursor.moveToFirst();
+                if(result) {
+                    return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                }
+                return null;
             }
 
             return null;
@@ -459,8 +485,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         );
         if(cursor!=null)
         {
-            cursor.moveToFirst();
+            boolean result;
+            result=cursor.moveToFirst();
+            if(result) {
             return new ClassInternRestaurant(cursor.getString(1), cursor.getString(2),cursor.getString(3));
+            }
+            return null;
         }
         return null;
 
