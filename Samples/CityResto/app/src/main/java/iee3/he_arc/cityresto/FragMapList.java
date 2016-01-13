@@ -395,7 +395,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                     Intent intent = new Intent(getContext(), ActRestoProfile.class);
                     intent.putExtra("markerID", restoID);
-                    intent.putExtra("PlaceParam",new ClassSerialPlace(ClassMainStorageManager.lListOfRestaurants.get(position)));
+                    //intent.putExtra("PlaceParam",new ClassSerialPlace(ClassMainStorageManager.lListOfRestaurants.get(position)));
                     startActivity(intent);
                 }
             });

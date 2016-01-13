@@ -96,6 +96,11 @@ public class ServiceGoogleHelper extends Service implements LocationListener,Goo
         return mBinder;
     }
 
+    @Override
+    public boolean onUnbind(Intent intent)
+    {
+        return false;
+    }
 
 
     @Override

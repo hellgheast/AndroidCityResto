@@ -71,6 +71,7 @@ public class ActMainResto extends AppCompatActivity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Log.i(TAG,"Service Disconnected");
+            mBound=false;
             ClassMainStorageManager.gps = null;
         }
 
@@ -109,8 +110,8 @@ public class ActMainResto extends AppCompatActivity {
         super.onStop();
         if(mBound)
         {
-            unbindService(mConnection);
             mBound=false;
+            getApplicationContext().unbindService(mConnection);
         }
     }
     @Override
@@ -118,8 +119,9 @@ public class ActMainResto extends AppCompatActivity {
         super.onPause();
         if(mBound)
         {
-            unbindService(mConnection);
             mBound=false;
+            getApplicationContext().unbindService(mConnection);
+
         }
     }
 
@@ -128,8 +130,9 @@ public class ActMainResto extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         if(mBound) {
-            unbindService(mConnection);
             mBound = false;
+            getApplicationContext().unbindService(mConnection);
+
         }
     }
 

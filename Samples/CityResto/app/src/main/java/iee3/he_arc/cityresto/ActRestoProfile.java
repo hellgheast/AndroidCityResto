@@ -31,11 +31,13 @@ import java.util.concurrent.ExecutionException;
 
 import iee3.he_arc.cityresto.InternDB.ClassInternRestaurant;
 import iee3.he_arc.cityresto.InternDB.ClassInternUser;
+import iee3.he_arc.cityresto.Utils.ClassSerialPlace;
 
 
 public class ActRestoProfile extends AppCompatActivity {
 
     private String restoID;
+    private ClassSerialPlace lSerizedResto;
     private Place resto;
     private float lRestoRating;
     private ImageButton lStarButton;
@@ -52,6 +54,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
         Intent intent = getIntent();
         restoID = intent.getStringExtra("markerID");
+        //resto = lSerizedResto.getmPlace();
 
         try
         {
@@ -62,6 +65,14 @@ public class ActRestoProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        try
+        {
+            resto = new GetPlaceDetail().execute(restoID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
 
 
 
@@ -200,6 +211,131 @@ public class ActRestoProfile extends AppCompatActivity {
                 System.out.println("Error" + mResp.getErrorMessage());
                 return null;
             }
+        }
+    }
+
+
+
+
+    private class GetPlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
+    {
+
+        private Place      mPlace;
+
+
+        public GetPlacePhotoTask (Place _Place)
+        {
+            mPlace = _Place;
+        }
+
+
+
+        @Override
+        protected void onPreExecute()
+        {
+            super.onPreExecute();
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        /**
+         * Override this method to perform a computation on a background thread. The
+         * specified parameters are the parameters passed to {@link #execute}
+         * by the caller of this task.
+         * <p>
+         * This method can call {@link #publishProgress} to publish updates
+         * on the UI thread.
+         *
+         * @param params The parameters of the task.
+         * @return A result, defined by the subclass of this task.
+         * @see #onPreExecute()
+         * @see #onPostExecute
+         * @see #publishProgress
+         */
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            StreetView.Response<InputStream> imagestreet = null;
+            Places.Response<InputStream> imageplace = null;
+            try {
+                //Méthode Place
+                List<Place.Photo> photos = mPlace.getPhotos();
+                if(!photos.isEmpty())
+                {
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        Place.Photo photo = photos.get(0);
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(200).maxWidth(200);
+                        imageplace = Places.photo(placesparams);
+                    }
+                }
+                else
+                {
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        //Méthode stretview
+                        imagestreet = StreetView.image(StreetView.Params.create()
+                                .longitude(mPlace.getLongitude())
+                                .latitude(mPlace.getLatitude()).height(200)
+                                .width(200));
+                    }
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            if(imagestreet!=null)
+            {
+                int status = imagestreet.getStatus();
+                InputStream in = imagestreet.getResult();
+
+                if (status == HttpURLConnection.HTTP_OK && in != null) {
+                    Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+                    Closeables.closeQuietly(in);
+
+                    return bitmapPhoto;
+
+                } else {
+                    System.out.println("error, HTTP status code: " + status);
+                    return null;
+                }
+
+            }
+            else
+            {
+                if(imageplace!=null)
+                {
+                    InputStream in = imageplace.getResult();
+                    String status = imageplace.getStatus();
+
+                    if (Places.Response.STATUS_OK.equals(status) && in != null) {
+                        Bitmap bitmapPhoto = (BitmapFactory.decodeStream(in)); // Get image in an asynchronous task
+                        Closeables.closeQuietly(in);
+                        return bitmapPhoto;
+                    } else {
+                        System.out.println("error: " + imageplace.getErrorMessage());
+                        return null;
+                    }
+                }
+                return null;
+            }
+        }
+
+        @Override
+        protected  void onPostExecute(Bitmap result)
+        {
+            if (result!=null)
+            {
+
+            }
+            //Check if image is already in cache
+            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+            {
+
+            }
+
         }
     }
 }
