@@ -5,10 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import iee3.he_arc.cityresto.InternDB.ClassInternPhotoResto;
 import iee3.he_arc.cityresto.InternDB.ClassInternRestaurant;
@@ -47,12 +52,14 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
     //Table User
     private static final String USERNAME_TYPE = " VARCHAR(20)";
     private static final String PASSWORD_TYPE = " VARCHAR(45)";
+    private static final String REMEMBER_TYPE = " INTEGER";
 
     private static final String TABLE_USER_SQL_CREATE_ENTRIES =
             "CREATE TABLE "+ ClassPermanentData.UserEntry.TABLE_NAME + " ("
                     + ClassPermanentData.UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME+ USERNAME_TYPE+ " NOT NULL"
                     + COMMA_SEP+ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD+PASSWORD_TYPE + " NOT NULL"
+                    + COMMA_SEP+ClassPermanentData.UserEntry.COLUMN_NAME_REMEBER+REMEMBER_TYPE + "NOT NULL DEFAULT 0"
                     + COMMA_SEP+"UNIQUE("+ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME +")"
                     + "ON CONFLICT REPLACE"
                     + " )";
@@ -98,7 +105,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
 
 
     //Main Settings
-    public static final int     DATABASE_VERSION = 4;
+    public static final int     DATABASE_VERSION = 6;
     public static final String  DATABASE_NAME="PermanentData.db";
 
     //TODO Tout ce qu'il faut pour manipuler ça !
@@ -237,11 +244,12 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
 
     }
 
+
     public int updateUser(ClassInternUser _User )
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,_User.getUsername());
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME, _User.getUsername());
         values.put(ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD, _User.getPassword());
 
         //Update of the row
@@ -253,8 +261,71 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Delete the row
-        db.delete(ClassPermanentData.UserEntry.TABLE_NAME, ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " =?", new String[]{ _User.getUsername()});
+        db.delete(ClassPermanentData.UserEntry.TABLE_NAME, ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + " =?", new String[]{_User.getUsername()});
         db.close();
+    }
+
+
+    /**
+     * Pour enregistrer le user et le récupérer
+     */
+
+    //Méthodes pour enregistrer le dernier user
+    public int RememberUser(ClassInternUser _User)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //Mise à jour des champs
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_REMEBER, 1);
+
+        return db.update(ClassPermanentData.UserEntry.TABLE_NAME,values,ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME+"=?",new String[]{_User.getUsername()});
+    }
+
+    public void UnrememberUser(ClassInternUser _User)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //Mise à jour des champs
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_REMEBER,0);
+
+        db.update(ClassPermanentData.UserEntry.TABLE_NAME, values, ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME + "=?", new String[]{_User.getUsername()});
+    }
+
+    public void UnrememberAllUser()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //Mise à jour des champs
+        values.put(ClassPermanentData.UserEntry.COLUMN_NAME_REMEBER,0);
+
+        db.update(ClassPermanentData.UserEntry.TABLE_NAME,values,null,null);
+    }
+
+    //Pour récupérer l'user à se rappeller
+    public ClassInternUser readRememberUser()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ClassPermanentData.UserEntry.TABLE_NAME,
+                new String[]{ClassPermanentData.UserEntry._ID,
+                        ClassPermanentData.UserEntry.COLUMN_NAME_USERNAME,
+                        ClassPermanentData.UserEntry.COLUMN_NAME_PASSWORD},
+                ClassPermanentData.UserEntry.COLUMN_NAME_REMEBER + "=?",
+                new String[]{"1"},
+                null,
+                null,
+                null
+        );
+        if(cursor!=null)
+        {
+            boolean result;
+            result = cursor.moveToFirst();
+            if(result)
+            {
+                return new ClassInternUser(cursor.getString(1),cursor.getString(2));
+            }
+            return null;
+        }
+        return null;
     }
 
     /**
@@ -410,6 +481,33 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         db.insert(ClassPermanentData.FavoriteRestaurants.TABLE_NAME, null, values);
         db.close();
 
+    }
+
+
+    public ArrayList<ClassInternRestaurant> readAllRestaurant()
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ClassPermanentData.FavoriteRestaurants.TABLE_NAME,null);
+        ArrayList<ClassInternRestaurant> mList = new ArrayList<ClassInternRestaurant>();
+
+        if(cursor!=null)
+        {
+            boolean result;
+            result=cursor.moveToFirst();
+            if(result)
+            {
+                do
+                {
+                    mList.add(new ClassInternRestaurant(cursor.getString(1), cursor.getString(2), cursor.getString(3)));
+                    cursor.moveToNext();
+                }while(cursor.isLast()==false);
+
+                return mList;
+
+            }
+            return null;
+        }
+        return null;
     }
 
     public ClassInternRestaurant readRestaurantPlaceID (String _PlaceID)

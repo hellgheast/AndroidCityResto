@@ -46,7 +46,7 @@ public class ClassPermanentData
         public static final String TABLE_NAME = "TLocalUser";
         public static final String COLUMN_NAME_USERNAME = "User";
         public static final String COLUMN_NAME_PASSWORD = "Password";
-
+        public static final String COLUMN_NAME_REMEBER  = "Remember";
     }
 
     /**
