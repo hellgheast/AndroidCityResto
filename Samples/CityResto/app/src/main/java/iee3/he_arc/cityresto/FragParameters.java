@@ -67,22 +67,20 @@ public class FragParameters extends Fragment {
                 // Ismail, pardonne moi pour cette méthode barbare xD
 
                 // Set all checkboxes, in case of some were unchecked or checked
-                ClassMainStorageManager.setHmTypesChecked("@string/type1", chk1.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type2", chk2.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type3", chk3.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type4", chk4.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type5", chk5.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type6", chk6.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type7", chk7.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type8", chk8.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type9", chk9.isChecked(), getContext());
-                ClassMainStorageManager.setHmTypesChecked("@string/type10", chk10.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type1", chk1.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type2", chk2.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type3", chk3.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type4", chk4.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type5", chk5.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type6", chk6.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type7", chk7.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type8", chk8.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type9", chk9.isChecked(), getContext());
+                ClassMainStorageManager.setHmTypesChecked("type10", chk10.isChecked(), getContext());
 
                 // Set radius chose by user and save it
                 lRadius = Integer.parseInt(etRadius.getText().toString());
                 ClassMainStorageManager.setRadius(lRadius, getContext());
-
-
 
                 // Go to Map/List fragment
                 ActMainResto.setPage(getContext());

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -36,12 +37,15 @@ import iee3.he_arc.cityresto.Utils.ClassSerialPlace;
 
 public class ActRestoProfile extends AppCompatActivity {
 
+    private List<String> lListOpenInfos;
+    private String[] lListRestoHours = new String[7];
     private String restoID;
     private ClassSerialPlace lSerizedResto;
     private Place resto;
     private float lRestoRating;
     private ImageButton lStarButton;
     private boolean lIsFavourite = false;
+    private ImageView lImageResto;
 
     private ClassInternRestaurant mClassInternRestaurant;
     private ClassPermanentDataHelper mClassPermanentDataHelper;
@@ -51,6 +55,7 @@ public class ActRestoProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_resto_profile);
         lStarButton = (ImageButton) findViewById(R.id.ibStar);
+        lImageResto = (ImageView) findViewById(R.id.ivRestoImage);
 
         Intent intent = getIntent();
         restoID = intent.getStringExtra("markerID");
@@ -65,22 +70,12 @@ public class ActRestoProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        try
-        {
-            resto = new GetPlaceDetail().execute(restoID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        new GetPlacePhotoTask(resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
 
 
-
-        // Find which Resto correspond to the ID
-
-        RatingBar ratingbar = (RatingBar) findViewById(R.id.ratingBar);
-        lRestoRating = resto.getRating();
-        ratingbar.setRating(lRestoRating);
+        TextView lRestoRating = new TextView(this);
+        lRestoRating = (TextView) findViewById(R.id.tvRestoRating);
+        lRestoRating.setText(resto.getRating() + "");
 
         TextView lRestoName = new TextView(this);
         lRestoName = (TextView) findViewById(R.id.tvProfileRestoName);
@@ -90,6 +85,54 @@ public class ActRestoProfile extends AppCompatActivity {
         lRestoAddress = (TextView) findViewById(R.id.tvProfileRestoAddress);
         lRestoAddress.setText(resto.getVicinity());
 
+        TextView lRestoPhoneNumber = new TextView(this);
+        lRestoPhoneNumber = (TextView) findViewById(R.id.tvProfilePhoneNumber);
+        lRestoPhoneNumber.setText(resto.getFormattedPhoneNumber());
+
+        lListOpenInfos = resto.getFormattedOpeningHours();
+
+        if(lListOpenInfos.isEmpty()){
+
+            int i;
+            for(i=0 ; i<lListRestoHours.length ; i++) {
+                lListRestoHours[i] = "Not founded";
+            }
+        }else {
+            // Memorize list of opening hours in an array of Strings
+            (resto.getFormattedOpeningHours()).toArray(lListRestoHours);
+        }
+
+        // Hours of the days of the week
+        TextView lRestoHourMonday = new TextView(this);
+        lRestoHourMonday = (TextView) findViewById(R.id.tvHourMonday);
+        lRestoHourMonday.setText(lListRestoHours[0]);
+
+        TextView lRestoHourTuesday = new TextView(this);
+        lRestoHourTuesday = (TextView) findViewById(R.id.tvHourTuesday);
+        lRestoHourTuesday.setText(lListRestoHours[1]);
+
+        TextView lRestoHourWednesday = new TextView(this);
+        lRestoHourWednesday = (TextView) findViewById(R.id.tvHourWednesday);
+        lRestoHourWednesday.setText(lListRestoHours[2]);
+
+        TextView lRestoHourThursday = new TextView(this);
+        lRestoHourThursday = (TextView) findViewById(R.id.tvHourThursday);
+        lRestoHourThursday.setText(lListRestoHours[3]);
+
+        TextView lRestoHourFriday = new TextView(this);
+        lRestoHourFriday = (TextView) findViewById(R.id.tvHourFriday);
+        lRestoHourFriday.setText(lListRestoHours[4]);
+
+        TextView lRestoHourSaturday = new TextView(this);
+        lRestoHourSaturday = (TextView) findViewById(R.id.tvHourSaturday);
+        lRestoHourSaturday.setText(lListRestoHours[5]);
+
+        TextView lRestoHourSunday = new TextView(this);
+        lRestoHourSunday = (TextView) findViewById(R.id.tvHourSunday);
+        lRestoHourSunday.setText(lListRestoHours[6]);
+
+
+
         mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
         mClassInternRestaurant = mClassPermanentDataHelper.readRestaurantPlaceID(resto.getPlaceId().getId());
        // mClassInternRestaurant = null if resto isn't saved
@@ -97,11 +140,11 @@ public class ActRestoProfile extends AppCompatActivity {
 
         if(null == mClassInternRestaurant){
             // This resto is not saved, it's not a favourite
-            lStarButton.setBackgroundResource(R.drawable.empty_star2);
+            lStarButton.setBackgroundResource(R.drawable.empty_ratstar);
             lIsFavourite = false;
         }
         else {
-            lStarButton.setBackgroundResource(R.drawable.full_star);
+            lStarButton.setBackgroundResource(R.drawable.full_ratstar);
             lIsFavourite = true;
         }
 
@@ -117,14 +160,14 @@ public class ActRestoProfile extends AppCompatActivity {
                 if(lIsFavourite) {
                     // If favourite, toggle favorite to false and put empty star
                     lIsFavourite = false;
-                    lStarButton.setBackgroundResource(R.drawable.empty_star2);
+                    lStarButton.setBackgroundResource(R.drawable.empty_ratstar);
 
                     // Remove this resto frome the database
                     mClassPermanentDataHelper.deleteRestaurant(mClassInternRestaurant);
                 }
                 else{
                     lIsFavourite = true;
-                    lStarButton.setBackgroundResource(R.drawable.full_star);
+                    lStarButton.setBackgroundResource(R.drawable.full_ratstar);
 
                     // Add this resto to the database
                     mClassPermanentDataHelper.addRestaurant(mClassInternRestaurant);
@@ -220,7 +263,7 @@ public class ActRestoProfile extends AppCompatActivity {
     private class GetPlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
     {
 
-        private Place      mPlace;
+        private Place mPlace;
 
 
         public GetPlacePhotoTask (Place _Place)
@@ -264,7 +307,7 @@ public class ActRestoProfile extends AppCompatActivity {
                     if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
                     {
                         Place.Photo photo = photos.get(0);
-                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(200).maxWidth(200);
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(2000).maxWidth(2000);
                         imageplace = Places.photo(placesparams);
                     }
                 }
@@ -328,14 +371,19 @@ public class ActRestoProfile extends AppCompatActivity {
         {
             if (result!=null)
             {
-
+                //Check if image is already in cache
+                if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                {
+                    lImageResto.setImageBitmap(result);
+                }
+                else
+                {
+                    ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId(), result); // Save image in disk cache
+                    lImageResto.setImageBitmap(result);
+                }
+            }else{
+                lImageResto.getResources().getDrawable(R.drawable.no_image_availible);
             }
-            //Check if image is already in cache
-            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
-            {
-
-            }
-
         }
     }
 }

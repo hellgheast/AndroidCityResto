@@ -29,6 +29,8 @@ public class ActConnect extends AppCompatActivity {
 
     private Button btnOKConnect;
     private CheckBox cbRememberMe;
+    private EditText lEditTextUserName;
+    private EditText lEditTextPassword;
     private String lUserName = "name";
     private String lPassword = "password";
     private String lRegisteredName = "name";
@@ -36,7 +38,7 @@ public class ActConnect extends AppCompatActivity {
     private ProgressDialog progDialog;
     private LocationManager lm;
     final Context context = this;
-
+    private boolean lRememberMe = false;
     private ClassInternUser mClassInternUser;
     private ClassPermanentDataHelper mClassPermanentDataHelper;
 
@@ -46,11 +48,21 @@ public class ActConnect extends AppCompatActivity {
         setContentView(R.layout.activity_act_connect);
 
         lm = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
-
         btnOKConnect = (Button) findViewById(R.id.btnOKConnect);
+
+        lEditTextUserName = (EditText) findViewById(R.id.etUserName);
+        lEditTextPassword = (EditText) findViewById(R.id.etPassword);
+
+
+        if(lRememberMe){
+            //lEditTextUserName.setText(lUserName);
+        }
 
         mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
 
+        // Clear types checkboxes
+        ClassMainStorageManager.initTypesNamesArray();
+        ClassMainStorageManager.initCheckBoxes(this);
         // Connection
         btnOKConnect.setOnClickListener(new View.OnClickListener() {
 
@@ -59,15 +71,29 @@ public class ActConnect extends AppCompatActivity {
             public void onClick(View arg0) {
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();
                 lPassword = ((EditText) findViewById(R.id.etPassword)).getText().toString();
+                cbRememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
 
                 progDialog = new ProgressDialog(ActConnect.this);
 
                 mClassInternUser = mClassPermanentDataHelper.readUser(lUserName);
 
+                // Check if name exists
+                if(null == mClassInternUser){
+                    Toast.makeText(getBaseContext(),
+                            (R.string.LoginNameError), Toast.LENGTH_LONG).show();
+                }
+
                 // Check User's password
-                if(lPassword.equals(mClassInternUser.getPassword())){
+                else if(lPassword.equals(mClassInternUser.getPassword())){
 
                     // Login accepted !
+
+                    if(cbRememberMe.isChecked()){
+                        lRememberMe = true;
+                    }
+                    else{
+                        lRememberMe = false;
+                    }
 
                     // check if GPS enabled
                     if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

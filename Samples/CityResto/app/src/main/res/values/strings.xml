@@ -28,7 +28,7 @@
     <string name="TvCheckBoxRemember">Remember me !</string>
     <string name="BtnOKConnect">Connect</string>
     <string name="LoginNameError">Wrong name !</string>
-    <string name="LoginPasswordError">Wrong name/password !</string>
+    <string name="LoginPasswordError">Wrong password !</string>
     <string name="NoProfileCreated">Please subscribe first !</string>
     <string name="WaitBoxTitle">Localisation</string>
     <string name="WaitBoxMessage">Please wait during localisation...</string>

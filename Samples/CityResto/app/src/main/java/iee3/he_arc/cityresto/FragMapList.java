@@ -125,7 +125,6 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
-
         // Switch to List
         swList.setOnClickListener(new View.OnClickListener() {
 
@@ -260,9 +259,12 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                 //Partie population de la listview
 
-                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)!=null)
+                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),
+                        ClassMainStorageManager.fillArrayOfTypesChecked())!=null)
                 {
-                    listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), null)));
+                    listView.setAdapter(new ClassRestoAdapter(getActivity(),
+                            ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),
+                            ClassMainStorageManager.fillArrayOfTypesChecked())));
 
                     ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
 
@@ -363,11 +365,11 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
 
                 //Vérification si on obtiens des restaurants
-                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)!=null)
+                if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), ClassMainStorageManager.fillArrayOfTypesChecked())!=null)
                 {
 
                     //Partie population de la listview
-                    listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),null)));
+                    listView.setAdapter(new ClassRestoAdapter(getActivity(),ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), ClassMainStorageManager.fillArrayOfTypesChecked())));
 
                     ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
 
