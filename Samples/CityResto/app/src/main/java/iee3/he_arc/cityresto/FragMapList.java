@@ -98,6 +98,9 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
     private String lMarkerRestoClickedID;
     private String lMarkerRestoClickedName;
 
+    private View l_vMarker;
+
+
     public FragMapList() {
         // Required empty public constructor
     }
@@ -107,8 +110,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_frag_map_list, container, false);
-        View vMarker = inflater.inflate(R.layout.marker_window, null);
-
+        l_vMarker = getLayoutInflater(savedInstanceState).inflate(R.layout.marker_window, null);
 
         fragMapListContext = getContext();
 
@@ -176,6 +178,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ServiceGoogleHelper.GOOGLEAPICONNECTED);
         intentFilter.addAction(FragParameters.ACCEPTPARAMETERS);
+        intentFilter.addAction(ActRestoProfile.BACKTOACT);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, intentFilter);
     }
 
@@ -229,7 +232,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
         @Override
         public void onReceive(final Context context, Intent intent) {
-            if(intent.getAction().equalsIgnoreCase(ServiceGoogleHelper.GOOGLEAPICONNECTED))
+            if((intent.getAction().equalsIgnoreCase(ServiceGoogleHelper.GOOGLEAPICONNECTED))||(intent.getAction().equalsIgnoreCase(ActRestoProfile.BACKTOACT)))
             {
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
@@ -295,9 +298,9 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                         public View getInfoContents(Marker marker) {
 
                             // Getting view from the layout file info_window_layout
-                            LayoutInflater mInflater = LayoutInflater.from(context);
-                            View v = mInflater.inflate(R.layout.marker_window, null);
-                            lMarkerRestoName = (TextView) v.findViewById(R.id.tvMarkerRestoName);
+                            lMarkerRestoName = (TextView) l_vMarker.findViewById(R.id.tvMarkerRestoName);
+                            //View v = mInflater.inflate(R.layout.marker_window, null);
+                            //lMarkerRestoName = (TextView) l_vMarker.findViewById(R.id.tvMarkerRestoName);
                             int i;
                             // Find which Resto correspond to the marker
                             for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
@@ -315,25 +318,20 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                                 }
                             }
 
-
                             map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                                 public void onInfoWindowClick(Marker marker)
                                 {
 
-                                            String ID = "markerID";
-                                            Intent intent = new Intent(getContext() ,ActRestoProfile.class);
-                                            intent.putExtra(ID, lMarkerRestoClickedID);
+                                    String ID = "markerID";
+                                    Intent intent = new Intent(getContext() ,ActRestoProfile.class);
+                                    intent.putExtra(ID, lMarkerRestoClickedID);
 
-                                            startActivity(intent);
-
-
-
+                                    startActivity(intent);
 
                                 }
                             });
                             // Returning the view containing InfoWindow contents
-                            return v;
-
+                            return l_vMarker;
                         }
                     });
                 }
@@ -342,7 +340,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
             }
 
 
-            else if (intent.getAction().equalsIgnoreCase(FragParameters.ACCEPTPARAMETERS))
+            else if (intent.getAction().equalsIgnoreCase(FragParameters.ACCEPTPARAMETERS)||intent.getAction().equalsIgnoreCase(ActMainResto.TABSELECT))
             {
                 Toast.makeText(getContext(),"FragParamOk",Toast.LENGTH_LONG).show();
                 map.clear();

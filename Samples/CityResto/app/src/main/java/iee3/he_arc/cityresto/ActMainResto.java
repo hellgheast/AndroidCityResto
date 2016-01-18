@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.os.IBinder;
 import android.renderscript.ScriptGroup;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ public class ActMainResto extends AppCompatActivity {
     public static ClassDiskLruImageCache mDiskLruImageCache;
     private static final int DISK_CACHE_SIZE = 1024 * 1024 * 10; // 10MB
     private static final String DISK_CACHE_SUBDIR = "thumbnails";
+    public static final String TABSELECT = "TABSELECT";
 
 
     private static final String TAG = "ActMainResto" ;
@@ -103,6 +105,14 @@ public class ActMainResto extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //Binding du service
+        getApplicationContext().bindService(new Intent(ActMainResto.this, ServiceGoogleHelper.class), this.mConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override

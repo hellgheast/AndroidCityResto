@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -53,6 +54,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
     private ClassInternRestaurant mClassInternRestaurant;
     private ClassPermanentDataHelper mClassPermanentDataHelper;
+    public static final String BACKTOACT = "BACKTOACT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
             int i;
             for(i=0 ; i<lListRestoHours.length ; i++) {
-                lListRestoHours[i] = "Not founded";
+                lListRestoHours[i] = "Hours not founded";
             }
         }else {
             // Memorize list of opening hours in an array of Strings
@@ -213,6 +215,7 @@ public class ActRestoProfile extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(ActRestoProfile.this ,ActMainResto.class);
         startActivity(intent);
+        LocalBroadcastManager.getInstance(this.getApplicationContext()).sendBroadcast(new Intent(BACKTOACT));
         finish();
     }
 
@@ -320,7 +323,7 @@ public class ActRestoProfile extends AppCompatActivity {
                     if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
                     {
                         Place.Photo photo = photos.get(0);
-                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(200).maxWidth(400);
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference());
                         imageplace = Places.photo(placesparams);
                     }
                 }
@@ -330,9 +333,7 @@ public class ActRestoProfile extends AppCompatActivity {
                     {
                         //Méthode stretview
                         imagestreet = StreetView.image(StreetView.Params.create()
-                                .longitude(mPlace.getLongitude())
-                                .latitude(mPlace.getLatitude()).height(200)
-                                .width(400));
+                                .longitude(mPlace.getLongitude()));
                     }
                 }
 

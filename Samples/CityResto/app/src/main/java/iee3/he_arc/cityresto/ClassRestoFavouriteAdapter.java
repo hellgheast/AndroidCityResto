@@ -26,8 +26,11 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import iee3.he_arc.cityresto.ActMainResto;
 import iee3.he_arc.cityresto.InternDB.ClassInternRestaurant;
+import iee3.he_arc.cityresto.R;
 
 /**
  * Created by vincent.meier on 14.01.2016.
@@ -83,24 +86,24 @@ public class ClassRestoFavouriteAdapter extends ArrayAdapter<ClassInternRestaura
         new GetFavouritePlacePhotoTask(position,holder,resto).execute();
         return view;
 
-
-
     }
+
 
 
     private class GetFavouritePlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
     {
-        private ViewHolder                  mViewHolder;
-        private ClassInternRestaurant       mResto;
-        private int                         mPosition;
+        private ViewHolder                 mViewHolder;
+        private ClassInternRestaurant      mResto;
+        private int                        mPosition;
 
 
-        public GetFavouritePlacePhotoTask (int _Position,ViewHolder _Holder, ClassInternRestaurant _Resto)
+        public GetFavouritePlacePhotoTask (int _Position, ViewHolder _Holder,ClassInternRestaurant _Resto)
         {
             mResto = _Resto;
             mViewHolder = _Holder;
             mPosition = _Position;
         }
+
 
 
         @Override
@@ -127,27 +130,40 @@ public class ClassRestoFavouriteAdapter extends ArrayAdapter<ClassInternRestaura
          */
         @Override
         protected Bitmap doInBackground(Void... params) {
+            Bitmap bitmap;
 
-            //Check if image is already in cache
-            if(ActMainResto.mDiskLruImageCache.containsKey(mResto.getPlaceID()))
+            if(mViewHolder.mPosition == this.mPosition)
             {
-                bitmap = getResizedBitmap(ActMainResto.mDiskLruImageCache.getBitmap(mResto.getPlaceID()),80,80);
-            }
-            else{
-                // TODO : placer l'image "no image availible"
-               // bitmap.(R.drawable.empty_ratstar);
-            }
+                //Check if image is already in cache
+                if(ActMainResto.mDiskLruImageCache.containsKey(mResto.getPlaceID()))
+                {
+                    bitmap = ActMainResto.mDiskLruImageCache.getBitmap(mResto.getPlaceID());
+                    bitmap = (getResizedBitmap(bitmap, 80, 80));
+                    return bitmap;
 
-            return bitmap;
+                }
+
+            }
+            return null;
         }
 
         @Override
         protected  void onPostExecute(Bitmap result)
         {
-            mViewHolder.mImage.setImageBitmap(bitmap);
+            if (result!=null)
+            {
+                mViewHolder.mImage.setImageBitmap(result);
+            }
+            //Check if image is already in cache
+            if(ActMainResto.mDiskLruImageCache.containsKey(mResto.getPlaceID()))
+            {
+                mViewHolder.mImage.setImageBitmap(getResizedBitmap(ActMainResto.mDiskLruImageCache
+                        .getBitmap(mResto.getPlaceID()),80,80));
+            }
 
         }
     }
+
 
 
     // decodes image and scales it to reduce memory consumption

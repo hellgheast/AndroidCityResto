@@ -86,6 +86,7 @@ public class ActConnect extends AppCompatActivity {
             // TODO Sauvegarder l'état de la checkbox "Remember Me" en base de donnée permanente !!
             @Override
             public void onClick(View arg0) {
+
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();
                 lPassword = ((EditText) findViewById(R.id.etPassword)).getText().toString();
 
@@ -107,6 +108,7 @@ public class ActConnect extends AppCompatActivity {
 
                     if(cbRememberMe.isChecked()){
                         lRememberMe = true;
+                        mClassPermanentDataHelper.UnrememberAllUser();
                         mClassPermanentDataHelper.RememberUser(mClassInternUser);
                     }
                     else{
@@ -116,7 +118,7 @@ public class ActConnect extends AppCompatActivity {
 
                     // check if GPS enabled
                     if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        new CountDownTimer(3000, 3000) {
+                        new CountDownTimer(4000, 4000) {
 
                             public void onTick(long millisUntilFinished) {
 
