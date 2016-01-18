@@ -79,6 +79,15 @@ public class FragParameters extends Fragment {
                 ClassMainStorageManager.setHmTypesChecked("type10", chk10.isChecked(), getContext());
 
                 // Set radius chose by user and save it
+                if(lRadius < 100 ) // Min 100m
+                {
+                    lRadius = 100;
+                }
+                else if(lRadius > 10000)  // Max 10km
+                {
+                    lRadius = 10000;
+                }
+
                 lRadius = Integer.parseInt(etRadius.getText().toString());
                 ClassMainStorageManager.setRadius(lRadius, getContext());
 

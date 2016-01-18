@@ -90,9 +90,13 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
     final int PLACE_PICKER_REQUEST = 1;
     protected static final String TAG = "FragMapList";
 
-
     private static Circle circle;
     private static Context fragMapListContext;
+
+    private TextView lMarkerRestoName;
+
+    private String lMarkerRestoClickedID;
+    private String lMarkerRestoClickedName;
 
     public FragMapList() {
         // Required empty public constructor
@@ -105,6 +109,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         View v = inflater.inflate(R.layout.fragment_frag_map_list, container, false);
         View vMarker = inflater.inflate(R.layout.marker_window, null);
 
+
         fragMapListContext = getContext();
 
         // Initialize checkbox for switching between map and list
@@ -112,6 +117,8 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         listView = (ListView) v.findViewById(R.id.listView);
         listView.setVisibility(listView.GONE);
 
+        // Marker snippet
+        lMarkerRestoName = (TextView) v.findViewById(R.id.tvHourWednesday);
 
         // MAP ---------------------------------------------------------------------
         mapView = (MapView) v.findViewById(R.id.mapView);
@@ -290,26 +297,36 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                             // Getting view from the layout file info_window_layout
                             LayoutInflater mInflater = LayoutInflater.from(context);
                             View v = mInflater.inflate(R.layout.marker_window, null);
+                            lMarkerRestoName = (TextView) v.findViewById(R.id.tvMarkerRestoName);
+                            int i;
+                            // Find which Resto correspond to the marker
+                            for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
+
+                                // Create LatLng object for comparison
+                                LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
+                                        ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
+
+                                // If the resto has the same position as marker
+                                if(latlng.equals(marker.getPosition())){
+                                    lMarkerRestoClickedID = ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId();
+                                    lMarkerRestoClickedName = ClassMainStorageManager.lListOfRestaurants.get(i).getName();
+                                    lMarkerRestoName.setText(lMarkerRestoClickedName);
+                                    i = ClassMainStorageManager.lListOfRestaurants.size();
+                                }
+                            }
+
 
                             map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                                 public void onInfoWindowClick(Marker marker)
                                 {
-                                    int i;
-                                    // Find which Resto correspond to the marker
-                                    for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
 
-                                        // Create LAtLng object for comparison
-                                        LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
-                                                ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
-                                        // If the resto has the same position as marker
-                                        if(latlng.equals(marker.getPosition())){
                                             String ID = "markerID";
                                             Intent intent = new Intent(getContext() ,ActRestoProfile.class);
-                                            intent.putExtra(ID, ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId());
-                                            i = ClassMainStorageManager.lListOfRestaurants.size();
+                                            intent.putExtra(ID, lMarkerRestoClickedID);
+
                                             startActivity(intent);
-                                        }
-                                    }
+
+
 
 
                                 }
@@ -364,7 +381,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
 
 
-                //Vérification si on obtiens des restaurants
+                //Vérification si on obtient des restaurants
                 if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())), ClassMainStorageManager.fillArrayOfTypesChecked())!=null)
                 {
 
@@ -403,6 +420,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
             });
         }
     };
+
 
 
 

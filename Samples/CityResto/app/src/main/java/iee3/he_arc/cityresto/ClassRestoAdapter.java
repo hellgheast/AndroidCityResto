@@ -63,11 +63,9 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
     // Memory cache
     private LruCache<String, Bitmap> mMemoryCache;
 
-
-
     private final Activity context;
     private final List<Place> list;
-
+    private Bitmap bitmap;
 
     public ClassRestoAdapter(Activity context, List<Place> list) {
         super(context, R.layout.row_restos, list);
@@ -75,7 +73,6 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
         this.list = list;
 
     }
-
 
     private static class ViewHolder
     {
@@ -121,80 +118,9 @@ public class ClassRestoAdapter extends ArrayAdapter<Place> {
         new GetPlacePhotoTask(position,holder,resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,(Void)null);
         return view;
 
-
-
     }
 
 
-
-
-
-/*
-    public ClassRestoAdapter(Context context, List<Place> resto, Activity context1, List<Place> list) {
-        super(context, 0, resto);
-        this.context = context1;
-        this.list = list;
-    }
-*/
-
-
-
-    /*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_restos,parent, false);
-        }
-
-        RestoViewHolder viewHolder = (RestoViewHolder) convertView.getTag();
-        if(viewHolder == null){
-            viewHolder = new RestoViewHolder();
-            viewHolder.pseudo = (TextView) convertView.findViewById(R.id.pseudo);
-            viewHolder.text = (TextView) convertView.findViewById(R.id.text);
-            viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
-            convertView.setTag(viewHolder);
-        }
-
-        Place resto = getItem(position);
-
-        //il ne reste plus qu'à remplir notre vue
-        viewHolder.pseudo.setText(resto.getName());
-        viewHolder.text.setText(resto.getFormattedAddress());
-
-        LatLng restoLatLng = new LatLng(resto.getLatitude(),resto.getLongitude());
-     //   String url = url(resto, 50, 50);
-    //    photo (resto.get.getPlaceId(), url);
-
-        try
-        {
-            //InputStream in = new GetPlacePhotoTask().execute(restoLatLng).get();
-            InputStream in = new GetPlacePhotoTask().execute(resto).get();
-            viewHolder.avatar.setImageBitmap(getResizedBitmap((BitmapFactory.decodeStream(in)), 50, 50)); // set an image resized
-            //viewHolder.avatar.setImageBitmap(BitmapFactory.decodeStream(in));
-            Closeables.closeQuietly(in);
-
-        }
-        catch(InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        catch(ExecutionException e)
-        {
-            e.printStackTrace();
-        }
-
-
-        return convertView;
-    }
-
-
-    private class RestoViewHolder{
-        public TextView pseudo;
-        public TextView text;
-        public ImageView avatar;
-    }
-*/
 
     private class GetPlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
     {

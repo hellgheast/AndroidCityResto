@@ -452,7 +452,7 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Delete the row
-        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME,ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + " =?",new String[]{_Reference});
+        db.delete(ClassPermanentData.PhotoRestaurants.TABLE_NAME, ClassPermanentData.PhotoRestaurants.COLUMN_PHOTO_REFERENCE + " =?", new String[]{_Reference});
         db.close();
     }
     public void deletePhotoPlaceID(String _PlaceID)
@@ -487,28 +487,34 @@ public class ClassPermanentDataHelper extends SQLiteOpenHelper
     public ArrayList<ClassInternRestaurant> readAllRestaurant()
     {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM "+ClassPermanentData.FavoriteRestaurants.TABLE_NAME,null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ClassPermanentData.FavoriteRestaurants.TABLE_NAME, null);
         ArrayList<ClassInternRestaurant> mList = new ArrayList<ClassInternRestaurant>();
-
-        if(cursor!=null)
-        {
+        int i=0;
+        int rowCount =0;
             boolean result;
             result=cursor.moveToFirst();
-            if(result)
+            if(result && cursor != null)
             {
+                rowCount= cursor.getCount();
                 do
                 {
                     mList.add(new ClassInternRestaurant(cursor.getString(1), cursor.getString(2), cursor.getString(3)));
                     cursor.moveToNext();
-                }while(cursor.isLast()==false);
+                    i++;
 
-                return mList;
-
+                }while(i<rowCount);
             }
+        if(mList.size()==0)
+        {
             return null;
         }
-        return null;
+        else
+        {
+            return mList;
+        }
+
     }
+
 
     public ClassInternRestaurant readRestaurantPlaceID (String _PlaceID)
     {

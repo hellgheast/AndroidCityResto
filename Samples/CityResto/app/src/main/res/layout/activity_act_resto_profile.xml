@@ -30,6 +30,7 @@
             android:layout_width="fill_parent"
             android:layout_height="180dp"
             android:id="@+id/ivRestoImage"
+            android:background="@drawable/no_image_availible"
             android:adjustViewBounds="true"
             android:scaleType="centerInside"
             android:layout_alignParentLeft="true"
@@ -41,8 +42,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Name"
             android:id="@+id/tvProfileRestoName"
-            android:textSize="21dp"
+            android:textSize="20dp"
             android:fontFamily="Arial"
+            android:textStyle="bold"
+            android:textColor="#000000"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:layout_marginLeft="30dp"
@@ -54,12 +57,23 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Address"
             android:id="@+id/tvProfileRestoAddress"
-            android:textSize="21dp"
+            android:textSize="20dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="238dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibAddress"
+            android:background="@drawable/address"
+            android:alpha="1.4"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="260dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -67,12 +81,23 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="5.1"
             android:id="@+id/tvRestoRating"
-            android:textSize="21dp"
+            android:textSize="20dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:layout_marginLeft="70dp"
-            android:layout_marginTop="120dp" />
+            android:layout_marginTop="209dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ibGreyStar"
+            android:background="@drawable/grey_star"
+            android:alpha=".8"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="225dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,26 +105,23 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Phone Number"
             android:id="@+id/tvProfilePhoneNumber"
-            android:textSize="21dp"
+            android:textSize="20dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:layout_marginLeft="70dp"
-            android:layout_marginTop="160dp" />
+            android:layout_marginTop="175dp" />
 
-        <TextView
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Opening hours :"
-            android:id="@+id/tvOpening"
-            android:textSize="21dp"
-            android:fontFamily="Arial"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:id="@+id/ibPhone"
+            android:background="@drawable/phone"
+            android:alpha=".9"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="230dp"/>
-
+            android:layout_marginTop="190dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -111,34 +133,8 @@
             android:paddingBottom="30dp"
             android:paddingLeft="30dp"
             android:paddingRight="30dp"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="30dp" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ibPhone"
-            android:background="@drawable/ib_grey_star"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:layout_alignBottom="@+id/ivRestoImage"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ibGreyStar"
-            android:background="@drawable/ib_phone"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:layout_below="@+id/ibPhone"
-            android:layout_alignRight="@+id/ibStar"
-            android:layout_alignEnd="@+id/ibStar" />
+            android:layout_marginLeft="270dp"
+            android:layout_marginTop="190dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -146,12 +142,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourMonday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="280dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="300dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -159,12 +155,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourTuesday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="310dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="330dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -172,12 +168,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourWednesday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="340dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="360dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -185,12 +181,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourThursday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="370dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="390dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -198,12 +194,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourFriday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="400dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="420dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -211,12 +207,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourSaturday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="430dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="450dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -224,12 +220,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="08:00"
             android:id="@+id/tvHourSunday"
-            android:textSize="19dp"
+            android:textSize="18dp"
             android:fontFamily="Arial"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginTop="460dp"/>
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="480dp"/>
 
     </RelativeLayout>
 

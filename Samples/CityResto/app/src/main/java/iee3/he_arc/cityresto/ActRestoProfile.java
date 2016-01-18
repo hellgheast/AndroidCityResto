@@ -1,9 +1,11 @@
 package iee3.he_arc.cityresto;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.common.io.Closeables;
@@ -46,6 +49,7 @@ public class ActRestoProfile extends AppCompatActivity {
     private ImageButton lStarButton;
     private boolean lIsFavourite = false;
     private ImageView lImageResto;
+    private Bitmap bitmap;
 
     private ClassInternRestaurant mClassInternRestaurant;
     private ClassPermanentDataHelper mClassPermanentDataHelper;
@@ -59,7 +63,6 @@ public class ActRestoProfile extends AppCompatActivity {
 
         Intent intent = getIntent();
         restoID = intent.getStringExtra("markerID");
-        //resto = lSerizedResto.getmPlace();
 
         try
         {
@@ -140,11 +143,11 @@ public class ActRestoProfile extends AppCompatActivity {
 
         if(null == mClassInternRestaurant){
             // This resto is not saved, it's not a favourite
-            lStarButton.setBackgroundResource(R.drawable.empty_ratstar);
+            lStarButton.setBackgroundResource(R.drawable.fav_emptystar);
             lIsFavourite = false;
         }
         else {
-            lStarButton.setBackgroundResource(R.drawable.full_ratstar);
+            lStarButton.setBackgroundResource(R.drawable.fav_fullstar);
             lIsFavourite = true;
         }
 
@@ -160,17 +163,25 @@ public class ActRestoProfile extends AppCompatActivity {
                 if(lIsFavourite) {
                     // If favourite, toggle favorite to false and put empty star
                     lIsFavourite = false;
-                    lStarButton.setBackgroundResource(R.drawable.empty_ratstar);
+                    lStarButton.setBackgroundResource(R.drawable.fav_emptystar);
 
                     // Remove this resto frome the database
                     mClassPermanentDataHelper.deleteRestaurant(mClassInternRestaurant);
+
+                    Toast.makeText(getBaseContext()
+                            , (R.string.FavouriteRemoved)
+                            , Toast.LENGTH_LONG).show();
                 }
                 else{
                     lIsFavourite = true;
-                    lStarButton.setBackgroundResource(R.drawable.full_ratstar);
+                    lStarButton.setBackgroundResource(R.drawable.fav_fullstar);
 
                     // Add this resto to the database
                     mClassPermanentDataHelper.addRestaurant(mClassInternRestaurant);
+
+                    Toast.makeText(getBaseContext()
+                            , (R.string.FavouriteAdded)
+                            , Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -200,17 +211,20 @@ public class ActRestoProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //Intent intent = new Intent(ActRestoProfile.this ,ActMainResto.class);
-       // startActivity(intent);
+        Intent intent = new Intent(ActRestoProfile.this ,ActMainResto.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        finish();
     }
 
     public void onPause() {
         super.onPause();
+        finish();
     }
 
     @Override
@@ -262,8 +276,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
     private class GetPlacePhotoTask extends AsyncTask <Void,Void,Bitmap>
     {
-
-        private Place mPlace;
+        private Place      mPlace;
 
 
         public GetPlacePhotoTask (Place _Place)
@@ -307,7 +320,7 @@ public class ActRestoProfile extends AppCompatActivity {
                     if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
                     {
                         Place.Photo photo = photos.get(0);
-                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(2000).maxWidth(2000);
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(200).maxWidth(400);
                         imageplace = Places.photo(placesparams);
                     }
                 }
@@ -319,7 +332,7 @@ public class ActRestoProfile extends AppCompatActivity {
                         imagestreet = StreetView.image(StreetView.Params.create()
                                 .longitude(mPlace.getLongitude())
                                 .latitude(mPlace.getLatitude()).height(200)
-                                .width(200));
+                                .width(400));
                     }
                 }
 
@@ -369,21 +382,28 @@ public class ActRestoProfile extends AppCompatActivity {
         @Override
         protected  void onPostExecute(Bitmap result)
         {
+
             if (result!=null)
             {
-                //Check if image is already in cache
-                if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
-                {
-                    lImageResto.setImageBitmap(result);
-                }
-                else
-                {
-                    ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId(), result); // Save image in disk cache
-                    lImageResto.setImageBitmap(result);
-                }
-            }else{
-                lImageResto.getResources().getDrawable(R.drawable.no_image_availible);
+                  //Check if image is already in cache
+                    if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    {
+                        lImageResto.setImageBitmap(result);
+                    }
+                    else
+                    {
+                        ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId(), result); // Save image in disk cache
+                        lImageResto.setImageBitmap(result);
+                    }
+
             }
+            //Check if image is already in cache
+            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+            {
+               bitmap = (ActMainResto.mDiskLruImageCache.getBitmap(mPlace.getPlaceId().getId()));
+                lImageResto.setImageBitmap(bitmap);
+            }
+
         }
     }
 }

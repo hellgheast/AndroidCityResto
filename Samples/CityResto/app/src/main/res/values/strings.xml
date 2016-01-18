@@ -70,7 +70,9 @@
     <string name="CbSwitchList">List</string>
     <string name="TouchMapForUpdate">Touch the map for updating your position</string>
 
-
+    <!-- ActRestoProfile -->
+    <string name="FavouriteAdded">Restaurant added to your favourites !</string>
+    <string name="FavouriteRemoved">Restaurant removed from your favourites !</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

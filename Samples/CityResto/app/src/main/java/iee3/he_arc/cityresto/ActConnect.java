@@ -52,13 +52,30 @@ public class ActConnect extends AppCompatActivity {
 
         lEditTextUserName = (EditText) findViewById(R.id.etUserName);
         lEditTextPassword = (EditText) findViewById(R.id.etPassword);
-
-
-        if(lRememberMe){
-            //lEditTextUserName.setText(lUserName);
-        }
+        cbRememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
 
         mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
+
+        // Check if an user has choose to be remembered
+        mClassInternUser = mClassPermanentDataHelper.readRememberUser();
+
+        if(null != mClassInternUser){
+
+            // User has choose to be remembered !
+            // Fill EditBoxes with name and password of the user
+            lEditTextUserName.setText(mClassInternUser.getUsername());
+            lEditTextPassword.setText(mClassInternUser.getPassword());
+
+            // Keep the checkbox checked
+            cbRememberMe.setChecked(true);
+
+        }else{
+
+            // Uncheck Checkbox
+            cbRememberMe.setChecked(false);
+        }
+
+        //mClassPermanentDataHelper = new ClassPermanentDataHelper(this);
 
         // Clear types checkboxes
         ClassMainStorageManager.initTypesNamesArray();
@@ -71,7 +88,6 @@ public class ActConnect extends AppCompatActivity {
             public void onClick(View arg0) {
                 lUserName = ((EditText) findViewById(R.id.etUserName)).getText().toString();
                 lPassword = ((EditText) findViewById(R.id.etPassword)).getText().toString();
-                cbRememberMe = (CheckBox) findViewById(R.id.cbRememberMe);
 
                 progDialog = new ProgressDialog(ActConnect.this);
 
@@ -84,15 +100,18 @@ public class ActConnect extends AppCompatActivity {
                 }
 
                 // Check User's password
-                else if(lPassword.equals(mClassInternUser.getPassword())){
+                else if(lPassword.equals(mClassInternUser.getPassword()))
+                {
 
                     // Login accepted !
 
                     if(cbRememberMe.isChecked()){
                         lRememberMe = true;
+                        mClassPermanentDataHelper.RememberUser(mClassInternUser);
                     }
                     else{
                         lRememberMe = false;
+                        mClassPermanentDataHelper.UnrememberUser(mClassInternUser);
                     }
 
                     // check if GPS enabled
@@ -126,8 +145,9 @@ public class ActConnect extends AppCompatActivity {
 
 
                 } else{
-                    Toast.makeText(getBaseContext(),
-                        (R.string.LoginPasswordError), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext()
+                        ,(R.string.LoginPasswordError)
+                            , Toast.LENGTH_LONG).show();
                 }
 
             }
