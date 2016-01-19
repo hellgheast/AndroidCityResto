@@ -33,10 +33,15 @@ public class ServiceGoogleHelper extends Service implements LocationListener,Goo
 {
 
     public static final String GOOGLEAPICONNECTED = "ISCONNECTED";
+    public static final String POPULATEOK = "POPULATEOK";
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location        mLastLocation;
     protected static final String TAG = "ServiceGoogleHelper";
+
+
+
+
 
     //Remplacement des différents Implementations
 

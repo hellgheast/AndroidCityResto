@@ -109,7 +109,7 @@ public class ActMainResto extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab.getPosition() == 0) {
-                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TABSELECT));
+                    //LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TABSELECT));
                 }
                 viewPager.setCurrentItem(tab.getPosition());
             }

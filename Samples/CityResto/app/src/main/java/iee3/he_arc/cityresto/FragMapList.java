@@ -58,7 +58,7 @@ import java.util.List;
 
 import iee3.he_arc.cityresto.Utils.ClassSerialPlace;
 
-public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMap.OnMapClickListener
+public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMap.OnMapClickListener,GoogleMap.OnMapLoadedCallback
 {
 
     private Switch swList;
@@ -130,6 +130,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         map = mapView.getMap();
         map.getUiSettings().setMyLocationButtonEnabled(false);
         map.setMyLocationEnabled(true);
+        map.setOnMapLoadedCallback(this);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -235,7 +236,138 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapLoaded() {
+        System.out.println("LOADED");
+        if(ClassMainStorageManager.gps!=null)
+        {
+
+            map.addMarker(new MarkerOptions()
+                    .position(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                            ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
+                    .title("You are here")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                    ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
+
+
+            // Update camera when user touche the map
+            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                @Override
+                public void onMapClick(LatLng point) {
+                    Log.d("Map", "Map clicked");
+
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                            ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13));
+
+                    // CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                    //         ClassMainStorageManager.gps.getLastLocationLatLng().longitude), 13);
+                    // map.animateCamera(cameraUpdate);
+                }
+            });
+
+            circle = map.addCircle(new CircleOptions()
+                    .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
+                            ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
+                    .radius(ClassMainStorageManager.getRadius(getContext())+90)
+                    .strokeColor(Color.BLUE)
+                    .strokeWidth(1));
+
+            //Partie population de la listview
+
+            if(ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),
+                    ClassMainStorageManager.fillArrayOfTypesChecked())!=null)
+            {
+                listView.setAdapter(new ClassRestoAdapter(getActivity(),
+                        ClassMainStorageManager.gps.getPlaces(Integer.valueOf(ClassMainStorageManager.getRadius(getContext())),
+                                ClassMainStorageManager.fillArrayOfTypesChecked())));
+
+                ClassMainStorageManager.lListOfRestaurants = ClassMainStorageManager.gps.getPlaceNoArg();
+
+                //Population de markeurs
+                for(Place place : ClassMainStorageManager.lListOfRestaurants )
+                {
+                    map.addMarker(new MarkerOptions()
+                            .position(new LatLng(place.getLatitude(),place.getLongitude()))
+                            .title(place.getName()));
+                }
+
+                map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+                    // Use default InfoWindow frame
+                    @Override
+                    public View getInfoWindow(Marker args) {
+                        return null;
+                    }
+
+                    @Override
+                    public View getInfoContents(Marker marker) {
+
+                        // Getting view from the layout file info_window_layout
+                        lMarkerRestoName = (TextView) l_vMarker.findViewById(R.id.tvMarkerRestoName);
+                        //View v = mInflater.inflate(R.layout.marker_window, null);
+                        //lMarkerRestoName = (TextView) l_vMarker.findViewById(R.id.tvMarkerRestoName);
+                        int i;
+                        // Find which Resto correspond to the marker
+                        for(i=0 ; i<ClassMainStorageManager.lListOfRestaurants.size() ; i++){
+
+                            // Create LatLng object for comparison
+                            LatLng latlng = new LatLng(ClassMainStorageManager.lListOfRestaurants.get(i).getLatitude(),
+                                    ClassMainStorageManager.lListOfRestaurants.get(i).getLongitude());
+
+                            // If the resto has the same position as marker
+                            if(latlng.equals(marker.getPosition())){
+                                lMarkerRestoClickedID = ClassMainStorageManager.lListOfRestaurants.get(i).getPlaceId().getId();
+                                lMarkerRestoClickedName = ClassMainStorageManager.lListOfRestaurants.get(i).getName();
+                                lMarkerRestoName.setText(lMarkerRestoClickedName);
+                                i = ClassMainStorageManager.lListOfRestaurants.size();
+                            }
+                        }
+
+                        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                            public void onInfoWindowClick(Marker marker)
+                            {
+                                ClassMainStorageManager.lPositionTab = 0; // Prepare to display map
+                                ClassMainStorageManager.lDisplayList = false; // Prepare to hide list
+                                String ID = "markerID";
+                                Intent intent = new Intent(getContext() ,ActRestoProfile.class);
+                                intent.putExtra(ID, lMarkerRestoClickedID);
+
+                                startActivity(intent);
+
+                            }
+                        });
+                        // Returning the view containing InfoWindow contents
+                        return l_vMarker;
+                    }
+                });
+            }
+
+            // listView Listener
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                @Override
+                public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+                    // Find which Resto correspond to the position
+                    String restoID = ClassMainStorageManager.lListOfRestaurants.get(position).getPlaceId().getId();
+
+                    Intent intent = new Intent(getContext(), ActRestoProfile.class);
+                    intent.putExtra("markerID", restoID);
+                    //intent.putExtra("PlaceParam",new ClassSerialPlace(ClassMainStorageManager.lListOfRestaurants.get(position)));
+                    startActivity(intent);
+                }
+            });
+
+        }
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        System.out.println("TEST ADKAK");
+
 
     }
 
@@ -434,8 +566,6 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
             });
         }
     };
-
-
 
 
 }
