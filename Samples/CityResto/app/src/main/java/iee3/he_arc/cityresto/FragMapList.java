@@ -179,6 +179,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         intentFilter.addAction(ServiceGoogleHelper.GOOGLEAPICONNECTED);
         intentFilter.addAction(FragParameters.ACCEPTPARAMETERS);
         intentFilter.addAction(ActRestoProfile.BACKTOACT);
+        intentFilter.addAction(ActMainResto.TABSELECT);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, intentFilter);
     }
 

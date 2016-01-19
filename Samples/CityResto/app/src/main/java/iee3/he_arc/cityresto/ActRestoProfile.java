@@ -320,20 +320,23 @@ public class ActRestoProfile extends AppCompatActivity {
                 List<Place.Photo> photos = mPlace.getPhotos();
                 if(!photos.isEmpty())
                 {
-                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()+"LARGE"))
                     {
                         Place.Photo photo = photos.get(0);
-                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference());
+                        PlacesParams placesparams = Places.Params.create().reference(photo.getReference()).maxHeight(600).maxWidth(1080);
                         imageplace = Places.photo(placesparams);
                     }
                 }
                 else
                 {
-                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    if(!ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()+"LARGE"))
                     {
                         //Méthode stretview
                         imagestreet = StreetView.image(StreetView.Params.create()
-                                .longitude(mPlace.getLongitude()));
+                                .longitude(mPlace.getLongitude())
+                                .latitude(mPlace.getLatitude())
+                                .height(600)
+                                .width(1080));
                     }
                 }
 
@@ -387,21 +390,29 @@ public class ActRestoProfile extends AppCompatActivity {
             if (result!=null)
             {
                   //Check if image is already in cache
-                    if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+                    if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()+"LARGE"))
                     {
+                        result = Bitmap.createScaledBitmap(result,1080,600, true);
+
                         lImageResto.setImageBitmap(result);
                     }
                     else
                     {
-                        ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId(), result); // Save image in disk cache
+                        ActMainResto.mDiskLruImageCache.put(mPlace.getPlaceId().getId()+"LARGE", result); // Save image in disk
+
+
+                        result = Bitmap.createScaledBitmap(result,1080,600, true);
+
                         lImageResto.setImageBitmap(result);
                     }
 
             }
             //Check if image is already in cache
-            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()))
+            if(ActMainResto.mDiskLruImageCache.containsKey(mPlace.getPlaceId().getId()+"LARGE"))
             {
-               bitmap = (ActMainResto.mDiskLruImageCache.getBitmap(mPlace.getPlaceId().getId()));
+               bitmap = (ActMainResto.mDiskLruImageCache.getBitmap(mPlace.getPlaceId().getId()+"LARGE"));
+                bitmap = Bitmap.createScaledBitmap(bitmap,1080,600, true);
+
                 lImageResto.setImageBitmap(bitmap);
             }
 

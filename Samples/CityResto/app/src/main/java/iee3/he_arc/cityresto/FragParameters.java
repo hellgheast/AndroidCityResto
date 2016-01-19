@@ -78,6 +78,9 @@ public class FragParameters extends Fragment {
                 ClassMainStorageManager.setHmTypesChecked("type9", chk9.isChecked(), getContext());
                 ClassMainStorageManager.setHmTypesChecked("type10", chk10.isChecked(), getContext());
 
+
+                lRadius = Integer.parseInt(etRadius.getText().toString());
+
                 // Set radius chose by user and save it
                 if(lRadius < 100 ) // Min 100m
                 {
@@ -87,8 +90,8 @@ public class FragParameters extends Fragment {
                 {
                     lRadius = 10000;
                 }
+                etRadius.setText(lRadius + "");
 
-                lRadius = Integer.parseInt(etRadius.getText().toString());
                 ClassMainStorageManager.setRadius(lRadius, getContext());
 
                 // Go to Map/List fragment

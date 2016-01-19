@@ -42,6 +42,7 @@ public class FragFavourites extends Fragment {
 
         listView = (ListView) v.findViewById(R.id.lvListFavourite);
 
+
         return v;
     }
 
@@ -50,6 +51,8 @@ public class FragFavourites extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         fragFavouriteContext = getContext();
+        mArrayListOfRestos = new ArrayList<ClassInternRestaurant>();
+
         mClassPermanentDataHelper = new ClassPermanentDataHelper(getContext());
         if(null != mClassPermanentDataHelper.readAllRestaurant()) {
             mArrayListOfRestos = mClassPermanentDataHelper.readAllRestaurant();
