@@ -6,14 +6,14 @@
     <!-- Btn = Button, Tv = TextView -->
 
     <!-- Google API Keys -->
-    <string name="google_maps_key">AIzaSyDGroVx9DacLLZ5VR1F3xg-ubjhozVxlsY</string>
+    <string name="google_maps_key">AIzaSyDlezFNNivbECyWuAmm4HuLNEabhCqssRY</string>
 
     <!-- Noms des activités et de l'application  -->
     <string name="app_name">CityResto</string>
     <string name="title_activity_act_connect"></string>
     <string name="title_activity_act_choice"></string>
-    <string name="title_activity_act_subscr">ActSubscr</string>
-    <string name="title_activity_act_main_resto">ActSubscr</string>
+    <string name="title_activity_act_subscr">CityResto</string>
+    <string name="title_activity_act_main_resto">CityResto</string>
     <string name="action_settings">Settings</string>
 
     <!-- ActAcceuil  -->

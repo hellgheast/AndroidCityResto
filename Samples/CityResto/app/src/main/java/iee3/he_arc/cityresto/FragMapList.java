@@ -175,7 +175,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         circle = map.addCircle(new CircleOptions()
                 .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
                         ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
-                .radius(ClassMainStorageManager.getRadius(fragMapListContext))
+                .radius(ClassMainStorageManager.getRadius(fragMapListContext)+90)
                 .strokeColor(Color.BLUE)
                 .strokeWidth(1));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
@@ -277,7 +277,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                 circle = map.addCircle(new CircleOptions()
                         .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
                                 ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
-                        .radius(ClassMainStorageManager.getRadius(getContext()))
+                        .radius(ClassMainStorageManager.getRadius(getContext())+90)
                         .strokeColor(Color.BLUE)
                         .strokeWidth(1));
 
@@ -374,7 +374,7 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                 circle = map.addCircle(new CircleOptions()
                         .center(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
                                 ClassMainStorageManager.gps.getLastLocationLatLng().longitude))
-                        .radius(ClassMainStorageManager.getRadius(getContext()))
+                        .radius(ClassMainStorageManager.getRadius(getContext())+90)
                         .strokeColor(Color.BLUE)
                         .strokeWidth(1));
 
