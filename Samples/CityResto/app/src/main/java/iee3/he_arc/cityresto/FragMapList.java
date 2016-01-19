@@ -134,19 +134,32 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
 
+        if(ClassMainStorageManager.lDisplayList) {
+            mapView.setVisibility(mapView.GONE);
+            listView.setVisibility(listView.VISIBLE);
+            swList.setChecked(true);
+
+        }else{
+            mapView.setVisibility(mapView.VISIBLE);
+            listView.setVisibility(listView.GONE);
+            ClassMainStorageManager.lDisplayList = false;
+        }
+
         // Switch to List
         swList.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 // Check if user want to switch to List
-                if(swList.isChecked()){
+                if(swList.isChecked() || ClassMainStorageManager.lDisplayList) {
                     mapView.setVisibility(mapView.GONE);
                     listView.setVisibility(listView.VISIBLE);
+                    swList.setChecked(true);
 
                 }else{
                     mapView.setVisibility(mapView.VISIBLE);
                     listView.setVisibility(listView.GONE);
+                    ClassMainStorageManager.lDisplayList = false;
                 }
             }
         });
@@ -322,7 +335,8 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
                             map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                                 public void onInfoWindowClick(Marker marker)
                                 {
-
+                                    ClassMainStorageManager.lPositionTab = 0; // Prepare to display map
+                                    ClassMainStorageManager.lDisplayList = false; // Prepare to hide list
                                     String ID = "markerID";
                                     Intent intent = new Intent(getContext() ,ActRestoProfile.class);
                                     intent.putExtra(ID, lMarkerRestoClickedID);
@@ -343,7 +357,6 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
             else if (intent.getAction().equalsIgnoreCase(FragParameters.ACCEPTPARAMETERS)||intent.getAction().equalsIgnoreCase(ActMainResto.TABSELECT))
             {
-                Toast.makeText(getContext(),"FragParamOk",Toast.LENGTH_LONG).show();
                 map.clear();
                 map.addMarker(new MarkerOptions()
                         .position(new LatLng(ClassMainStorageManager.gps.getLastLocationLatLng().latitude,
@@ -407,6 +420,8 @@ public class FragMapList extends Fragment implements OnMapReadyCallback,GoogleMa
 
                 @Override
                 public void onItemClick (AdapterView < ? > parent, View view,int position, long id){
+
+                    ClassMainStorageManager.lDisplayList = true; // Prepare to hide list
 
                     // Find which Resto correspond to the position
                     String restoID = ClassMainStorageManager.lListOfRestaurants.get(position).getPlaceId().getId();

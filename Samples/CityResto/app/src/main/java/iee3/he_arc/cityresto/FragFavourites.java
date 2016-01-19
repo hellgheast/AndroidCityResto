@@ -73,6 +73,7 @@ public class FragFavourites extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                ClassMainStorageManager.lPositionTab = 2; // Display favourite list when return
                 // Find which Resto correspond to the position
                 String restoID = mArrayListOfRestos.get(position).getPlaceID();
 

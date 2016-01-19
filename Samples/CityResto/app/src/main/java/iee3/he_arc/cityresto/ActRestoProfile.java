@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.StrictMode;
@@ -77,7 +78,6 @@ public class ActRestoProfile extends AppCompatActivity {
 
         new GetPlacePhotoTask(resto).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void) null);
 
-
         TextView lRestoRating = new TextView(this);
         lRestoRating = (TextView) findViewById(R.id.tvRestoRating);
         lRestoRating.setText(resto.getRating() + "");
@@ -85,6 +85,8 @@ public class ActRestoProfile extends AppCompatActivity {
         TextView lRestoName = new TextView(this);
         lRestoName = (TextView) findViewById(R.id.tvProfileRestoName);
         lRestoName.setText(resto.getName());
+        lRestoName.setBackgroundColor(Color.WHITE);
+        lRestoName.getBackground().setAlpha(87);
 
         TextView lRestoAddress = new TextView(this);
         lRestoAddress = (TextView) findViewById(R.id.tvProfileRestoAddress);
@@ -100,7 +102,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
             int i;
             for(i=0 ; i<lListRestoHours.length ; i++) {
-                lListRestoHours[i] = "Hours not founded";
+                lListRestoHours[i] = "Hours not found";
             }
         }else {
             // Memorize list of opening hours in an array of Strings
@@ -213,6 +215,7 @@ public class ActRestoProfile extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
         Intent intent = new Intent(ActRestoProfile.this ,ActMainResto.class);
         startActivity(intent);
         LocalBroadcastManager.getInstance(this.getApplicationContext()).sendBroadcast(new Intent(BACKTOACT));

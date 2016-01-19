@@ -104,14 +104,13 @@ public class ActMainResto extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setOnTabSelectedListener( new TabLayout.ViewPagerOnTabSelectedListener(viewPager){
+        setPage(this, ClassMainStorageManager.lPositionTab); // At the begining, position = 0. Sometimes, = 2
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
             @Override
-            public void onTabSelected(TabLayout.Tab tab)
-            {
-              if(tab.getPosition()==0)
-              {
-                  LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TABSELECT));
-              }
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab.getPosition() == 0) {
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TABSELECT));
+                }
                 viewPager.setCurrentItem(tab.getPosition());
             }
         });
@@ -171,8 +170,8 @@ public class ActMainResto extends AppCompatActivity {
     }
 
     // Going to the Map/List fragment
-    public static void setPage(Context c){
-        viewPager.setCurrentItem(0);
+    public static void setPage(Context c, int pos){
+        viewPager.setCurrentItem(pos);
     }
 
 

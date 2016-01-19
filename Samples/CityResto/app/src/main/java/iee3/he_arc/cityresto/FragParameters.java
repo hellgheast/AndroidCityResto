@@ -44,7 +44,6 @@ public class FragParameters extends Fragment {
         lRadius = ClassMainStorageManager.getRadius(getContext()); // Read the default radius
         etRadius.setText(lRadius + ""); // Set the default Radius
 
-        // TODO : Vérifier que les checkBoxes ne se reset pas à chaque fois !
         ClassMainStorageManager.initCheckBoxes(getContext()); // Make checkboxes empty
 
         chk1 = (CheckBox) this.getActivity().findViewById(R.id.cbType1);
@@ -95,7 +94,7 @@ public class FragParameters extends Fragment {
                 ClassMainStorageManager.setRadius(lRadius, getContext());
 
                 // Go to Map/List fragment
-                ActMainResto.setPage(getContext());
+                ActMainResto.setPage(getContext(), 0);
 
                 // Scroll to the top of the parameters list for further uses
                 ScrollView scroll = (ScrollView) getActivity().findViewById(R.id.scrollView);
@@ -118,7 +117,7 @@ public class FragParameters extends Fragment {
             public void onClick(View arg0) {
 
                 // Go to Map/List fragment
-                ActMainResto.setPage(getContext());
+                ActMainResto.setPage(getContext(), 0);
 
             }
         });

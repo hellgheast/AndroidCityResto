@@ -134,6 +134,8 @@ public class ActConnect extends AppCompatActivity {
                                     progDialog = null;
                                 }
 
+                                ClassMainStorageManager.lPositionTab = 0; // Prepare to display map
+                                ClassMainStorageManager.lDisplayList = false; // Prepare to hide list
                                 // Go to next activity
                                 Intent intent = new Intent(ActConnect.this, ActMainResto.class);
                                 startActivity(intent);

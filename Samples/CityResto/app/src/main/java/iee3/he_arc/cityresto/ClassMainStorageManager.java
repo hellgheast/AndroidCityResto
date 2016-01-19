@@ -32,7 +32,8 @@ public class ClassMainStorageManager {
     public static LatLng lCoordonates;
     public static ServiceGoogleHelper gps;
 
-
+    public static int lPositionTab = 0;
+    public static boolean lDisplayList = false;
 
     // We use a Hashmap for saving choices of types of restaurants
     // The key is the type of restaurant, and the value is a boolean who said if it's checked or not.
